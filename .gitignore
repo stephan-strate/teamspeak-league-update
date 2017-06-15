@@ -25,6 +25,7 @@ hs_err_pid*
 .idea/
 out/
 *iml
+src/META-INF/
 
 # Libary
 lib/
