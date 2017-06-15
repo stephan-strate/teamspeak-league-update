@@ -1,25 +1,29 @@
-author: Stephan Strate
-website: www.famstrate.de
-last update: 18.02.2017 - 22:31
+# Changelog
 
-v1
-	- relased
-	- test setup
+**author:** Stephan Strate ([development@famstrate.com](mailto:development@famstrate.com))<br />
+**internet:** www.famstrate.com<br />
 
-v1.1
-	- fixed proper mysql close
-	  (deprecated in later build, v1.1.1)
-	- minor changes
+## 2.0.0 (2017-06-15)
 
-v1.1.1
-	- mysql instance, opening new
-	  instance on every single connection
-	  (very inefficent (!))
-	- ssl usage off
-	- auto reconnect enabled
+Improvements in commenting and git integration.
 
+## 1.1.1
 
+#### Bugfixes
 
-upcoming patches
-v1.1.2
-    * mysql instance fix
+- mysql instance, opening new on every single connection (workaround for MySQL disconnect bug)
+- ssl usage off
+
+#### Features
+
+- auto reconnect enabled
+
+## 1.1.0
+
+#### Bugfixes
+
+- fixed proper mysql close (deprecated in later build v1.1.1)
+
+## 1.0.0
+
+first release
