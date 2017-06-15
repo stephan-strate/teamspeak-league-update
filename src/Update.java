@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 /**
  *  @author   Stephan Strate (development@famstrate.com)
- *  @version  2.2 (last update: 23.02.2017)
+ *  @version  2.0.0 (last update: 15.06.2017)
  */
 public class Update {
 

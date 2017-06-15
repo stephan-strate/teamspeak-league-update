@@ -13,7 +13,7 @@ import java.util.logging.Level;
  *  causing the bot to update the users League of Legends Solo/Duo Queue Tier.
  *
  *  @author   Stephan Strate (development@famstrate.com)
- *  @version  2.2 (last update: 23.02.2017)
+ *  @version  2.0.0 (last update: 15.06.2017)
  */
 public class Initialize {
 
