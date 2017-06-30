@@ -5,6 +5,7 @@ import com.github.theholywaffle.teamspeak3.api.TextMessageTargetMode;
 import com.github.theholywaffle.teamspeak3.api.event.*;
 import com.github.theholywaffle.teamspeak3.api.reconnect.ConnectionHandler;
 import com.github.theholywaffle.teamspeak3.api.reconnect.ReconnectStrategy;
+import requests.RiotApi;
 import settings.Configuration;
 
 import java.util.logging.Level;
@@ -31,6 +32,9 @@ public class Initialize {
         String[] names = { "RIOTGAMESAPIKEY", "TEAMSPEAKHOST", "TEAMSPEAKPORT", "TEAMSPEAKQUERYNAME", "TEAMSPEAKQUERYPASS",
                 "TEAMSPEAKVIRTUALID", "BOTNAME", "BOTREADYMSG", "BOTCHANNELID", "MYSQLHOST", "MYSQLPORT", "MYSQLDB", "MYSQLUSER", "MYSQLPASS" };
         Configuration configuration = new Configuration("config.properties", names);
+
+        RiotApi riotApi = new RiotApi(configuration.get("RIOTGAMESAPIKEY"), "euw1");
+        System.out.println(riotApi.getLeagueBySummonerId(riotApi.getIdBySummonerName("HDG metrickstar")));
 
         final TS3Config config = new TS3Config();
         // host (ip-adress !important)

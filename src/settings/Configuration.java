@@ -6,8 +6,8 @@ import java.util.Properties;
 /**
  * Can create a configuration file with given specs.
  *
- * @since   2.0.0
  * @author  Stephan Strate (development@famstrate.com)
+ * @since   2.0.0
  */
 public class Configuration {
     private Properties prop;
