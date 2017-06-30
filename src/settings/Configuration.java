@@ -3,9 +3,15 @@ package settings;
 import java.io.*;
 import java.util.Properties;
 
+/**
+ * Can create a configuration file with given specs.
+ *
+ * @since   2.0.0
+ * @author  Stephan Strate (development@famstrate.com)
+ */
 public class Configuration {
     private Properties prop;
-    private String[] names;
+    private String[] names = null;
 
     public Configuration(String path, String[] names) {
         // Setting the names
@@ -14,6 +20,13 @@ public class Configuration {
         // Initialize propertie attribute
         prop = new Properties();
 
+        // Loading the given propertie file
+        loadFile(path);
+    }
+
+    public Configuration(String path) {
+        // Initialize propertie attribute
+        prop = new Properties();
         // Loading the given propertie file
         loadFile(path);
     }
@@ -97,9 +110,11 @@ public class Configuration {
     private void loadProperties (InputStream input) {
         try {
             prop.load(input);
-            for (String name : names) {
-                if (prop.getProperty(name).equals("")) {
-                    throw new IllegalAccessException();
+            if (names != null) {
+                for (String name : names) {
+                    if (prop.getProperty(name).equals("")) {
+                        throw new IllegalAccessException();
+                    }
                 }
             }
             input.close();
@@ -122,8 +137,10 @@ public class Configuration {
         try {
             // Setting the given propertie names
             Properties properties = new Properties();
-            for (String name : names) {
-                properties.setProperty(name, "");
+            if (names != null) {
+                for (String name : names) {
+                    properties.setProperty(name, "");
+                }
             }
 
             // Save it to the file
