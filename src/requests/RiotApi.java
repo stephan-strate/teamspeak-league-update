@@ -1,5 +1,7 @@
 package requests;
 
+import constants.League;
+import constants.Region;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -8,30 +10,44 @@ import org.json.simple.parser.ParseException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+/**
+ * Can perform api requests to Riot Games.
+ *
+ * @author  Stephan Strate (development@famstrate.com)
+ * @since   2.0.0
+ */
 public class RiotApi {
     private String key;
-    private String region;
+    private Region region;
 
-    private final String type = "https://";
-    private final String endpoint = ".api.riotgames.com/";
-
-    public RiotApi (String key, String region) {
+    public RiotApi (String key, Region region) {
         this.key = key;
         this.region = region;
     }
 
+    /**
+     * Returns the unique account id of a summoner name,
+     * or 0 if account doesn't exist.
+     *
+     * @param username  Username to search for
+     *
+     * @return  Unique account id
+     */
     public long getIdBySummonerName (String username) {
         try {
+            // preventing whitespaces in url
             username = URLEncoder.encode(username, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
-        Http http = new Http(type + region + endpoint + "lol/summoner/v3/summoners/by-name/" +
+        // performing http request
+        Http http = new Http(region.getHost() + "/lol/summoner/v3/summoners/by-name/" +
                 username + "?api_key=" + key);
 
         try {
             JSONParser jsonParser = new JSONParser();
+            // parsing json
             JSONObject jsonObject = (JSONObject) jsonParser.parse(http.getResponse());
             return (long) jsonObject.get("id");
         } catch (ParseException e) {
@@ -41,47 +57,29 @@ public class RiotApi {
         return 0;
     }
 
-    public int parseLeagueToId (String league) {
-        switch (league) {
-            case "BRONCE":
-                return 0;
-
-            case "SILVER":
-                return 1;
-
-            case "GOLD":
-                return 2;
-
-            case "PLATINUM":
-                return 3;
-
-            case "DIAMOND":
-                return 4;
-
-            case "MASTER":
-                return 5;
-
-            case "CHALLENGER":
-                return 6;
-
-            default:
-                return -1;
-        }
-    }
-
-    public int getLeagueBySummonerId (long id) {
-        Http http = new Http(type + region + endpoint + "lol/league/v3/leagues/by-summoner/" +
+    /**
+     * Returns the league of a summoner account id, or
+     * UNRANKED if account doesn't exist.
+     *
+     * @param id    Unique account id
+     *
+     * @return  League of the account id
+     */
+    public League getLeagueBySummonerId (long id) {
+        // performing http request
+        Http http = new Http(region.getHost() + "/lol/league/v3/leagues/by-summoner/" +
                 id + "?api_key=" + key);
 
         try {
             JSONParser jsonParser = new JSONParser();
+            // parsing json
             JSONArray jsonArray = (JSONArray) jsonParser.parse(http.getResponse());
             JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-            return parseLeagueToId((String) jsonObject.get("tier"));
+            return League.getLeagueByName((String) jsonObject.get("tier"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return -1;
+        return League.UNRANKED;
     }
 }
