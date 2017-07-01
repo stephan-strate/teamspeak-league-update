@@ -12,8 +12,6 @@ Riot Games
 ### Dependencies
 
 - [Teamspeak-3-Java-API](https://github.com/TheHolyWaffle/TeamSpeak-3-Java-API) by _TheHolyWaffle_ at [1.0.14](https://github.com/TheHolyWaffle/TeamSpeak-3-Java-API/releases/tag/v1.0.14)
-- [riot-api-java](https://github.com/taycaldwell/riot-api-java) by _taycaldwell_ at [3.9.0](https://github.com/taycaldwell/riot-api-java/releases/tag/v3.9.0)
-- [gson](https://github.com/google/gson) at [2.8.0](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.8.0)
 - [MySQL Connector](https://mvnrepository.com/artifact/mysql/mysql-connector-java) at [5.1.40](https://mvnrepository.com/artifact/mysql/mysql-connector-java/5.1.40)
 
 ### Configuration

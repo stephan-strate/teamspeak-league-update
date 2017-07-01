@@ -46,6 +46,7 @@ public class Update {
         RiotApi api = new RiotApi(Initialize.configuration.get(Propertie.API), Region.getRegionByName(Initialize.configuration.get(Propertie.REGION)));
 
         // returning identifier
+        System.out.println("leagueIdentifier");
         return api.getIdBySummonerName(name);
     }
 
