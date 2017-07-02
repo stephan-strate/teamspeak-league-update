@@ -3,9 +3,19 @@
 **author:** Stephan Strate ([development@famstrate.com](mailto:development@famstrate.com))<br />
 **internet:** www.famstrate.com<br />
 
-## 2.0.0 (2017-06-15)
+## 2.0.0 (2017-07-03)
 
-Improvements in commenting and git integration.
+#### Improvements
+
+- commenting optimized
+- git integration
+- size decreased
+
+#### Features
+
+- simple riot api adaption (independent from other adaptions)
+- supporting all regions
+- external configuration files
 
 ## 1.1.1
 
