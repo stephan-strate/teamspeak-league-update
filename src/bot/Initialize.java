@@ -1,3 +1,5 @@
+package bot;
+
 import com.github.theholywaffle.teamspeak3.TS3Api;
 import com.github.theholywaffle.teamspeak3.TS3Config;
 import com.github.theholywaffle.teamspeak3.TS3Query;
@@ -5,21 +7,34 @@ import com.github.theholywaffle.teamspeak3.api.TextMessageTargetMode;
 import com.github.theholywaffle.teamspeak3.api.event.*;
 import com.github.theholywaffle.teamspeak3.api.reconnect.ConnectionHandler;
 import com.github.theholywaffle.teamspeak3.api.reconnect.ReconnectStrategy;
+import constants.League;
+import constants.Propertie;
 import settings.Configuration;
 
 import java.util.logging.Level;
 
 /**
- *  This bot registers an onclientJoin Event, thats
- *  causing the bot to update the users League of Legends Solo/Duo Queue Tier.
+ * This bot registers an onclientJoin Event, thats
+ * causing the bot to update the users League of Legends Solo/Duo Queue Tier.
  *
- *  @author   Stephan Strate (development@famstrate.com)
- *  @version  2.0.0 (last update: 15.06.2017)
+ * @author  Stephan Strate (development@famstrate.com)
+ * @version 2.0.0 (last update: 15.06.2017)
  */
 public class Initialize {
 
     // client id !important
     private static volatile int clientId;
+
+    public static Configuration configuration;
+    public static Configuration servergroups;
+
+    public Configuration getConfiguration () {
+        return configuration;
+    }
+
+    public Configuration getServergroups () {
+        return servergroups;
+    }
 
     /**
      *  Starting the bot and calling the two main functions
@@ -28,13 +43,19 @@ public class Initialize {
      *  @param args  no description needed
      */
     public static void main (String[] args) {
-        String[] names = { "RIOTGAMESAPIKEY", "TEAMSPEAKHOST", "TEAMSPEAKPORT", "TEAMSPEAKQUERYNAME", "TEAMSPEAKQUERYPASS",
-                "TEAMSPEAKVIRTUALID", "BOTNAME", "BOTREADYMSG", "BOTCHANNELID", "MYSQLHOST", "MYSQLPORT", "MYSQLDB", "MYSQLUSER", "MYSQLPASS" };
-        Configuration configuration = new Configuration("config.properties", names);
+        Propertie[] configProperties = { Propertie.API, Propertie.TSHOST, Propertie.TSPORT, Propertie.TSQUERYNAME, Propertie.TSQUERYPASS,
+                Propertie.TSVIRTUALID, Propertie.BOTNAME, Propertie.BOTMSG, Propertie.BOTCHANNEL, Propertie.MYSQLHOST, Propertie.MYSQLPORT, Propertie.MYSQLDB,
+                Propertie.MYSQLUSER, Propertie.MYSQLPASS, Propertie.REGION };
+        configuration = new Configuration("config.properties", configProperties);
+
+        Propertie[] servergroupProperties = { Propertie.UNRANKED, Propertie.BRONCE, Propertie.SILVER, Propertie.GOLD, Propertie.PLATINUM, Propertie.DIAMOND,
+                Propertie.MASTER, Propertie.CHALLENGER };
+        servergroups = new Configuration("servergroups.properties", servergroupProperties);
+
 
         final TS3Config config = new TS3Config();
         // host (ip-adress !important)
-        config.setHost(Config.TS_HOST);
+        config.setHost(configuration.get(Propertie.TSHOST));
         // debug level, displays messages in console
         config.setDebugLevel(Level.ALL);
 
@@ -63,16 +84,15 @@ public class Initialize {
 
 
     /**
-     *  Login into the server query account
-     *  thats defined in {@link Config}.
+     *  Login into the server query account.
      *
      *  @param api  Teamspeak 3 api
      */
     private static void queryLogin (TS3Api api) {
-        api.login(Config.TS_QUERYNAME, Config.TS_QUERYPASS);                // username, password
-        api.selectVirtualServerById(Config.TS_VIRTUALSERVERID);             // virtualserver id
-        api.setNickname(Config.BOT_NAME);                                   // nickname
-        api.sendChannelMessage(Config.BOT_CHANNEL, Config.BOT_READY_MSG);   // channel + message
+        api.login(configuration.get(Propertie.TSQUERYNAME), configuration.get(Propertie.TSQUERYPASS));                          // username, password
+        api.selectVirtualServerById(Integer.parseInt(configuration.get(Propertie.TSVIRTUALID)));                                // virtualserver id
+        api.setNickname(configuration.get(Propertie.BOTNAME));                                                                  // nickname
+        api.sendChannelMessage(Integer.parseInt(configuration.get(Propertie.BOTCHANNEL)), configuration.get(Propertie.BOTMSG)); // channel + message
 
         // register "Server" and "Text-Channel" events
         api.registerEvent(TS3EventType.SERVER);
@@ -105,9 +125,9 @@ public class Initialize {
                 long leagueIdentifier = Update.databaseIdentifier(e.getUniqueClientIdentifier());
 
                 // initializing serverTier with UNKNOWN
-                int serverTier = LeagueTier.UNKNOWN;
+                League serverTier = League.UNRANKED;
                 // if unique identifier isn't UNKNOWN, requesting League of Legends Solo/Duo Queue Tier from riot api
-                if (leagueIdentifier != Config.UNKNOWN) {
+                if (leagueIdentifier != 0) {
                     serverTier = Update.serverTier(leagueIdentifier);
                 } else {
                     // if someone isn't in database
@@ -115,66 +135,47 @@ public class Initialize {
                     api.pokeClient(e.getClientId(), "Dazu musst du in den Channel 'Wer ist Nocturne?' und !name deinSummonerName in den Chat schreiben.");
                 }
 
-                // initializing variable
-                int serverServerGroup;
-
-                // filter server group out of String
-                if (serverTier == LeagueTier.UNRANKED) {
-                    serverServerGroup = ServerGroup.UNRANKED;
-                } else if (serverTier == LeagueTier.BRONCE) {
-                    serverServerGroup = ServerGroup.BRONCE;
-                } else if (serverTier == LeagueTier.SILVER) {
-                    serverServerGroup = ServerGroup.SILVER;
-                } else if (serverTier == LeagueTier.GOLD) {
-                    serverServerGroup = ServerGroup.GOLD;
-                } else if (serverTier == LeagueTier.PLATINUM) {
-                    serverServerGroup = ServerGroup.PLATINUM;
-                } else if (serverTier == LeagueTier.DIAMOND) {
-                    serverServerGroup = ServerGroup.DIAMOND;
-                } else if (serverTier == LeagueTier.MASTER) {
-                    serverServerGroup = ServerGroup.MASTER;
-                } else if (serverTier == LeagueTier.CHALLENGER) {
-                    serverServerGroup = ServerGroup.CHALLENGER;
-                } else { serverServerGroup = ServerGroup.UNKNOWN; }
-
-
                 // initializing some variables
-                int clientTier;
+                int serverServerGroup = Integer.parseInt(configuration.get(Propertie.getPropertieByName(serverTier.getName())));
+                League clientTier;
                 int clientServerGroup;
 
                 // getting clients server groups as a string
                 String clientServerGroups = e.getClientServerGroups();
 
                 // string analysis, assign server group (delete later) and tier (comparison)
-                if (clientServerGroups.contains(ServerGroup.UNRANKED + "")) {
-                    clientTier = LeagueTier.UNRANKED;
-                    clientServerGroup = ServerGroup.UNRANKED;
-                } else if (clientServerGroups.contains(ServerGroup.BRONCE + "")) {
-                    clientTier = LeagueTier.BRONCE;
-                    clientServerGroup = ServerGroup.BRONCE;
-                } else if (clientServerGroups.contains(ServerGroup.SILVER + "")) {
-                    clientTier = LeagueTier.SILVER;
-                    clientServerGroup = ServerGroup.SILVER;
-                } else if (clientServerGroups.contains(ServerGroup.GOLD + "")) {
-                    clientTier = LeagueTier.GOLD;
-                    clientServerGroup = ServerGroup.GOLD;
-                } else if (clientServerGroups.contains(ServerGroup.PLATINUM + "")) {
-                    clientTier = LeagueTier.PLATINUM;
-                    clientServerGroup = ServerGroup.PLATINUM;
-                } else if (clientServerGroups.contains(ServerGroup.DIAMOND + "")) {
-                    clientTier = LeagueTier.DIAMOND;
-                    clientServerGroup = ServerGroup.DIAMOND;
-                } else if (clientServerGroups.contains(ServerGroup.MASTER + "")) {
-                    clientTier = LeagueTier.MASTER;
-                    clientServerGroup = ServerGroup.MASTER;
-                } else if (clientServerGroups.contains(ServerGroup.CHALLENGER + "")) {
-                    clientTier = LeagueTier.CHALLENGER;
-                    clientServerGroup = ServerGroup.CHALLENGER;
-                } else { clientTier = ServerGroup.UNKNOWN; clientServerGroup = ServerGroup.UNKNOWN; }
+                if (clientServerGroups.contains(League.UNRANKED.getName() + "")) {
+                    clientTier = League.UNRANKED;
+                    clientServerGroup = Integer.parseInt(servergroups.get(Propertie.UNRANKED));
+                } else if (clientServerGroups.contains(League.BRONCE + "")) {
+                    clientTier = League.BRONCE;
+                    clientServerGroup = Integer.parseInt(servergroups.get(Propertie.BRONCE));
+                } else if (clientServerGroups.contains(League.SILVER + "")) {
+                    clientTier = League.SILVER;
+                    clientServerGroup = Integer.parseInt(servergroups.get(Propertie.SILVER));
+                } else if (clientServerGroups.contains(League.GOLD + "")) {
+                    clientTier = League.GOLD;
+                    clientServerGroup = Integer.parseInt(servergroups.get(Propertie.GOLD));
+                } else if (clientServerGroups.contains(League.PLATINUM + "")) {
+                    clientTier = League.PLATINUM;
+                    clientServerGroup = Integer.parseInt(servergroups.get(Propertie.PLATINUM));
+                } else if (clientServerGroups.contains(League.DIAMOND + "")) {
+                    clientTier = League.DIAMOND;
+                    clientServerGroup = Integer.parseInt(servergroups.get(Propertie.DIAMOND));
+                } else if (clientServerGroups.contains(League.MASTER + "")) {
+                    clientTier = League.MASTER;
+                    clientServerGroup = Integer.parseInt(servergroups.get(Propertie.MASTER));
+                } else if (clientServerGroups.contains(League.CHALLENGER + "")) {
+                    clientTier = League.CHALLENGER;
+                    clientServerGroup = Integer.parseInt(servergroups.get(Propertie.CHALLENGER));
+                } else {
+                    clientTier = League.UNRANKED;
+                    clientServerGroup = Integer.parseInt(servergroups.get(Propertie.UNRANKED));
+                }
 
 
                 // assign/remove new/old server group (if it's different)
-                if (clientTier != serverTier) {
+                if (!clientTier.equals(serverTier)) {
                     int ivoker = e.getClientDatabaseId();
 
                     api.removeClientFromServerGroup(clientServerGroup, ivoker);
@@ -213,6 +214,7 @@ public class Initialize {
                                 "einfach '!name [League of Legends Name]' und ersetzt [League of Legends Name] durch deinen Namen.");
 
                     } else if (message.startsWith("!name ")) {
+                        System.out.println("Checking league name...");
                         // format !name {League of Legends name}
                         String leagueName = message.substring(6);
 

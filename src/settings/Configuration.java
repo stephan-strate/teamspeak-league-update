@@ -1,23 +1,25 @@
 package settings;
 
+import constants.Propertie;
+
 import java.io.*;
 import java.util.Properties;
 
 /**
  * Can create a configuration file with given specs.
  *
- * @since   2.0.0
  * @author  Stephan Strate (development@famstrate.com)
+ * @since   2.0.0
  */
 public class Configuration {
     private Properties prop;
-    private String[] names = null;
+    private Propertie[] names = null;
 
-    public Configuration(String path, String[] names) {
+    public Configuration(String path, Propertie[] names) {
         // Setting the names
         this.names = names;
 
-        // Initialize propertie attribute
+        // bot.Initialize propertie attribute
         prop = new Properties();
 
         // Loading the given propertie file
@@ -25,7 +27,7 @@ public class Configuration {
     }
 
     public Configuration(String path) {
-        // Initialize propertie attribute
+        // bot.Initialize propertie attribute
         prop = new Properties();
         // Loading the given propertie file
         loadFile(path);
@@ -38,10 +40,10 @@ public class Configuration {
      * @param propertie Propertie name
      * @return          Propertie value
      */
-    public String get (String propertie) {
+    public String get (Propertie propertie) {
         try {
             if (prop != null) {
-                return prop.getProperty(propertie);
+                return prop.getProperty(propertie.getName());
             }
 
             throw new IllegalAccessException();
@@ -78,6 +80,7 @@ public class Configuration {
             loadProperties(input);
         } catch (FileNotFoundException e) {
             // Is called when file could not be found
+            System.out.println(path + " couldn't be found, creating it.");
             createFile(path);
         }
     }
@@ -111,8 +114,8 @@ public class Configuration {
         try {
             prop.load(input);
             if (names != null) {
-                for (String name : names) {
-                    if (prop.getProperty(name).equals("")) {
+                for (Propertie name : names) {
+                    if (prop.getProperty(name.getName()).equals("")) {
                         throw new IllegalAccessException();
                     }
                 }
@@ -138,8 +141,8 @@ public class Configuration {
             // Setting the given propertie names
             Properties properties = new Properties();
             if (names != null) {
-                for (String name : names) {
-                    properties.setProperty(name, "");
+                for (Propertie name : names) {
+                    properties.setProperty(name.getName(), "");
                 }
             }
 
