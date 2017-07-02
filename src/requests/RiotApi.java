@@ -21,6 +21,7 @@ public class RiotApi {
     private Region region;
 
     public RiotApi (String key, Region region) {
+        System.out.println("New riot api created...");
         this.key = key;
         this.region = region;
     }

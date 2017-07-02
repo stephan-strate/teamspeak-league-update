@@ -214,6 +214,7 @@ public class Initialize {
                                 "einfach '!name [League of Legends Name]' und ersetzt [League of Legends Name] durch deinen Namen.");
 
                     } else if (message.startsWith("!name ")) {
+                        System.out.println("Checking league name...");
                         // format !name {League of Legends name}
                         String leagueName = message.substring(6);
 
