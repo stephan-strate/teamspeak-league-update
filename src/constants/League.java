@@ -8,14 +8,14 @@ package constants;
  * @since   2.0.0
  */
 public enum League {
-    UNRANKED(0, "UNRANKED"),
-    BRONCE(1, "BRONCE"),
-    SILVER(2, "SILVER"),
-    GOLD(3, "GOLD"),
-    PLATINUM(4, "PLATINUM"),
-    DIAMOND(5, "DIAMOND"),
-    MASTER(6, "MASTER"),
-    CHALLENGER(7, "CHALLENGER");
+    UNRANKED(0, "Unranked"),
+    BRONCE(1, "Bronce"),
+    SILVER(2, "Silver"),
+    GOLD(3, "Gold"),
+    PLATINUM(4, "Platinum"),
+    DIAMOND(5, "Diamond"),
+    MASTER(6, "Master"),
+    CHALLENGER(7, "Challenger");
 
     private int id;
     private String name;

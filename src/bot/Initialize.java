@@ -129,6 +129,8 @@ public class Initialize {
                 // if unique identifier isn't UNKNOWN, requesting League of Legends Solo/Duo Queue Tier from riot api
                 if (leagueIdentifier != 0) {
                     serverTier = Update.serverTier(leagueIdentifier);
+                    System.out.println("Users league: " + serverTier.getName());
+                    System.out.println(League.SILVER.getName() + "");
                 } else {
                     // if someone isn't in database
                     api.pokeClient(e.getClientId(), "Du hast deinen Summoner Namen noch nicht hinterlegt!");
@@ -136,7 +138,13 @@ public class Initialize {
                 }
 
                 // initializing some variables
-                int serverServerGroup = Integer.parseInt(configuration.get(Propertie.getPropertieByName(serverTier.getName())));
+                int serverServerGroup = 0;
+                try {
+                    String temp = configuration.get(Propertie.getPropertieByName(serverTier.getName()));
+                    serverServerGroup = Integer.parseInt(temp);
+                } catch (NumberFormatException x) {
+                    System.out.println("FAIL");
+                }
                 League clientTier;
                 int clientServerGroup;
 
@@ -147,25 +155,25 @@ public class Initialize {
                 if (clientServerGroups.contains(League.UNRANKED.getName() + "")) {
                     clientTier = League.UNRANKED;
                     clientServerGroup = Integer.parseInt(servergroups.get(Propertie.UNRANKED));
-                } else if (clientServerGroups.contains(League.BRONCE + "")) {
+                } else if (clientServerGroups.contains(League.BRONCE.getName() + "")) {
                     clientTier = League.BRONCE;
                     clientServerGroup = Integer.parseInt(servergroups.get(Propertie.BRONCE));
-                } else if (clientServerGroups.contains(League.SILVER + "")) {
+                } else if (clientServerGroups.contains(League.SILVER.getName() + "")) {
                     clientTier = League.SILVER;
                     clientServerGroup = Integer.parseInt(servergroups.get(Propertie.SILVER));
-                } else if (clientServerGroups.contains(League.GOLD + "")) {
+                } else if (clientServerGroups.contains(League.GOLD.getName() + "")) {
                     clientTier = League.GOLD;
                     clientServerGroup = Integer.parseInt(servergroups.get(Propertie.GOLD));
-                } else if (clientServerGroups.contains(League.PLATINUM + "")) {
+                } else if (clientServerGroups.contains(League.PLATINUM.getName() + "")) {
                     clientTier = League.PLATINUM;
                     clientServerGroup = Integer.parseInt(servergroups.get(Propertie.PLATINUM));
-                } else if (clientServerGroups.contains(League.DIAMOND + "")) {
+                } else if (clientServerGroups.contains(League.DIAMOND.getName() + "")) {
                     clientTier = League.DIAMOND;
                     clientServerGroup = Integer.parseInt(servergroups.get(Propertie.DIAMOND));
-                } else if (clientServerGroups.contains(League.MASTER + "")) {
+                } else if (clientServerGroups.contains(League.MASTER.getName() + "")) {
                     clientTier = League.MASTER;
                     clientServerGroup = Integer.parseInt(servergroups.get(Propertie.MASTER));
-                } else if (clientServerGroups.contains(League.CHALLENGER + "")) {
+                } else if (clientServerGroups.contains(League.CHALLENGER.getName() + "")) {
                     clientTier = League.CHALLENGER;
                     clientServerGroup = Integer.parseInt(servergroups.get(Propertie.CHALLENGER));
                 } else {
