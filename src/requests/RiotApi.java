@@ -1,6 +1,8 @@
 package requests;
 
+import bot.Initialize;
 import constants.League;
+import constants.Propertie;
 import constants.Region;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -21,7 +23,7 @@ public class RiotApi {
     private Region region;
 
     public RiotApi (String key, Region region) {
-        System.out.println("New riot api created...");
+        System.out.println("Creating new Riot api...");
         this.key = key;
         this.region = region;
     }
@@ -34,7 +36,7 @@ public class RiotApi {
      *
      * @return  Unique account id
      */
-    public long getIdBySummonerName (String username) {
+    private long idBySummonerName (String username) {
         try {
             // preventing whitespaces in url
             username = URLEncoder.encode(username, "UTF-8");
@@ -59,6 +61,22 @@ public class RiotApi {
     }
 
     /**
+     * Requesting the unique League of Legends account identifier by
+     * summoner name.
+     *
+     * @param name  League of Legends summoner name
+     *
+     * @return  leagueIdentifier from RiotGames as long
+     */
+    public static long getIdBySummonerName (String name) {
+        // initializing connection to riot api
+        RiotApi api = new RiotApi(Initialize.configuration.get(Propertie.API), Region.getRegionByName(Initialize.configuration.get(Propertie.REGION)));
+
+        // returning identifier
+        return api.idBySummonerName(name);
+    }
+
+    /**
      * Returns the league of a summoner account id, or
      * UNRANKED if account doesn't exist.
      *
@@ -66,7 +84,7 @@ public class RiotApi {
      *
      * @return  League of the account id
      */
-    public League getLeagueBySummonerId (long id) {
+    private League leagueBySummonerId (long id) {
         // performing http request
         Http http = new Http(region.getHost() + "/lol/league/v3/leagues/by-summoner/" +
                 id + "?api_key=" + key);
@@ -82,5 +100,21 @@ public class RiotApi {
         }
 
         return League.UNRANKED;
+    }
+
+    /**
+     * Requesting League of Legends Solo/Duo Queue Tier from
+     * riot api and returning a unique int identifier.
+     *
+     * @param id    leagueIdentifier
+     *
+     * @return  serverTier as League
+     */
+    public static League getLeagueBySummonerId (long id) {
+        // initializing connection to riot api
+        RiotApi api = new RiotApi(Initialize.configuration.get(Propertie.API), Region.getRegionByName(Initialize.configuration.get(Propertie.REGION)));
+
+        // requesting tier
+        return api.leagueBySummonerId(id);
     }
 }

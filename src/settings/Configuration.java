@@ -74,13 +74,15 @@ public class Configuration {
     private void loadFile (String path) {
         try {
             // Opening the file
+            System.out.println("Loading " + path + " file...");
             InputStream input = new FileInputStream(path);
 
             // Loading properties of the file
+            System.out.println("Loading given properties for file...");
             loadProperties(input);
         } catch (FileNotFoundException e) {
             // Is called when file could not be found
-            System.out.println(path + " couldn't be found, creating it.");
+            System.out.println(path + " couldn't be found, creating it...");
             createFile(path);
         }
     }
@@ -142,7 +144,7 @@ public class Configuration {
             Properties properties = new Properties();
             if (names != null) {
                 for (Propertie name : names) {
-                    properties.setProperty(name.getName(), "");
+                    properties.setProperty(name.getName() , "");
                 }
             }
 

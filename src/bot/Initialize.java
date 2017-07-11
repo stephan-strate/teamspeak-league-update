@@ -10,6 +10,8 @@ import com.github.theholywaffle.teamspeak3.api.reconnect.ReconnectStrategy;
 import com.github.theholywaffle.teamspeak3.api.wrapper.ClientInfo;
 import constants.League;
 import constants.Propertie;
+import requests.Mysql;
+import requests.RiotApi;
 import settings.Configuration;
 
 import java.util.logging.Level;
@@ -26,16 +28,10 @@ public class Initialize {
     // client id !important
     private static volatile int clientId;
 
+    // public configurations
     public static Configuration configuration;
     public static Configuration servergroups;
-
-    public Configuration getConfiguration () {
-        return configuration;
-    }
-
-    public Configuration getServergroups () {
-        return servergroups;
-    }
+    public static Configuration messages;
 
     /**
      *  Starting the bot and calling the two main functions
@@ -44,20 +40,31 @@ public class Initialize {
      *  @param args  no description needed
      */
     public static void main (String[] args) {
+        // all available configurations
         Propertie[] configProperties = { Propertie.API, Propertie.TSHOST, Propertie.TSPORT, Propertie.TSQUERYNAME, Propertie.TSQUERYPASS,
                 Propertie.TSVIRTUALID, Propertie.BOTNAME, Propertie.BOTMSG, Propertie.BOTCHANNEL, Propertie.MYSQLHOST, Propertie.MYSQLPORT, Propertie.MYSQLDB,
                 Propertie.MYSQLUSER, Propertie.MYSQLPASS, Propertie.REGION };
+        // loading configurations
         configuration = new Configuration("config.properties", configProperties);
 
+        // all available servergroups
         Propertie[] servergroupProperties = { Propertie.UNRANKED, Propertie.BRONCE, Propertie.SILVER, Propertie.GOLD, Propertie.PLATINUM, Propertie.DIAMOND,
                 Propertie.MASTER, Propertie.CHALLENGER };
+        // loading servergroups
         servergroups = new Configuration("servergroups.properties", servergroupProperties);
+
+        // all available messages
+        Propertie[] messageProperties = { Propertie.REMINDER, Propertie.NOTINDATABASE, Propertie.HELP, Propertie.NAME, Propertie.SUCCESS, Propertie.ERROR,
+                Propertie.COMMAND };
+        // loading messages
+        messages = new Configuration("messages.properties", messageProperties);
+
 
         final TS3Config config = new TS3Config();
         // host (ip-adress !important)
         config.setHost(configuration.get(Propertie.TSHOST));
         // debug level, displays messages in console
-        config.setDebugLevel(Level.ALL);
+        config.setDebugLevel(Level.WARNING);
 
         // reconnecting after server restarts
         config.setReconnectStrategy(ReconnectStrategy.exponentialBackoff());
@@ -89,17 +96,20 @@ public class Initialize {
      *  @param api  Teamspeak 3 api
      */
     private static void queryLogin (TS3Api api) {
+        System.out.println("Connecting with query account...");
         api.login(configuration.get(Propertie.TSQUERYNAME), configuration.get(Propertie.TSQUERYPASS));                          // username, password
         api.selectVirtualServerById(Integer.parseInt(configuration.get(Propertie.TSVIRTUALID)));                                // virtualserver id
         api.setNickname(configuration.get(Propertie.BOTNAME));                                                                  // nickname
         api.sendChannelMessage(Integer.parseInt(configuration.get(Propertie.BOTCHANNEL)), configuration.get(Propertie.BOTMSG)); // channel + message
 
         // register "Server" and "Text-Channel" events
+        System.out.println("Register events...");
         api.registerEvent(TS3EventType.SERVER);
         api.registerEvent(TS3EventType.TEXT_CHANNEL);
 
         // update clientId
         clientId = api.whoAmI().getId();
+        System.out.println("Bot ready...");
     }
 
 
@@ -121,31 +131,31 @@ public class Initialize {
              */
             @Override
             public void onClientJoin (ClientJoinEvent e) {
+                System.out.println();
                 // requesting League of Legends unique identifier from MySQL databse
-                long clientAccountId = Update.databaseIdentifier(e.getUniqueClientIdentifier());
+                long clientAccountId = Mysql.databaseIdentifier(e.getUniqueClientIdentifier());
 
                 // initializing serverTier with UNKNOWN
-                League accountLeague = League.UNRANKED;
+                League accountLeague;
                 // if unique identifier isn't UNKNOWN, requesting League of Legends Solo/Duo Queue Tier from riot api
                 if (clientAccountId != 0) {
-                    accountLeague = Update.serverTier(clientAccountId);
-                    System.out.println("Users league: " + accountLeague.getName());
+                    accountLeague = RiotApi.getLeagueBySummonerId(clientAccountId);
+                    System.out.println("Users league from account: " + accountLeague.getName());
                 } else {
-                    // if someone isn't in database
-                    api.pokeClient(e.getClientId(), "Du hast deinen Summoner Namen noch nicht hinterlegt!");
-                    api.pokeClient(e.getClientId(), "Dazu musst du in den Channel 'Wer ist Nocturne?' und !name deinSummonerName in den Chat schreiben.");
+                    if (Boolean.parseBoolean(messages.get(Propertie.REMINDER))) {
+                        // if someone isn't in database
+                        api.pokeClient(e.getClientId(), messages.get(Propertie.NOTINDATABASE));
+                    }
+                    return;
                 }
 
                 // initializing some variables
                 League clientLeague;
-
                 // getting client
                 ClientInfo client = api.getClientInfo(e.getClientId());
 
                 try {
-                    if (client.isInServerGroup(Integer.parseInt(servergroups.get(Propertie.UNRANKED)))) {
-                        clientLeague = League.UNRANKED;
-                    } else if (client.isInServerGroup(Integer.parseInt(servergroups.get(Propertie.BRONCE)))) {
+                    if (client.isInServerGroup(Integer.parseInt(servergroups.get(Propertie.BRONCE)))) {
                         clientLeague = League.BRONCE;
                     } else if (client.isInServerGroup(Integer.parseInt(servergroups.get(Propertie.SILVER)))) {
                         clientLeague = League.SILVER;
@@ -163,15 +173,18 @@ public class Initialize {
                         clientLeague = League.UNRANKED;
                     }
 
+                    System.out.println("Users league from teamspeak: " + clientLeague.getName());
+
                     // assign/remove new/old server group (if it's different)
                     if (!clientLeague.equals(accountLeague)) {
+                        System.out.println("Leagues are different, changing it...");
                         int ivoker = e.getClientDatabaseId();
 
                         api.removeClientFromServerGroup(Integer.parseInt(servergroups.get(Propertie.getPropertieByName(clientLeague.getName()))), ivoker);
                         api.addClientToServerGroup(Integer.parseInt(servergroups.get(Propertie.getPropertieByName(accountLeague.getName()))), ivoker);
 
-                        System.out.println(">> League update for " + e.getClientNickname() +
-                                " from groupID " + clientLeague.getName() + " to " + accountLeague.getName());
+                        System.out.println("League update for " + e.getClientNickname() +
+                                " from group " + clientLeague.getName() + " to " + accountLeague.getName() + "\n");
                     }
                 } catch (NumberFormatException error) {
                     error.printStackTrace();
@@ -194,16 +207,15 @@ public class Initialize {
 
                     if (message.equals("!ping")) {
                         // simple ping test
-                        api.sendChannelMessage("Anwesend");
+                        api.sendChannelMessage("Pong");
 
                     } else if (message.equals("!help")) {
                         // a bot can't help
-                        api.sendChannelMessage("Ich kann dir nicht helfen!");
+                        api.sendChannelMessage(messages.get(Propertie.HELP));
 
                     } else if (message.equals("!name"))  {
                         // short explanation for the name system
-                        api.sendChannelMessage("Um deinen League of Legends in unser System einzutragen, schreibe " +
-                                "einfach '!name [League of Legends Name]' und ersetzt [League of Legends Name] durch deinen Namen.");
+                        api.sendChannelMessage(messages.get(Propertie.NAME));
 
                     } else if (message.startsWith("!name ")) {
                         System.out.println("Checking league name...");
@@ -211,17 +223,16 @@ public class Initialize {
                         String leagueName = message.substring(6);
 
                         // check if name is spelled right, or riot server is down
-                        if (Update.editDatabaseIdentifier(leagueName, e.getInvokerUniqueId(), Update.leagueIdentifier(leagueName))) {
+                        if (Mysql.editDatabaseIdentifier(leagueName, e.getInvokerUniqueId(), RiotApi.getIdBySummonerName(leagueName))) {
                             api.sendChannelMessage("[b]" + e.getInvokerName() +
-                                    "[/b] dein League of Legends Name [i]" + leagueName + "[/i] wurde erfolgreich aktualisiert!");
+                                    "[/b] " + messages.get(Propertie.SUCCESS));
                         } else {
-                            api.sendChannelMessage("Es gab ein Problem bei der Aktualisierung! Entweder du hast deinen Namen " +
-                                    "falsch geschrieben oder die Riot Server sind nicht zu erreichen.");
+                            api.sendChannelMessage(messages.get(Propertie.ERROR));
                         }
 
                     } else if (message.startsWith("!")) {
                         // after all equals, error message
-                        api.sendChannelMessage("Konnte diesen Befehl nicht finden.");
+                        api.sendChannelMessage(messages.get(Propertie.COMMAND));
 
                     }
                 }

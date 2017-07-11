@@ -70,7 +70,7 @@ public enum League {
      * @return  true if league is the same, false if not
      */
     public boolean equals (League other) {
-        return getId() != other.getId();
+        return this.getId() == other.getId();
     }
 
     /**

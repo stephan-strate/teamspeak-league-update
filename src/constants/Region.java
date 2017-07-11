@@ -39,7 +39,6 @@ public enum Region {
     public static Region getRegionByName (String name) {
         for (Region region : Region.values()) {
             if (region.getName().equals(name.toLowerCase())) {
-                System.out.println("Returning region " + region.toString());
                 return region;
             }
         }

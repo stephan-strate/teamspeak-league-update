@@ -55,7 +55,7 @@ public class Http {
 
             // Get response code
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Sending 'GET' request to URL : " + url);
             System.out.println("Response Code : " + responseCode);
 
             // Read response
