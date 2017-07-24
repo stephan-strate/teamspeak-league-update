@@ -1,8 +1,10 @@
 # teamspeak-league-update
 
+A bot registers every user that joins your Teamspeak 3 server and assigns the users League of Legends solo/duo q tier matching server group.
+
 ## Features
 
-- Based on the most powerful Teamspeak 3 java wrapper
+- Based on the most powerful Teamspeak 3 api java wrapper
 - Assigns matching League of Legends tier server groups for every client
 - Easy to set up
 
