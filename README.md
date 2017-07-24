@@ -12,7 +12,7 @@
 
 #### Download
 You can download the latest version [2.0.0]() via GitHub.<br />
-Older versions aren't available anymore.
+Older versions aren't available anymore, due riots api changes.
 
 #### What do I need?
 
@@ -25,7 +25,9 @@ Older versions aren't available anymore.
 2. Fill up the first configuration file `config.properties`
 3. Start `teamspeak-league-update.jar` again
 4. Fill up the second configuration file `servergroups.properties`
-5. Now you can start `teamspeak-league-update.jar` and you are ready to go
+5. Start `teamspeak-league-update.jar` again
+6. Fill up the third and last configuration file `messages.properties`
+7. Now you are ready to go to start `teamspeak-league-update.jar`
 
 #### Configuration
 
@@ -51,7 +53,7 @@ MYSQLDB= { MySQL database name }
 BOTCHANNELID= { Channel where the bot is reachable }
 REGION= { Region you want to setup your bot for }
 ```
-We recommend your MySQL database to be only reachable localy, to avoid problems.
+We recommend your MySQL database to be only reachable **localy**, to avoid problems.
 <br />
 <br />
 
@@ -68,6 +70,21 @@ CHALLENGER= { Servergroup id }
 DIAMOND= { Servergroup id }
 BRONCE= { Servergroup id }
 PLATINUM= { Servergroup id }
+```
+<br />
+
+`messages.properties`<br />
+Here you can customize all messages of the bot.
+```
+#teamspeak-league-update properties
+#Tue Jul 11 18:04:57 CEST 2017
+ERROR= { name could not be updated }
+COMMAND= { could not find the command }
+SUCCESS= { your name got updated successfully }
+NAMEEXPLANATION= { you can change your account name by !name [your name] }
+NOTINDATABASE= { reminding message, that name is not in database }
+HELP= { can not help you }
+REMINDER= { true / false }
 ```
 
 ### Development
@@ -88,7 +105,7 @@ But there is no warranty or guaranteed support.
 You can add your name to the database with a simple text message
 ```!name [LEAGUE OF LEGENDS INGAME NAME]``` into the configured channel.<br />
 With the same command, you can change your account.<br />
-<p><b>ATTENTION:</b> You don't need to update your ingame name after you changed it, because
+<p>You don't need to update your ingame name after you changed it, because
 the bot stores your account id.</p>
 
 

@@ -10,6 +10,7 @@
 - commenting optimized
 - git integration
 - size decreased
+- better console logging
 
 #### Features
 
