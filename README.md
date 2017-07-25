@@ -1,5 +1,9 @@
 # teamspeak-league-update
 
+![Version](https://img.shields.io/badge/version-v2.0.0-red.svg)
+![Issues](https://img.shields.io/github/issues/stephan-strate/teamspeak-league-update.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+
 A bot registers every user that joins your Teamspeak 3 server and assigns the users League of Legends solo/duo q tier matching server group.
 
 ## Features
