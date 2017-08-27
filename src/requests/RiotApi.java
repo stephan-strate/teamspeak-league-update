@@ -93,8 +93,16 @@ public class RiotApi {
             JSONParser jsonParser = new JSONParser();
             // parsing json
             JSONArray jsonArray = (JSONArray) jsonParser.parse(http.getResponse());
-            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-            return League.getLeagueByName((String) jsonObject.get("tier"));
+
+            JSONObject jsonObject;
+            int i = 0;
+            while ((jsonObject = (JSONObject) jsonArray.get(i)) != null) {
+                System.out.println(jsonObject.get("queue"));
+                if (jsonObject.get("queue").equals("RANKED_SOLO_5x5")) {
+                    return League.getLeagueByName((String) jsonObject.get("tier"));
+                }
+                i = i + 1;
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
