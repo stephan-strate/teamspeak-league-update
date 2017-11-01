@@ -2,9 +2,6 @@ package com.strate.remote.riot.constants;
 
 import com.strate.constants.Ansi;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 /* @TODO: Finish descriptions */
 /* @TODO: Working on Error Logging */
 
