@@ -1,5 +1,11 @@
 package com.strate.constants;
 
+/**
+ * <p>Color definition to style command line
+ * output. eg. Ansi.[COLOR] + [string] + Ansi.RESET.</p>
+ * @author Stephan Strate
+ * @since 3.0.0
+ */
 public class Ansi {
 
     public static final String RESET = "\u001B[0m";

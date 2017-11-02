@@ -1,8 +1,12 @@
 package com.strate.constants;
 
 /**
- * <p>[description]</p>
+ * <p>Represents a supported language for this
+ * application. You can compare them, get a
+ * {@link Language} by language code and return
+ * all languages.</p>
  * @author Stephan Strate
+ * @since 3.0.0
  */
 public enum Language {
 
@@ -13,9 +17,11 @@ public enum Language {
     private String code;
 
     /**
-     * <p>[description]</p>
-     * @param id
-     * @param code
+     * <p>Represents a languages the application
+     * supports.</p>
+     * @param id    order id
+     * @param code  language code
+     * @since 3.0.0
      */
     Language (int id, String code) {
         this.id = id;
@@ -23,9 +29,11 @@ public enum Language {
     }
 
     /**
-     * <p>[description]</p>
-     * @param code
-     * @return
+     * <p>Get a {@link Language} object by language
+     * code.</p>
+     * @param code  language code
+     * @return      {@link Language}
+     * @since 3.0.0
      */
     public static Language getLanguageByCode (String code) {
         for (Language language : Language.values()) {
@@ -39,42 +47,9 @@ public enum Language {
     }
 
     /**
-     * <p>[description]</p>
-     * @return
-     */
-    public int getId () {
-        return id;
-    }
-
-    /**
-     * <p>[description]</p>
-     * @return
-     */
-    public String getCode () {
-        return code;
-    }
-
-    /**
-     * <p>[description]</p>
-     * @param other
-     * @return
-     */
-    public boolean equals (Language other) {
-        return this.getId() == other.getId();
-    }
-
-    /**
-     * <p>[description]</p>
-     * @return
-     */
-    @Override
-    public String toString () {
-        return code;
-    }
-
-    /**
-     * <p>[description]</p>
-     * @return
+     * <p>Concat all language codes with '/'.</p>
+     * @return  all languages concat with '/'
+     * @since 3.0.0
      */
     public static String getAllLanguages () {
         String languages = "";
@@ -84,5 +59,45 @@ public enum Language {
 
         languages = languages.substring(0, languages.length() - 1);
         return languages;
+    }
+
+    /**
+     * <p>Returns {@code true} when order id
+     * of both elements is equal.</p>
+     * @param other     {@link Language}
+     * @return          {@code true} when order is equal
+     * @since 3.0.0
+     */
+    public boolean equals (Language other) {
+        return this.getId() == other.getId();
+    }
+
+    /**
+     * <p>Returns the language code of
+     * a {@link Language} object.</p>
+     * @return  language code
+     * @since 3.0.0
+     */
+    @Override
+    public String toString () {
+        return code;
+    }
+
+    /**
+     * <p>Returns the order id.</p>
+     * @return  order id
+     * @since 3.0.0
+     */
+    public int getId () {
+        return id;
+    }
+
+    /**
+     * <p>Returns the language code.</p>
+     * @return  language code
+     * @since 3.0.0
+     */
+    public String getCode () {
+        return code;
     }
 }

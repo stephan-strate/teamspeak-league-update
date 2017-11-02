@@ -5,7 +5,6 @@ import com.strate.remote.Http;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import java.io.*;
 import java.net.*;
 import java.nio.channels.Channels;
@@ -14,7 +13,7 @@ import java.nio.channels.ReadableByteChannel;
 /**
  * <p>[description]</p>
  * @author Stephan Strate
- * @since 2.0.0
+ * @since 3.0.0
  */
 public class Version {
 
@@ -27,10 +26,12 @@ public class Version {
     private String download;
 
     /**
-     * <p>[description]</p>
-     * @param version
-     * @param build
-     * @param download
+     * <p>Represents a version of this application,
+     * contains version, build number and download link.</p>
+     * @param version   version
+     * @param build     build number
+     * @param download  download link
+     * @since 3.0.0
      */
     public Version (String version, int build, String download) {
         this.version = version;
@@ -40,7 +41,9 @@ public class Version {
     }
 
     /**
-     * <p>[description]</p>
+     * <p>Search for a new version using remote
+     * api of 'api.harddestiny.de'.</p>
+     * @since 3.0.0
      */
     public Version () {
         System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Searching for new version.");
@@ -68,41 +71,46 @@ public class Version {
     }
 
     /**
-     * <p>[description]</p>
-     * @param old
-     * @throws IOException
+     * <p>Check and update from another version.</p>
+     * @param old   {@link Version}
+     * @since 3.0.0
      */
-    public void update (Version old) throws IOException {
-        if (this.isValid()) {
-            if (this.isNewerThan(old)) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public void update (Version old) {
+        try {
+            if (this.isValid()) {
+                if (this.isNewerThan(old)) {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-                boolean update = false;
-                boolean touched = false;
-                do {
-                    System.out.print(Ansi.BLUE + "[tlu] " + Ansi.RESET + "New version available. Do you want to update (" + Ansi.RED + "recommended" + Ansi.RESET + ")? (Y/n) ");
-                    String temp = br.readLine();
-                    if (temp.toLowerCase().equals("y")) {
-                        touched = true;
-                        update = true;
-                    } else if (temp.toLowerCase().equals("n")) {
-                        touched = true;
-                        update = false;
+                    boolean update = false;
+                    boolean touched = false;
+                    do {
+                        System.out.print(Ansi.BLUE + "[tlu] " + Ansi.RESET + "New version available. Do you want to update (" + Ansi.RED + "recommended" + Ansi.RESET + ")? (Y/n) ");
+                        String temp = br.readLine();
+                        if (temp.toLowerCase().equals("y")) {
+                            touched = true;
+                            update = true;
+                        } else if (temp.toLowerCase().equals("n")) {
+                            touched = true;
+                            update = false;
+                        }
+                    } while (!touched);
+
+                    if (update) {
+                        System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Starting update from " + old.getVersion() + " to " + this.getVersion() + ".");
+                        download();
                     }
-                } while (!touched);
-
-                if (update) {
-                    System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Starting update from " + old.getVersion() + " to " + this.getVersion() + ".");
-                    download();
+                } else {
+                    System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "No new update available.");
                 }
-            } else {
-                System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "No new update available.");
             }
+        } catch (IOException e) {
+            System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Error while updating. Try again later.");
         }
     }
 
     /**
-     * <p>[description]</p>
+     * <p>Download the version and exit the application.</p>
+     * @since 3.0.0
      */
     private void download () {
         try {
@@ -126,73 +134,84 @@ public class Version {
     }
 
     /**
-     * <p>[description]</p>
-     * @param other
-     * @return
+     * <p>Returns {@code true} when the other version
+     * is older than this one.</p>
+     * @param other {@link Version}
+     * @return      {@code true} when version is older
+     * @since 3.0.0
      */
     public boolean isNewerThan (Version other) {
         return this.getBuild() > other.getBuild();
     }
 
     /**
-     * <p>[description]</p>
-     * @return
+     * <p>Returns the base url.</p>
+     * @return  base url
+     * @since 3.0.0
      */
     public String getBaseUrl () {
         return baseUrl;
     }
 
     /**
-     * <p>[description]</p>
-     * @return
+     * <p>Returns {@code true} when this version is
+     * valid.</p>
+     * @return  valid
+     * @since 3.0.0
      */
     public boolean isValid () {
         return valid;
     }
 
     /**
-     * <p>[description]</p>
-     * @return
+     * <p>Returns the version.</p>
+     * @return  version
+     * @since 3.0.0
      */
     public String getVersion () {
         return version;
     }
 
     /**
-     * <p>[description]</p>
-     * @return
+     * <p>Returns the build number.</p>
+     * @return  build number
+     * @since 3.0.0
      */
     public long getBuild () {
         return build;
     }
 
     /**
-     * <p>[description]</p>
-     * @return
+     * <p>Returns the download link.</p>
+     * @return  download link
+     * @since 3.0.0
      */
     public String getDownload () {
         return download;
     }
 
     /**
-     * <p>[description]</p>
-     * @param version
+     * <p>Sets the version.</p>
+     * @param version   version
+     * @since 3.0.0
      */
     public void setVersion (String version) {
         this.version = version;
     }
 
     /**
-     * <p>[description]</p>
-     * @param build
+     * <p>Sets the build number.</p>
+     * @param build     build number
+     * @since 3.0.0
      */
     public void setBuild (long build) {
         this.build = build;
     }
 
     /**
-     * <p>[description]</p>
-     * @param download
+     * <p>Sets the download link.</p>
+     * @param download  download link
+     * @since 3.0.0
      */
     public void setDownload (String download) {
         this.download = download;
