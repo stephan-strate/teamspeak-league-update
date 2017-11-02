@@ -1,15 +1,13 @@
 package com.strate.database;
 
+import com.strate.constants.Ansi;
 import java.sql.*;
 
-/* @TODO: Connecting at every interaction and closing connection after it. */
-/* @TODO: Finish descriptions */
-/* @TODO: Looking up best practices for "Statements" */
-/* @TODO: Working on Error Logging */
-
 /**
- * <p>[description]</p>
+ * <p>Represents sqlite database table. You can
+ * execute requests.</p>
  * @author Stephan Strate
+ * @since 3.0.0
  */
 abstract class Table {
 
@@ -21,9 +19,10 @@ abstract class Table {
     private String database;
 
     /**
-     * <p>[description]</p>
-     * @param database
-     * @param request
+     * <p>Represents sqlite database table.</p>
+     * @param database  database name
+     * @param request   request string
+     * @since 3.0.0
      */
     Table (String database, String request) {
         // assigning com.strate.database name, to make it available
@@ -34,9 +33,10 @@ abstract class Table {
     }
 
     /**
-     * <p>[description]</p>
-     * @param database
-     * @param request
+     * <p>Creating new database if needed.</p>
+     * @param database  database name
+     * @param request   request string
+     * @since 3.0.0
      */
     private void create (String database, String request) {
         sql = new Sql(database + ".db");
@@ -45,44 +45,37 @@ abstract class Table {
             con = sql.getCon();
             Statement stmt = con.createStatement();
             stmt.execute(request);
+            con = null;
 
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Database could not be created.");
         }
     }
 
     /**
-     * <p>[description]</p>
+     * <p>Executes a request string on selected
+     * database table.</p>
+     * @param request   request string
+     * @since 3.0.0
      */
-    public void connect () {
+    public void execute (String request) {
+        try {
+            con = sql.getCon();
+            Statement stmt = con.createStatement();
+            stmt.execute(request);
+            con = null;
 
+        } catch (SQLException e) {
+            System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Could not access database.");
+        }
     }
 
     /**
-     * <p>[description]</p>
-     * @param params
+     * <p>Shows database table for debug purposes.
+     * Not used in production.</p>
+     * @since 3.0.0
      */
-    public void insert (String[] params) {
-
-    }
-
-    /**
-     * <p>[description]</p>
-     */
-    public void update () {
-
-    }
-
-    /**
-     * <p>[description]</p>
-     */
-    public void delete () {
-
-    }
-
-    /**
-     * <p>[description]</p>
-     */
+    @Deprecated
     public void showAll () {
         String request =
                 "SELECT * FROM " + database;
@@ -101,23 +94,34 @@ abstract class Table {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Could not access database.");
         }
     }
 
     /**
-     * <p>[description]</p>
-     * @return
+     * <p>Returns the {@link Sql}.</p>
+     * @return  {@link Sql}
+     * @since 3.0.0
      */
     public Sql getSql () {
         return sql;
     }
 
     /**
-     * <p>[description]</p>
-     * @return
+     * <p>Returns the {@link Connection}.</p>
+     * @return  {@link Connection}
+     * @since 3.0.0
      */
     public Connection getCon () {
         return con;
+    }
+
+    /**
+     * <p>Returns the database name.</p>
+     * @return  database name
+     * @since 3.0.0
+     */
+    public String getDatabase () {
+        return database;
     }
 }
