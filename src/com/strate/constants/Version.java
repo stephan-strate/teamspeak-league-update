@@ -1,15 +1,15 @@
 package com.strate.constants;
 
+import com.strate.Init;
 import com.strate.remote.Http;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.io.*;
+import java.net.*;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 
 /**
  * <p>[description]</p>
@@ -105,7 +105,24 @@ public class Version {
      * <p>[description]</p>
      */
     private void download () {
-        System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Download not available yet. Update cancelled.");
+        try {
+            System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Reading download path.");
+            URL download = new URL(this.download);
+            ReadableByteChannel readableByteChannel = Channels.newChannel(download.openStream());
+
+            File path = new File(Init.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+            String decodePath = path.getName();
+
+            System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Starting download.");
+            FileOutputStream fileOutputStream = new FileOutputStream(decodePath + ".jar");
+            fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+            System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Update finished. Please restart.");
+            System.exit(0);
+        } catch (MalformedURLException e) {
+            System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RED + "Server error. " + Ansi.RESET + "Wrong download link.");
+        } catch (IOException e) {
+            System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RED + "Client error. " + Ansi.RESET + "Can not download update.");
+        }
     }
 
     /**
