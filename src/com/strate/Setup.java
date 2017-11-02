@@ -4,7 +4,6 @@ import com.strate.constants.Ansi;
 import com.strate.constants.Language;
 import com.strate.remote.riot.Api;
 import com.strate.remote.riot.constants.Region;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,7 +16,6 @@ class Setup {
 
     /**
      * <p>[description]</p>
-     * @throws IOException
      */
     Setup () {
 
