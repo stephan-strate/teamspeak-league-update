@@ -6,8 +6,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * <p>[description]</p>
+ * <p>Represents a sqlite database.</p>
  * @author Stephan Strate
+ * @since 3.0.0
  */
 class Sql {
 
@@ -16,24 +17,19 @@ class Sql {
     private Connection con = null;
 
     /**
-     * <p>[description]</p>
-     * @param database
+     * <p>Represents a sqlite database connection.</p>
+     * @param database  database name
+     * @since 3.0.0
      */
     Sql (String database) {
         connect(database);
     }
 
     /**
-     * <p>[description]</p>
-     * @return
-     */
-    Connection getCon () {
-        return con;
-    }
-
-    /**
-     * <p>[description]</p>
-     * @param database
+     * <p>Connect to a sqlite database and
+     * create folder if necessary.</p>
+     * @param database  database name
+     * @since 3.0.0
      */
     private void connect (String database) {
         try {
@@ -47,12 +43,22 @@ class Sql {
     }
 
     /**
-     * <p>[description]</p>
+     * <p>Create folder if necessary.</p>
+     * @since 3.0.0
      */
     private void checkFolder () {
         File file = new File(path);
         if (!file.exists()) {
             file.mkdir();
         }
+    }
+
+    /**
+     * <p>Returns the connection.</p>
+     * @return  {@link Connection}
+     * @since 3.0.0
+     */
+    Connection getCon () {
+        return con;
     }
 }

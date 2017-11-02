@@ -1,12 +1,12 @@
 package com.strate;
 
 import com.strate.constants.Version;
-
 import java.io.IOException;
 
 /**
  * <p>[description]</p>
  * @author Stephan Strate
+ * @since 3.0.0
  */
 public class Init {
 
@@ -19,6 +19,7 @@ public class Init {
     /**
      * <p>[description]</p>
      * @param args
+     * @since 3.0.0
      */
     public static void main (String[] args) throws IOException {
         // create the current version (manually)

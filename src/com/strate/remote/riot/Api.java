@@ -8,7 +8,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -17,7 +16,7 @@ import java.net.URLEncoder;
  * api calls are defined, which are used in this application.
  * It does not cover all api calls possible.</p>
  * @author Stephan Strate
- * @since 2.0.0
+ * @since 3.0.0
  */
 public class Api {
 
@@ -30,6 +29,7 @@ public class Api {
      * do this by using {@see isKeyValid}.</p>
      * @param key       Riot Games api key
      * @param region    League of Legends region
+     * @since 3.0.0
      */
     public Api (String key, Region region) {
         this.key = key;
@@ -41,6 +41,7 @@ public class Api {
      * error occurs.</p>
      * @param key   Riot Games api key
      * @return  {@code true} when api key is valid
+     * @since 3.0.0
      */
     public boolean isKeyValid (String key) {
         try {
@@ -64,6 +65,7 @@ public class Api {
      * name. Returns {@code -1} when something went wrong.</p>
      * @param summonerName  summoner name
      * @return  summoner id
+     * @since 3.0.0
      */
     public long getIdBySummonerName (String summonerName) {
         try {
@@ -92,6 +94,7 @@ public class Api {
      * will return {@code League.UNRANKED}.</p>
      * @param id    summoner id (can be get with {@see getIdBySummonerName}
      * @return  summoners highest {@link League}
+     * @since 3.0.0
      */
     public League getLeagueById (long id) {
         Http http = new Http(region.getBaseUrl() + "/lol/league/v3/leagues/by-summoner/" +
@@ -138,6 +141,7 @@ public class Api {
     /**
      * <p>Returns the api key.</p>
      * @return  api key
+     * @since 3.0.0
      */
     public String getKey () {
         return key;
@@ -146,6 +150,7 @@ public class Api {
     /**
      * <p>Returns the {@link Region}.</p>
      * @return  {@link Region}
+     * @since 3.0.0
      */
     public Region getRegion () {
         return region;
@@ -154,6 +159,7 @@ public class Api {
     /**
      * <p>Sets the api key.</p>
      * @param key   api key
+     * @since 3.0.0
      */
     public void setKey (String key) {
         this.key = key;
@@ -162,6 +168,7 @@ public class Api {
     /**
      * <p>Set the {@link Region}.</p>
      * @param region    {@link Region}
+     * @since 3.0.0
      */
     public void setRegion (Region region) {
         this.region = region;

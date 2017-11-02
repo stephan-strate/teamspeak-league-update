@@ -7,6 +7,7 @@ import java.sql.Statement;
 /**
  * <p>[description]</p>
  * @author Stephan Strate
+ * @since 3.0.0
  */
 public class Users extends Table {
 
@@ -23,11 +24,18 @@ public class Users extends Table {
 
     /**
      * <p>[description]</p>
+     * @since 3.0.0
      */
     public Users () {
         super("users", TABLE);
     }
 
+    /**
+     * <p>[description]</p>
+     * @param id
+     * @return
+     * @since 3.0.0
+     */
     public long getSummonerIdByTeamspeakId (String id) {
         String request =
                 "SELECT summoner_id FROM users WHERE teamspeak_id = " + id;

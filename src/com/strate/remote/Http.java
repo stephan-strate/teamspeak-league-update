@@ -1,7 +1,6 @@
 package com.strate.remote;
 
 import com.strate.constants.Ansi;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,7 +14,7 @@ import java.net.URL;
  * {@see getResponse} to get the response string. To check if request
  * was successful you can use {@see isSuccessful} or {@see isFailed}.</p>
  * @author Stephan Strate
- * @since 2.0.0
+ * @since 3.0.0
  */
 public class Http {
 
@@ -24,7 +23,7 @@ public class Http {
      * a request was successful and especially see what went wrong. It is
      * a part of {@link Http}</p>
      * @author Stephan Strate
-     * @since 2.0.0
+     * @since 3.0.0
      */
     public enum STATUS_CODE {
 
@@ -46,6 +45,7 @@ public class Http {
         /**
          * <p>Default constructor.</p>
          * @param code  http/https status code
+         * @since 3.0.0
          */
         STATUS_CODE (int code) {
             this.code = code;
@@ -56,6 +56,7 @@ public class Http {
          * when passed integer could not be found.</p>
          * @param code  status code
          * @return  status code object
+         * @since 3.0.0
          */
         static STATUS_CODE getStatusCodeByInt (int code) {
             for (STATUS_CODE status_code : STATUS_CODE.values()) {
@@ -71,6 +72,7 @@ public class Http {
          * <p>Get the requested http/https status code. Public access
          * is given, so you can check the status code in other classes.</p>
          * @return  http/https status code
+         * @since 3.0.0
          */
         public int getCode () {
             return code;
@@ -81,7 +83,7 @@ public class Http {
      * <p>Represents the current request state of a
      * {@link Http} object.</p>
      * @author Stephan Strate
-     * @since 2.0.0
+     * @since 3.0.0
      */
     enum State {
         Default, // default state
@@ -106,6 +108,7 @@ public class Http {
      * <p>Perform a synchronized http/https request to a remote
      * url. To get the request use {@see getResponse}.</p>
      * @param url   request url
+     * @since 3.0.0
      */
     public Http (String url) {
         init(url);
@@ -115,6 +118,7 @@ public class Http {
      * <p>Opens a connection to the request url. Method is called
      * by default constructor.</p>
      * @param url   request url
+     * @since 3.0.0
      */
     private void init (String url) {
         try {
@@ -131,6 +135,7 @@ public class Http {
     /**
      * <p>Opens a synchronized connection to request url and fetches the result. To get the
      * result you can use {@see getResponse}.</p>
+     * @since 3.0.0
      */
     private synchronized void start () {
         setState(State.Pending);
@@ -168,6 +173,7 @@ public class Http {
      * <p>Get the response string (can be parsed to json for example) or
      * {@code null} when request failed/is in progress.</p>
      * @return  response string
+     * @since 3.0.0
      */
     public String getResponse () {
         if (getState() == State.Success) {
@@ -180,6 +186,7 @@ public class Http {
     /**
      * <p>Returns {@code true} when request failed.</p>
      * @return  did request fail
+     * @since 3.0.0
      */
     public boolean isFailed () {
         return state == State.Failed;
@@ -188,6 +195,7 @@ public class Http {
     /**
      * <p>Returns {@code true} when request was successful.</p>
      * @return  did request was successful
+     * @since 3.0.0
      */
     public boolean isSuccessful () {
         return state == State.Success;
@@ -196,6 +204,7 @@ public class Http {
     /**
      * <p>Returns the {@link State} of request.</p>
      * @return  status of request
+     * @since 3.0.0
      */
     public State getState () {
         return state;
@@ -204,6 +213,7 @@ public class Http {
     /**
      * <p>Returns the {@link STATUS_CODE} of request.</p>
      * @return  status code of request
+     * @since 3.0.0
      */
     public STATUS_CODE getStatusCode () {
         return status_code;
@@ -212,6 +222,7 @@ public class Http {
     /**
      * <p>Returns the {@link URL} of request.</p>
      * @return  URL object of request
+     * @since 3.0.0
      */
     public URL getUrl () {
         return url;
@@ -220,6 +231,7 @@ public class Http {
     /**
      * <p>Returns the {@link HttpURLConnection} of request.</p>
      * @return  Connection of request
+     * @since 3.0.0
      */
     public HttpURLConnection getCon () {
         return con;
@@ -228,6 +240,7 @@ public class Http {
     /**
      * <p>Set the {@link State} of the current request.</p>
      * @param state current {@link State}
+     * @since 3.0.0
      */
     private void setState (State state) {
         this.state = state;
@@ -236,6 +249,7 @@ public class Http {
     /**
      * <p>Set the {@link STATUS_CODE} of the current request.</p>
      * @param statusCode    current {@link STATUS_CODE}
+     * @since 3.0.0
      */
     private void setStatusCode (STATUS_CODE statusCode) {
         this.status_code = statusCode;

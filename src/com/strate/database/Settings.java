@@ -3,6 +3,7 @@ package com.strate.database;
 /**
  * <p>[description]</p>
  * @author Stephan Strate
+ * @since 3.0.0
  */
 public class Settings extends Table {
 
@@ -23,6 +24,7 @@ public class Settings extends Table {
 
     /**
      * <p>[description]</p>
+     * @since 3.0.0
      */
     public Settings () {
         super("settings", TABLE);
