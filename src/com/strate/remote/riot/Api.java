@@ -12,10 +12,10 @@ import org.json.simple.parser.ParseException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-/* @TODO: Description for api class is missing */
-
 /**
- * <p>[description]</p>
+ * <p>Perform api requests to riot games api. Only specific
+ * api calls are defined, which are used in this application.
+ * It does not cover all api calls possible.</p>
  * @author Stephan Strate
  * @since 2.0.0
  */

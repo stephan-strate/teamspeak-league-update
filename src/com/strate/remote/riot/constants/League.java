@@ -1,10 +1,12 @@
 package com.strate.remote.riot.constants;
-
-/* @TODO: Finish descriptions */
+import com.strate.constants.Ansi;
 
 /**
- * <p>[description]</p>
+ * <p>Represents a League of Legends League.
+ * You can whether get a {@link League} by name
+ * or compare them.</p>
  * @author Stephan Strate
+ * @since 2.0.0
  */
 public enum League {
 
@@ -21,9 +23,10 @@ public enum League {
     private String name;
 
     /**
-     * <p>[description]</p>
-     * @param id
-     * @param name
+     * <p>Represents a League of Legends
+     * League with order id and a name.</p>
+     * @param id    order id from 0 (lowest) to 7 (highest)
+     * @param name  english name (normal case)
      */
     League (int id, String name) {
         this.id = id;
@@ -31,9 +34,11 @@ public enum League {
     }
 
     /**
-     * <p>[description]</p>
-     * @param name
-     * @return
+     * <p>Returns {@link League} by name. Not case
+     * sensitive. Returns {@see League.UNRANKED} when
+     * league can not be found.</p>
+     * @param name  english name
+     * @return      {@link League}
      */
     public static League getLeagueByName (String name) {
         for (League league : League.values()) {
@@ -42,41 +47,28 @@ public enum League {
             }
         }
 
-        /* @TODO: Creating custom exception for "League not found" */
-
-        System.out.println("League not found.");
+        System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RED + "League not found." + Ansi.RESET);
         return UNRANKED;
     }
 
     /**
-     * <p>[description]</p>
-     * @return
-     */
-    public int getId () {
-        return id;
-    }
-
-    /**
-     * <p>[description]</p>
-     * @return
-     */
-    public String getName () {
-        return name;
-    }
-
-    /**
-     * <p>[description]</p>
-     * @param other
-     * @return
+     * <p>Compares order ids of two
+     * {@link League} objects and returns
+     * {@code true} when they are equal.</p>
+     * @param other     {@Link League}
+     * @return          {@code true} when equals
      */
     public boolean equals (League other) {
         return this.getId() == other.getId();
     }
 
     /**
-     * <p>[description]</p>
-     * @param other
-     * @return
+     * <p>Compares order ids of two
+     * {@link League}. Returns 1 when
+     * other is lower, 0 when equal and
+     * -1 when other is higher.</p>
+     * @param other     {@link League}
+     * @return          int
      */
     public int compare (League other) {
         if (this.getId() > other.getId()) {
@@ -89,11 +81,27 @@ public enum League {
     }
 
     /**
-     * <p>[description]</p>
-     * @return
+     * <p>Returns the name of {@link League}.</p>
+     * @return  name as string
      */
     @Override
     public String toString () {
+        return name;
+    }
+
+    /**
+     * <p>Returns the id.</p>
+     * @return  id
+     */
+    public int getId () {
+        return id;
+    }
+
+    /**
+     * <p>Returns the name.</p>
+     * @return  name
+     */
+    public String getName () {
         return name;
     }
 }
