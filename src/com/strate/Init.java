@@ -22,7 +22,7 @@ public class Init {
      */
     public static void main (String[] args) throws IOException {
         // create the current version (manually)
-        Version version = new Version("2.0.0", 12, "https://api.harddestiny.de/v1/bot/download/2.0.0");
+        Version version = new Version("2.0.1", 2, "https://github.com/stephan-strate/teamspeak-league-update/releases/download/2.0.1/teamspeak-league-update.jar");
 
         // searching for new version
         Version latest = new Version();
