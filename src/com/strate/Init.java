@@ -11,8 +11,8 @@ import java.io.IOException;
 public class Init {
 
     /* @TODO: Sql requests and inserts */
-    /* @TODO: Setup */
     /* @TODO: Handle client join event */
+    /* @TODO: Handle setup problems with teamspeak auth, cant create sqlite databases */
 
     public static volatile int clientId;
 

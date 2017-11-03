@@ -45,7 +45,7 @@ abstract class Table {
             con = sql.getCon();
             Statement stmt = con.createStatement();
             stmt.execute(request);
-            con = null;
+            con.close();
 
         } catch (SQLException e) {
             System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Database could not be created.");

@@ -2,10 +2,10 @@ package com.strate;
 
 import com.strate.constants.Ansi;
 import com.strate.constants.Language;
+import com.strate.database.Settings;
 import com.strate.remote.riot.Api;
 import com.strate.remote.riot.constants.Region;
 import com.strate.remote.teamspeak.Teamspeak;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,6 +16,8 @@ import java.io.InputStreamReader;
  */
 class Setup {
 
+    private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
     /**
      * <p>[description]</p>
      */
@@ -23,51 +25,42 @@ class Setup {
 
     }
 
-    /**
-     * <p>[description]</p>
-     * @throws IOException
-     */
     void initSetup () throws IOException {
         System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Starting " + Ansi.PURPLE + "teamspeak-league-update" + Ansi.RESET + " setup.");
 
-        // Language
-        Language language = language();
+        // non teamspeak related
+        Language language = readLanguage();
+        Region region = readRegion();
+        String key = readKey(region);
+        boolean notifications = readNotifications();
 
-        // League of Legends region
-        Region region = region();
-
-        // Riot Games api key
-        String key = key(region);
-
-        // Notifications
-        boolean notifications = notifications();
-
+        // teamspeak related
         boolean validHost = false;
         Teamspeak teamspeak = null;
+        String host = "";
+        int port = 9987;
+        String username = "";
+        String password = "";
         do {
-            // Teamspeak Host
-            String host = host();
+            host = readHost();
+            port = readPort();
+            username = readUsername();
+            password = readPassword();
 
-            // Teamspeak Port
-            int port = port();
-
-            // host valid
-            teamspeak = checkHost(host, port);
+            // verify teamspeak related data
+            teamspeak = new Teamspeak(host, port, username, password);
             validHost = teamspeak.isValid();
         } while (!validHost);
-        teamspeak.showChannelList();
+        int channelid = readChannelId(teamspeak);
+        teamspeak.disconnect();
+
+        Settings settings = new Settings();
+        settings.insert(language.getCode(), region.getShortcut(), key, notifications, host, port, username, password, channelid);
 
         System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Finished " + Ansi.PURPLE + "teamspeak-league-update" + Ansi.RESET + " setup.");
     }
 
-    /**
-     * <p>[description]</p>
-     * @return
-     * @throws IOException
-     */
-    public Language language () throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+    public Language readLanguage () throws IOException {
         Language language = null;
         do {
             System.out.print(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Enter your prefered language (" + Language.getAllLanguages() + "): ");
@@ -78,14 +71,7 @@ class Setup {
         return language;
     }
 
-    /**
-     * <p>[description]</p>
-     * @return
-     * @throws IOException
-     */
-    public Region region () throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+    public Region readRegion () throws IOException {
         Region region = null;
         do {
             System.out.print(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Enter your region (" + Region.getAllRegions() + "): ");
@@ -96,17 +82,7 @@ class Setup {
         return region;
     }
 
-    /**
-     * <p>[description]</p>
-     * @param region
-     * @return
-     * @throws IOException
-     */
-    public String key (Region region) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        /* @TODO: RGAPI-F98DD623-6BE4-41E6-A3A3-7E4A62B7F3B0, 213.202.228.104, 25565 */
-
+    public String readKey (Region region) throws IOException {
         String key = "";
         boolean valid = false;
         Api api = new Api(key, region);
@@ -126,14 +102,7 @@ class Setup {
         return key;
     }
 
-    /**
-     * <p>[description]</p>
-     * @return
-     * @throws IOException
-     */
-    public boolean notifications () throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+    public boolean readNotifications () throws IOException {
         boolean notifications = false;
         boolean touched = false;
         do {
@@ -157,19 +126,16 @@ class Setup {
         return notifications;
     }
 
-    public String host () throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+    public String readHost () throws IOException {
         String host = "";
-        System.out.print(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Teamspeak server IP address (need to be an address eg. 192.168.0.1): ");
-        host = br.readLine();
-
+        do {
+            System.out.print(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Teamspeak server IP address (need to be an address eg. 192.168.0.1): ");
+            host = br.readLine();
+        } while (host.equals(""));
         return host;
     }
 
-    public int port () throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+    public int readPort () throws IOException {
         String port = "";
         int temp = 9987;
         boolean touched = false;
@@ -194,8 +160,47 @@ class Setup {
         return temp;
     }
 
+    public String readUsername () throws IOException {
+        String username = "";
+        do {
+            System.out.print(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Server query username: ");
+            username = br.readLine();
+        } while (username.equals(""));
+        return username;
+    }
 
-    public Teamspeak checkHost (String host, int port) {
-        return new Teamspeak(host, port);
+    public String readPassword () throws IOException {
+        String password = "";
+        do {
+            System.out.print(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Server query password: ");
+            password = br.readLine();
+        } while (password.equals(""));
+        return password;
+    }
+
+    public int readChannelId (Teamspeak teamspeak) throws IOException {
+        teamspeak.showChannelList();
+        String channelid = "";
+        int temp = 1;
+        boolean touched = false;
+        do {
+            System.out.print(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Select a channel id from above: ");
+            channelid = br.readLine();
+
+            if (channelid.equals("")) {
+                touched = true;
+            } else {
+                try {
+                    temp = Integer.parseInt(channelid);
+                } catch (NumberFormatException e) {
+                    System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "You need to parse a valid channel id.");
+                    continue;
+                }
+
+                touched = true;
+            }
+        } while (!touched);
+
+        return temp;
     }
 }
