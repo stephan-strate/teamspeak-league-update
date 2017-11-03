@@ -40,6 +40,21 @@ class Setup {
         // Notifications
         boolean notifications = notifications();
 
+        boolean validHost = false;
+        do {
+            // Teamspeak Host
+            String host = host();
+
+            // Teamspeak Port
+            String port = port();
+
+            // Teamspeak Virtual Id
+            int virtualid = virtualid();
+
+            // host valid
+            validHost = checkHost();
+        } while (!validHost);
+
         System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Finished " + Ansi.PURPLE + "teamspeak-league-update" + Ansi.RESET + " setup.");
     }
 
@@ -138,5 +153,59 @@ class Setup {
         }
 
         return notifications;
+    }
+
+    public String host () throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        String host = "";
+        System.out.print(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Teamspeak server IP address (need to be an address eg. 192.168.0.1): ");
+        host = br.readLine();
+
+        return host;
+    }
+
+    public String port () throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        String port = "";
+        System.out.print(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Teamspeak server port (default: 9987): ");
+        port = br.readLine();
+        if (port.equals("")) {
+            port = "9987";
+        }
+
+        return port;
+    }
+
+    public int virtualid () throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        String virtualid = "";
+        int temp = 1;
+        boolean touched = false;
+        do {
+            System.out.print(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Teamspeak virtual server id (default: 1): ");
+            virtualid = br.readLine();
+
+            if (virtualid.equals("")) {
+                touched = true;
+            } else {
+                try {
+                    temp = Integer.parseInt(virtualid);
+                } catch (NumberFormatException e) {
+                    System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "You need to parse a valid id.");
+                    continue;
+                }
+
+                touched = true;
+            }
+        } while (!touched);
+
+        return temp;
+    }
+
+    public boolean checkHost () {
+        return true;
     }
 }

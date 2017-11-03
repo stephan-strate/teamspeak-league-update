@@ -1,4 +1,4 @@
-package com.strate.teamspeak;
+package com.strate.remote.teamspeak;
 
 import com.github.theholywaffle.teamspeak3.TS3Api;
 import com.github.theholywaffle.teamspeak3.TS3Config;
