@@ -1,6 +1,9 @@
 package com.strate;
 
 import com.strate.constants.Version;
+import com.strate.database.Settings;
+import com.strate.remote.teamspeak.Teamspeak;
+
 import java.io.IOException;
 
 /**
@@ -29,8 +32,13 @@ public class Init {
         Version latest = new Version();
         latest.update(version);
 
-        // starting setup process
-        Setup setup = new Setup();
-        setup.initSetup();
+        Settings settings = new Settings();
+        if (!settings.exists()) {
+            // starting setup process
+            Setup setup = new Setup();
+            setup.initSetup();
+        } else {
+            Teamspeak teamspeak = new Teamspeak(settings.host, settings.port, settings.name, settings.password);
+        }
     }
 }

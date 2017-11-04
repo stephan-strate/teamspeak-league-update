@@ -58,6 +58,7 @@ class Setup {
         settings.insert(language.getCode(), region.getShortcut(), key, notifications, host, port, username, password, channelid);
 
         System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Finished " + Ansi.PURPLE + "teamspeak-league-update" + Ansi.RESET + " setup.");
+        System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Please restart the application.");
     }
 
     public Language readLanguage () throws IOException {

@@ -15,6 +15,7 @@ class Sql {
     private static final String path = ".tlu/";
 
     private Connection con = null;
+    private String url;
 
     /**
      * <p>Represents a sqlite database connection.</p>
@@ -22,7 +23,7 @@ class Sql {
      * @since 3.0.0
      */
     Sql (String database) {
-        connect(database);
+        create(database);
     }
 
     /**
@@ -31,12 +32,35 @@ class Sql {
      * @param database  database name
      * @since 3.0.0
      */
-    private void connect (String database) {
+    private void create (String database) {
         try {
             checkFolder();
-            String url = "jdbc:sqlite:" + path + database;
+            url = "jdbc:sqlite:" + path + database;
 
             con = DriverManager.getConnection(url);
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+
+    public Connection connect () {
+        con = null;
+        try {
+            return con = DriverManager.getConnection(url);
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public void disconnect () {
+        try {
+            if (con != null) {
+                con.close();
+            }
         } catch (SQLException e) {
             System.out.println(e);
         }

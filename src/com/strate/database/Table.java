@@ -42,31 +42,13 @@ abstract class Table {
         sql = new Sql(database + ".db");
 
         try {
-            con = sql.getCon();
+            con = sql.connect();
             Statement stmt = con.createStatement();
             stmt.execute(request);
-            con.close();
+            sql.disconnect();
 
         } catch (SQLException e) {
             System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Database could not be created.");
-        }
-    }
-
-    /**
-     * <p>Executes a request string on selected
-     * database table.</p>
-     * @param request   request string
-     * @since 3.0.0
-     */
-    public void execute (String request) {
-        try {
-            con = sql.getCon();
-            Statement stmt = con.createStatement();
-            stmt.execute(request);
-            con = null;
-
-        } catch (SQLException e) {
-            System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Could not access database.");
         }
     }
 
@@ -81,6 +63,7 @@ abstract class Table {
                 "SELECT * FROM " + database;
 
         try {
+            con = sql.connect();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(request);
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -93,6 +76,7 @@ abstract class Table {
                     System.out.print(rs.getString(i) + "  ");
                 }
             }
+            sql.disconnect();
         } catch (SQLException e) {
             System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Could not access database.");
         }

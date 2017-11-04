@@ -1,9 +1,10 @@
 package com.strate.database;
 
 import com.strate.constants.Ansi;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import com.strate.constants.Language;
+import com.strate.remote.riot.constants.Region;
+
+import java.sql.*;
 
 /**
  * <p>[description]</p>
@@ -23,8 +24,18 @@ public class Settings extends Table {
             " teamspeak_port integer NOT NULL,\n" +
             " teamspeak_queryname text NOT NULL,\n" +
             " teamspeak_querypass text NOT NULL,\n" +
-            " channel_id integer NOT NULL,\n" +
+            " channel_id integer NOT NULL\n" +
             ");";
+
+    public Language language;
+    public Region region;
+    public String key;
+    public boolean notifications;
+    public String host;
+    public int port;
+    public String name;
+    public String password;
+    public int channelid;
 
     /**
      * <p>[description]</p>
@@ -32,6 +43,29 @@ public class Settings extends Table {
      */
     public Settings () {
         super("settings", TABLE);
+
+        String request =
+                "SELECT * FROM settings";
+
+        try {
+            Connection con = getSql().connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(request);
+            if (rs.next()) {
+                language = Language.getLanguageByCode(rs.getString("language"));
+                region = Region.getRegionByShortcut(rs.getString("region"));
+                key = rs.getString("riot_key");
+                notifications = rs.getBoolean("notifications");
+                host = rs.getString("teamspeak_host");
+                port = rs.getInt("teamspeak_port");
+                name = rs.getString("teamspeak_queryname");
+                password = rs.getString("teamspeak_querypass");
+                channelid = rs.getInt("channel_id");
+            }
+            getSql().disconnect();
+        } catch (SQLException e) {
+            System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Could not read settings.");
+        }
     }
 
     public void insert (String language, String region, String riot_key, boolean notifications, String host, int port, String name, String password, int channelid) {
@@ -39,9 +73,8 @@ public class Settings extends Table {
                 "INSERT INTO settings(language,region,riot_key,notifications,teamspeak_host,teamspeak_port,teamspeak_queryname,teamspeak_querypass,channel_id) " +
                         "VALUES(?,?,?,?,?,?,?,?,?)";
 
-        Sql sql = new Sql("settings.db");
-        Connection con = sql.getCon();
         try {
+            Connection con = getSql().connect();
             PreparedStatement pstmt = con.prepareStatement(request);
             pstmt.setString(1, language);
             pstmt.setString(2, region);
@@ -53,9 +86,28 @@ public class Settings extends Table {
             pstmt.setString(8, password);
             pstmt.setInt(9, channelid);
             pstmt.execute();
+            getSql().disconnect();
         } catch (SQLException e) {
             System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Could not import settings, please try again.");
-            System.out.println(e);
         }
+    }
+
+    public boolean exists () {
+        String request =
+                "SELECT id FROM settings";
+
+        try {
+            Connection con = getSql().connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(request);
+            while (rs.next()) {
+                return true;
+            }
+            getSql().disconnect();
+        } catch (SQLException e) {
+            System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Could not read settings.");
+        }
+
+        return false;
     }
 }
