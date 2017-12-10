@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-abstract class Console {
+class Console {
 
     boolean actvie = false;
     ArrayList<Method> methods = new ArrayList<>();
@@ -90,6 +90,7 @@ abstract class Console {
 
     public void end () {
         actvie = false;
+        System.exit(0);
     }
 
     @com.strate.console.Method
