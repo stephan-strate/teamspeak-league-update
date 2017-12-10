@@ -10,8 +10,8 @@ import java.util.Arrays;
 
 class Console {
 
-    boolean actvie = false;
-    ArrayList<Method> methods = new ArrayList<>();
+    private boolean active = false;
+    private ArrayList<Method> methods = new ArrayList<>();
     private Class obj = getClass();
     private Object o;
 
@@ -29,7 +29,7 @@ class Console {
     private void process () {
         // init reader
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        while (actvie) {
+        while (active) {
             try {
                 // read line
                 String command = br.readLine();
@@ -84,18 +84,18 @@ class Console {
     }
 
     public void start () {
-        actvie = true;
+        active = true;
         process();
     }
 
     public void end () {
-        actvie = false;
+        active = false;
         System.exit(0);
     }
 
     @com.strate.console.Method
     public void exit (String[] args) {
         System.out.println("Exit program");
-        actvie = false;
+        active = false;
     }
 }
