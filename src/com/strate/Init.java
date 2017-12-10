@@ -41,7 +41,7 @@ public class Init {
             Teamspeak teamspeak = new Teamspeak(settings.host, settings.port, settings.name, settings.password);
         }
 
-        // opening
+        // opening console application
         DefaultConsole console = new DefaultConsole();
         console.start();
     }
