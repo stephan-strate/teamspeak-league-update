@@ -6,7 +6,8 @@ import com.strate.remote.riot.constants.Region;
 import java.sql.*;
 
 /**
- * <p>[description]</p>
+ * <p>Represents the settings database and its
+ * options.</p>
  * @author Stephan Strate
  * @since 3.0.0
  */
@@ -37,7 +38,8 @@ public class Settings extends Table {
     public int channelid;
 
     /**
-     * <p>[description]</p>
+     * <p>Creates settings database and reads the
+     * first line out of it.</p>
      * @since 3.0.0
      */
     public Settings () {
@@ -67,6 +69,19 @@ public class Settings extends Table {
         }
     }
 
+    /**
+     * <p>Insert settings into the database.</p>
+     * @param language      language code
+     * @param region        region code
+     * @param riot_key      api key
+     * @param notifications boolean
+     * @param host          ip
+     * @param port          port
+     * @param name          query name
+     * @param password      query pass
+     * @param channelid     channel id
+     * @since 3.0.0
+     */
     public void insert (String language, String region, String riot_key, boolean notifications, String host, int port, String name, String password, int channelid) {
         String request =
                 "INSERT INTO settings(language,region,riot_key,notifications,teamspeak_host,teamspeak_port,teamspeak_queryname,teamspeak_querypass,channel_id) " +
@@ -91,6 +106,11 @@ public class Settings extends Table {
         }
     }
 
+    /**
+     * <p>Check if settings exists. They still can be wrong!</p>
+     * @return  {@code boolean}
+     * @since 3.0.0
+     */
     public boolean exists () {
         String request =
                 "SELECT id FROM settings";
