@@ -8,6 +8,8 @@ package com.strate.console;
  */
 public class DefaultConsole extends Console {
 
+    /* @TODO: Create console methods */
+
     /**
      * <p>Dummy method. Output all arguments.</p>
      * @param args  arguments

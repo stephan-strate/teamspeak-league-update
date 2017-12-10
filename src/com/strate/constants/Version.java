@@ -11,7 +11,8 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
 /**
- * <p>[description]</p>
+ * <p>Represents a version of this bot and
+ * can update itself.</p>
  * @author Stephan Strate
  * @since 3.0.0
  */

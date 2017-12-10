@@ -2,12 +2,13 @@ package com.strate.remote.riot.constants;
 
 import com.strate.constants.Ansi;
 
-/* @TODO: Finish descriptions */
-/* @TODO: Working on Error Logging */
-
 /**
- * <p>[description]</p>
+ * <p>Represents a riot games, league
+ * of legends region. You can get a base
+ * url depending on region or get all
+ * regions.</p>
  * @author Stephan Strate
+ * @since 3.0.0
  */
 public enum Region {
 
@@ -28,9 +29,11 @@ public enum Region {
     private String shortcut;
 
     /**
-     * <p>[description]</p>
-     * @param endpoint
-     * @param shortcut
+     * <p>Represents a region defined by
+     * riot games.</p>
+     * @param endpoint  api endpoint
+     * @param shortcut  region shortcut
+     * @since 3.0.0
      */
     Region (String endpoint, String shortcut) {
         this.endpoint = endpoint;
@@ -38,9 +41,11 @@ public enum Region {
     }
 
     /**
-     * <p>[description]</p>
-     * @param shortcut
-     * @return
+     * <p>Fetch a region by shortcut. Static method
+     * to get a {@see Region} object.</p>
+     * @param shortcut  region shortcut
+     * @return  {@see Region}
+     * @since 3.0.0
      */
     public static Region getRegionByShortcut (String shortcut) {
         for (Region region : Region.values()) {
@@ -54,32 +59,38 @@ public enum Region {
     }
 
     /**
-     * <p>[description]</p>
-     * @return
+     * <p>Get the endpoint.</p>
+     * @return  {@code endpoint}
+     * @since 3.0.0
      */
     public String getEndpoint () {
         return endpoint;
     }
 
     /**
-     * <p>[description]</p>
-     * @return
+     * <p>Get the shortcut.</p>
+     * @return  {@code shortcut}
+     * @since 3.0.0
      */
     public String getShortcut () {
         return shortcut;
     }
 
     /**
-     * <p>[description]</p>
-     * @return
+     * <p>Creates the base url for riot games
+     * api, depending on region.</p>
+     * @return  base url
+     * @since 3.0.0
      */
     public String getBaseUrl () {
         return "https://" + getEndpoint().toLowerCase() + ".api.riotgames.com";
     }
 
     /**
-     * <p>[description]</p>
-     * @return
+     * <p>Get all regions in a string, for
+     * settings as options.</p>
+     * @return  all regions
+     * @since 3.0.0
      */
     public static String getAllRegions () {
         String regions = "";

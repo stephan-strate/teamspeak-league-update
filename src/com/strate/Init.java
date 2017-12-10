@@ -4,11 +4,10 @@ import com.strate.console.DefaultConsole;
 import com.strate.constants.Version;
 import com.strate.database.Settings;
 import com.strate.remote.teamspeak.Teamspeak;
-
 import java.io.IOException;
 
 /**
- * <p>[description]</p>
+ * <p>Main class.</p>
  * @author Stephan Strate
  * @since 3.0.0
  */
@@ -21,8 +20,8 @@ public class Init {
     public static volatile int clientId;
 
     /**
-     * <p>[description]</p>
-     * @param args
+     * <p>Main method.</p>
+     * @param args  arguments
      * @since 3.0.0
      */
     public static void main (String[] args) throws IOException {
@@ -31,7 +30,7 @@ public class Init {
 
         // searching for new version
         Version latest = new Version();
-        latest.update(version);
+        latest.update(version);*/
 
         Settings settings = new Settings();
         if (!settings.exists()) {
@@ -40,8 +39,9 @@ public class Init {
             setup.initSetup();
         } else {
             Teamspeak teamspeak = new Teamspeak(settings.host, settings.port, settings.name, settings.password);
-        }*/
+        }
 
+        // opening
         DefaultConsole console = new DefaultConsole();
         console.start();
     }

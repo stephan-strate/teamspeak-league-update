@@ -3,7 +3,6 @@ package com.strate.database;
 import com.strate.constants.Ansi;
 import com.strate.constants.Language;
 import com.strate.remote.riot.constants.Region;
-
 import java.sql.*;
 
 /**
