@@ -39,10 +39,10 @@ public class Init {
             setup.initSetup();
         } else {
             Teamspeak teamspeak = new Teamspeak(settings.host, settings.port, settings.name, settings.password);
-        }
 
-        // opening console application
-        DefaultConsole console = new DefaultConsole();
-        console.start();
+            // opening console application
+            DefaultConsole console = new DefaultConsole();
+            console.start();
+        }
     }
 }
