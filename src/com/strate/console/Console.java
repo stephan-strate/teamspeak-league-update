@@ -10,7 +10,8 @@ import java.util.Arrays;
 
 class Console {
 
-    private boolean active = false;
+    /* @TODO: Work on error logging */
+    private boolean active = true;
     private ArrayList<Method> methods = new ArrayList<>();
     private Class obj = getClass();
     private Object o;
@@ -29,7 +30,7 @@ class Console {
     private void process () {
         // init reader
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        while (active) {
+        while (isActive()) {
             try {
                 // read line
                 String command = br.readLine();
@@ -84,13 +85,26 @@ class Console {
     }
 
     public void start () {
-        active = true;
         process();
     }
 
-    public void end () {
-        active = false;
-        System.exit(0);
+    public boolean isActive () {
+        try {
+            Method method = getClass().getMethod("getActive");
+            return (boolean) method.invoke(getInstance());
+        } catch (NoSuchMethodException e) {
+
+        } catch (IllegalAccessException e) {
+
+        } catch (InvocationTargetException e) {
+
+        }
+
+        return false;
+    }
+
+    public boolean getActive () {
+        return active;
     }
 
     @com.strate.console.Method
