@@ -18,24 +18,18 @@ import java.util.Arrays;
  */
 abstract class Console {
 
-    private boolean active = true;
+    private boolean active = false;
     private ArrayList<Method> methods = new ArrayList<>();
-    private Class current = getClass();
-    private Object instance;
 
     /**
      * <p>Create a new console.</p>
      * @since 3.0.0
      */
     Console () {
-        for (Method method : current.getDeclaredMethods()) {
+        for (Method method : getClass().getDeclaredMethods()) {
             if (method.isAnnotationPresent(com.strate.console.Method.class)) {
                 // get all methods that have annotation
                 methods.add(method);
-
-                /* @TODO: Methods get iterate one time to much, when creating the console */
-                // debugging iteration bug
-                // System.out.println(method);
             }
         }
     }
@@ -48,7 +42,7 @@ abstract class Console {
     private void process () {
         // init reader
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        while (isActive()) {
+        while (active) {
             try {
                 // read line
                 String command = br.readLine();
@@ -66,13 +60,11 @@ abstract class Console {
                     for (Method method : methods) {
                         // check if any method has the name of endpoint
                         if (method.getName().equals(endpoint)) {
-                            // get singleton instance
-                            Object temp = getInstance();
                             // prepare arguments for method
                             Object[] params = new Object[1];
                             params[0] = args;
                             // invoke method
-                            method.invoke(temp, params);
+                            method.invoke(this, params);
                         }
                     }
                 }
@@ -91,31 +83,8 @@ abstract class Console {
      * @since 3.0.0
      */
     public void start () {
+        active = true;
         process();
-    }
-
-    /**
-     * <p>Singleton pattern. Returns a instance
-     * of current object, to invoke methods on it.</p>
-     * @return  {@code instance}
-     * @since 3.0.0
-     */
-    public Object getInstance () {
-        // check if instance is present
-        if (instance == null) {
-            try {
-                // create new instance
-                instance = current.newInstance();
-            } catch (InstantiationException e) {
-                System.out.println("Internal error. Can not create a new instance of console.");
-            } catch (IllegalAccessException e) {
-                System.out.println("Internal error.");
-            }
-
-            return instance;
-        } else {
-            return instance;
-        }
     }
 
     /**
@@ -125,29 +94,6 @@ abstract class Console {
      */
     public boolean getActive () {
         return active;
-    }
-
-    /**
-     * <p>Check if console application is active.</p>
-     * @return  {@code boolean}
-     * @since 3.0.0
-     */
-    public boolean isActive () {
-        try {
-            // get active method
-            Method method = getClass().getMethod("getActive");
-            // calling method on instance object
-            return (boolean) method.invoke(getInstance());
-        } catch (NoSuchMethodException e) {
-            System.out.println("Internal error. getActive method could not be found.");
-        } catch (IllegalAccessException e) {
-            System.out.println("Internal error. No permission to call getActive method.");
-        } catch (InvocationTargetException e) {
-            System.out.println("Internal error.");
-        }
-
-        // application can not run in this state
-        return false;
     }
 
     /**
