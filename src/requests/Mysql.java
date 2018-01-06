@@ -20,6 +20,7 @@ public class Mysql {
      */
     public Mysql () {
         try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection("jdbc:mysql://" + Initialize.configuration.get(Propertie.MYSQLHOST) +
                     ":" + Initialize.configuration.get(Propertie.MYSQLPORT) + "/" + Initialize.configuration.get(Propertie.MYSQLDB) + "?"+"user=" +
                     Initialize.configuration.get(Propertie.MYSQLUSER) + "&"+"password=" + Initialize.configuration.get(Propertie.MYSQLPASS) + "&autoReconnect=true&useSSL=false");
@@ -28,6 +29,8 @@ public class Mysql {
             System.out.println("SQLException: " + e.getMessage());
             System.out.println("SQLState: " + e.getSQLState());
             System.out.println("VendorError: " + e.getErrorCode());
+        } catch (Exception e) {
+
         }
     }
 

@@ -86,7 +86,7 @@ public class RiotApi {
      */
     private League leagueBySummonerId (long id) {
         // performing http request
-        Http http = new Http(region.getHost() + "/lol/league/v3/leagues/by-summoner/" +
+        Http http = new Http(region.getHost() + "/lol/league/v3/positions/by-summoner/" +
                 id + "?api_key=" + key);
 
         try {
@@ -97,8 +97,8 @@ public class RiotApi {
             JSONObject jsonObject;
             int i = 0;
             while ((jsonObject = (JSONObject) jsonArray.get(i)) != null) {
-                System.out.println(jsonObject.get("queue"));
-                if (jsonObject.get("queue").equals("RANKED_SOLO_5x5")) {
+                System.out.println(jsonObject.get("queueType"));
+                if (jsonObject.get("queueType").equals("RANKED_SOLO_5x5")) {
                     return League.getLeagueByName((String) jsonObject.get("tier"));
                 }
                 i = i + 1;
