@@ -2,7 +2,7 @@ package com.strate;
 
 import com.strate.console.DefaultConsole;
 import com.strate.constants.Version;
-import com.strate.database.Settings;
+import com.strate.sql.Settings;
 import com.strate.remote.teamspeak.Connection;
 import com.strate.remote.teamspeak.DefaultConnection;
 import java.io.IOException;

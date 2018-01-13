@@ -46,8 +46,8 @@ abstract class Console {
             try {
                 // read line
                 String command = br.readLine();
-                // split inputs from eg. "update database test" to
-                // ["update", "database", "test"]
+                // split inputs from eg. "update sql test" to
+                // ["update", "sql", "test"]
                 String[] parts = command.split(" ");
                 // if command is available
                 if (parts.length > 0) {
