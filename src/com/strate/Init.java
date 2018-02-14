@@ -2,9 +2,10 @@ package com.strate;
 
 import com.strate.console.DefaultConsole;
 import com.strate.constants.Version;
-import com.strate.sql.Settings;
 import com.strate.remote.teamspeak.Connection;
 import com.strate.remote.teamspeak.DefaultConnection;
+import com.strate.sql.tables.Settings;
+
 import java.io.IOException;
 
 /**
@@ -38,7 +39,7 @@ public class Init {
             setup.initSetup();
         } else {
             // open a teamspeak connect
-            Connection connection = new DefaultConnection(settings.host, settings.port, settings.name, settings.password, settings.channelid);
+            Connection connection = new DefaultConnection(settings.getHost(), settings.getPort(), settings.getName(), settings.getPassword(), settings.getChannelid());
             connection.connect();
 
             // opening console application

@@ -1,7 +1,5 @@
 package com.strate.remote.riot.constants;
 
-import com.strate.constants.Ansi;
-
 /**
  * <p>Represents a riot games, league
  * of legends region. You can get a base
@@ -54,7 +52,7 @@ public enum Region {
             }
         }
 
-        System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RED + "Region not found." + Ansi.RESET);
+        System.out.println("[tlu] Region not found.");
         return null;
     }
 

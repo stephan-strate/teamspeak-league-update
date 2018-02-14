@@ -1,6 +1,5 @@
 package com.strate.remote;
 
-import com.strate.constants.Ansi;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -128,7 +127,7 @@ public class Http {
             start();
         } catch (MalformedURLException e) {
             setState(State.Failed);
-            System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Can not generate request of " + url + ".");
+            System.out.println("[tlu] Can not generate request of " + url + ".");
         }
     }
 
@@ -165,7 +164,7 @@ public class Http {
             }
         } catch (IOException e) {
             setState(State.Failed);
-            System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RESET + "Can not open connection to " + url.toString() + ".");
+            System.out.println("[tlu] Can not open connection to " + url.toString() + ".");
         }
     }
 

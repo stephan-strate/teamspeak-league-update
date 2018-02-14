@@ -52,7 +52,7 @@ abstract class Console {
                 // if command is available
                 if (parts.length > 0) {
                     // get command/endpoint
-                    String endpoint = parts[0];
+                    String endpoint = parts[0].toLowerCase();
                     // get the attributes
                     String[] args = Arrays.copyOfRange(parts, 1, parts.length);
 

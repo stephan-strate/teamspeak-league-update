@@ -1,6 +1,5 @@
 package com.strate;
 
-import com.strate.constants.Ansi;
 import com.strate.constants.Language;
 import com.strate.sql.Settings;
 import com.strate.remote.riot.Api;

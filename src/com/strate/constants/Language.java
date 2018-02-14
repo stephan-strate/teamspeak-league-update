@@ -42,7 +42,7 @@ public enum Language {
             }
         }
 
-        System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RED + "Language not found." + Ansi.RESET);
+        System.out.println("[tlu] Language not found.");
         return null;
     }
 

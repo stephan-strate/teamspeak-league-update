@@ -1,5 +1,4 @@
 package com.strate.remote.riot.constants;
-import com.strate.constants.Ansi;
 
 /**
  * <p>Represents a League of Legends League.
@@ -47,7 +46,7 @@ public enum League {
             }
         }
 
-        System.out.println(Ansi.BLUE + "[tlu] " + Ansi.RED + "League not found." + Ansi.RESET);
+        System.out.println("[tlu] League not found.");
         return UNRANKED;
     }
 
