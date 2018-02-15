@@ -4,6 +4,8 @@ import com.strate.console.DefaultConsole;
 import com.strate.constants.Version;
 import com.strate.remote.teamspeak.Connection;
 import com.strate.remote.teamspeak.DefaultConnection;
+import com.strate.setup.Language;
+import com.strate.setup.Region;
 import com.strate.sql.tables.Settings;
 
 import java.io.IOException;
@@ -35,8 +37,11 @@ public class Init {
         Settings settings = new Settings();
         if (!settings.exists()) {
             // starting setup process
-            Setup setup = new Setup();
-            setup.initSetup();
+            Language language = new Language();
+            language.execute();
+
+            Region region = new Region();
+            region.execute();
         } else {
             // open a teamspeak connect
             Connection connection = new DefaultConnection(settings.getHost(), settings.getPort(), settings.getName(), settings.getPassword(), settings.getChannelid());

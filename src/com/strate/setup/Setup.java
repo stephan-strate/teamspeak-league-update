@@ -1,8 +1,6 @@
 package com.strate.setup;
 
-abstract class Setup {
+interface Setup {
 
-    Setup () {
-
-    }
+    public void execute ();
 }
