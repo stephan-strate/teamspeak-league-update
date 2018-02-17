@@ -3,6 +3,8 @@ package com.strate.console;
 import com.strate.remote.teamspeak.DefaultConnection;
 import com.strate.setup.Settings;
 
+import java.util.Date;
+
 /**
  * <p>Default console application, that's controlling
  * teamspeak-league-update bot.</p>
@@ -20,21 +22,16 @@ public class DefaultConsole extends Console {
         this.settings = settings;
     }
 
-    /**
-     * <p>Dummy method. Output all arguments.</p>
-     * @param args  arguments
-     * @since 3.0.0
-     */
     @Method
-    protected void update (String[] args) {
-        // do something when user calls function
-        for (int i = 0; i < args.length; i++) {
-            System.out.println(args[i]);
-        }
-    }
-
     protected void reload (String[] args) {
         settings.load();
-        System.out.println("[tlu] Settings reloaded.");
+        System.out.println("[" + new Date().toString() + "][tlu] Settings reloaded.");
+    }
+
+    @Override
+    @Method
+    public void exit (String[] args) {
+        super.exit(args);
+        defaultConnection.disconnect();
     }
 }

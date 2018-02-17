@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 
 /**
  * <p>Used to perform a http/https request to a remote server. Just
@@ -127,7 +128,7 @@ public class Http {
             start();
         } catch (MalformedURLException e) {
             setState(State.Failed);
-            System.out.println("[tlu] Can not generate request of " + url + ".");
+            System.err.println("[" + new Date().toString() + "][tlu] Can not generate request of " + url + ".");
         }
     }
 
@@ -164,7 +165,7 @@ public class Http {
             }
         } catch (IOException e) {
             setState(State.Failed);
-            System.out.println("[tlu] Can not open connection to " + url.toString() + ".");
+            System.err.println("[" + new Date().toString() + "][tlu] Can not open connection to " + url.toString() + ".");
         }
     }
 

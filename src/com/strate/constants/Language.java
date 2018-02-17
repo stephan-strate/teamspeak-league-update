@@ -1,5 +1,7 @@
 package com.strate.constants;
 
+import java.util.Date;
+
 /**
  * <p>Represents a supported language for this
  * application. You can compare them, get a
@@ -42,7 +44,7 @@ public enum Language {
             }
         }
 
-        System.out.println("[tlu] Language not found.");
+        System.out.println("[" + new Date().toString() + "][tlu] Language not found.");
         return null;
     }
 

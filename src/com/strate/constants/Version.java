@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.Date;
 
 /**
  * <p>Represents a version of this bot and
@@ -47,7 +48,7 @@ public class Version {
      * @since 3.0.0
      */
     public Version () {
-        System.out.println("[tlu] Searching for new version.");
+        System.out.println("[" + new Date().toString() + "][tlu] Searching for new version.");
         try {
             Http http = new Http(baseUrl + URLEncoder.encode("latest", "UTF-8"));
 
@@ -61,13 +62,13 @@ public class Version {
 
                 valid = true;
             } else {
-                System.out.println("[tlu] Can not connect to our servers. You can try again later.");
+                System.out.println("[" + new Date().toString() + "][tlu] Can not connect to our servers. You can try again later.");
                 valid = false;
             }
         } catch (UnsupportedEncodingException e) {
-            System.out.println("[tlu] Code 500: Internal update error, please contact dev@harddestiny.de.");
+            System.out.println("[" + new Date().toString() + "][tlu] Code 500: Internal update error, please contact dev@harddestiny.de.");
         } catch (ParseException e) {
-            System.out.println("[tlu] Code 402: Wrong update content, please contact dev@harddestiny.de.");
+            System.out.println("[" + new Date().toString() + "][tlu] Code 402: Wrong update content, please contact dev@harddestiny.de.");
         }
     }
 
@@ -85,7 +86,7 @@ public class Version {
                     boolean update = false;
                     boolean touched = false;
                     do {
-                        System.out.print("[tlu] New version available. Do you want to update (recommended)? (Y/n) ");
+                        System.out.print("[" + new Date().toString() + "][tlu] New version available. Do you want to update (recommended)? (Y/n) ");
                         String temp = br.readLine();
                         if (temp.toLowerCase().equals("y")) {
                             touched = true;
@@ -97,15 +98,15 @@ public class Version {
                     } while (!touched);
 
                     if (update) {
-                        System.out.println("[tlu] Starting update from " + old.getVersion() + " to " + this.getVersion() + ".");
+                        System.out.println("[" + new Date().toString() + "][tlu] Starting update from " + old.getVersion() + " to " + this.getVersion() + ".");
                         download();
                     }
                 } else {
-                    System.out.println("[tlu] No new update available.");
+                    System.out.println("[" + new Date().toString() + "][tlu] No new update available.");
                 }
             }
         } catch (IOException e) {
-            System.out.println("[tlu] Error while updating. Try again later.");
+            System.out.println("[" + new Date().toString() + "][tlu] Error while updating. Try again later.");
         }
     }
 
@@ -115,22 +116,22 @@ public class Version {
      */
     private void download () {
         try {
-            System.out.println("[tlu] Reading download path.");
+            System.out.println("[" + new Date().toString() + "][tlu] Reading download path.");
             URL download = new URL(this.download);
             ReadableByteChannel readableByteChannel = Channels.newChannel(download.openStream());
 
             File path = new File(Init.class.getProtectionDomain().getCodeSource().getLocation().getPath());
             String decodePath = path.getName();
 
-            System.out.println("[tlu] Starting download.");
+            System.out.println("[" + new Date().toString() + "][tlu] Starting download.");
             FileOutputStream fileOutputStream = new FileOutputStream(decodePath + ".jar");
             fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
-            System.out.println("[tlu] Update finished. Please restart.");
+            System.out.println("[" + new Date().toString() + "][tlu] Update finished. Please restart.");
             System.exit(0);
         } catch (MalformedURLException e) {
-            System.out.println("[tlu] Server error. Wrong download link.");
+            System.out.println("[" + new Date().toString() + "][tlu] Server error. Wrong download link.");
         } catch (IOException e) {
-            System.out.println("[tlu] Client error. Can not download update.");
+            System.out.println("[" + new Date().toString() + "][tlu] Client error. Can not download update.");
         }
     }
 

@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * <p>Console class that's make it possible to create
@@ -18,11 +19,22 @@ import java.util.Arrays;
  */
 abstract class Console {
 
+    /**
+     * <p>Status of console. Can be terminated
+     * by using {@link Console#exit(String[])}.</p>
+     */
     private boolean active = false;
+
+    /**
+     * <p>Used to store all fetched methods with
+     * {@link com.strate.console.Method} annotation.</p>
+     */
     private ArrayList<Method> methods = new ArrayList<>();
 
     /**
-     * <p>Create a new console.</p>
+     * <p>Create a new console. Fetches all methods with
+     * {@link Method} annotation and adds them to a list.
+     * Methods will be invoked from this list later.</p>
      * @since 3.0.0
      */
     Console () {
@@ -46,8 +58,8 @@ abstract class Console {
             try {
                 // read line
                 String command = br.readLine();
-                // split inputs from eg. "update sql test" to
-                // ["update", "sql", "test"]
+                // split inputs from eg. "update database test" to
+                // ["update", "database", "test"]
                 String[] parts = command.split(" ");
                 // if command is available
                 if (parts.length > 0) {
@@ -57,6 +69,7 @@ abstract class Console {
                     String[] args = Arrays.copyOfRange(parts, 1, parts.length);
 
                     // iterate all methods
+                    boolean methodFound = false;
                     for (Method method : methods) {
                         // check if any method has the name of endpoint
                         if (method.getName().equals(endpoint)) {
@@ -65,15 +78,21 @@ abstract class Console {
                             params[0] = args;
                             // invoke method
                             method.invoke(this, params);
+                            methodFound = true;
                         }
+                    }
+
+                    // when no method is found
+                    if (!methodFound) {
+                        System.err.println("[" + new Date().toString() + "][tlu] Error: Method not found.");
                     }
                 }
             } catch (IOException e) {
-                System.out.println("Error. Input/Output error.");
+                System.err.println("[" + new Date().toString() + "][tlu] Error: Input/Output error.");
             } catch (IllegalAccessException e) {
-                System.out.println("Internal error. No permission to call method.");
+                System.err.println("[" + new Date().toString() + "][tlu] Internal Error: No permission to call method.");
             } catch (InvocationTargetException e) {
-                System.out.println("Internal error.");
+                System.err.println("[" + new Date().toString() + "][tlu] Error: Console method threw error.");
             }
         }
     }

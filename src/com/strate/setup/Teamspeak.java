@@ -5,6 +5,7 @@ import com.strate.remote.teamspeak.DefaultConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
 
 public class Teamspeak implements Setup {
 
@@ -62,7 +63,7 @@ public class Teamspeak implements Setup {
         String hostAddress = "";
         try {
             do {
-                System.out.print("[tlu] Teamspeak server IP address (needs to be an address eg. 192.168.0.1): ");
+                System.out.print("[" + new Date().toString() + "][tlu] Teamspeak server IP address/hostname: ");
                 hostAddress = br.readLine();
             } while (hostAddress.equals(""));
         } catch (IOException e) {
@@ -78,7 +79,7 @@ public class Teamspeak implements Setup {
         try {
             boolean touched = false;
             do {
-                System.out.print("[tlu] Teamspeak server port (default: 9987): ");
+                System.out.print("[" + new Date().toString() + "][tlu] Teamspeak server port (default: 9987): ");
                 port = br.readLine();
 
                 if (port.equals("")) {
@@ -87,7 +88,7 @@ public class Teamspeak implements Setup {
                     try {
                         parsedPort = Integer.parseInt(port);
                     } catch (NumberFormatException e) {
-                        System.out.println("[tlu] You need to parse a valid port.");
+                        System.out.println("[" + new Date().toString() + "][tlu] You need to parse a valid port.");
                         continue;
                     }
 
@@ -105,7 +106,7 @@ public class Teamspeak implements Setup {
         String queryUsername = "";
         try {
             do {
-                System.out.print("[tlu] Server query username: ");
+                System.out.print("[" + new Date().toString() + "][tlu] Server query username: ");
                 queryUsername = br.readLine();
             } while (queryUsername.equals(""));
         } catch (IOException e) {
@@ -119,7 +120,7 @@ public class Teamspeak implements Setup {
         String queryPassword = "";
         try {
             do {
-                System.out.print("[tlu] Server query password: ");
+                System.out.print("[" + new Date().toString() + "][tlu] Server query password: ");
                 queryPassword = br.readLine();
             } while (queryPassword.equals(""));
         } catch (IOException e) {
@@ -138,7 +139,7 @@ public class Teamspeak implements Setup {
         try {
             boolean touched = false;
             do {
-                System.out.print("[tlu] Select a channel id from above: ");
+                System.out.print("[" + new Date().toString() + "][tlu] Select a channel id from above: ");
                 channelId = br.readLine();
 
                 if (channelId.equals("")) {
@@ -147,7 +148,7 @@ public class Teamspeak implements Setup {
                     try {
                         parsedChannelId = Integer.parseInt(channelId);
                     } catch (NumberFormatException e) {
-                        System.out.println("[tlu] You need to parse a valid channel id.");
+                        System.out.println("[" + new Date().toString() + "][tlu] You need to parse a valid channel id.");
                         continue;
                     }
 

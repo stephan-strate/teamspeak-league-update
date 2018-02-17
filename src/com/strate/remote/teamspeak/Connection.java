@@ -7,6 +7,7 @@ import com.github.theholywaffle.teamspeak3.api.event.TS3EventAdapter;
 import com.github.theholywaffle.teamspeak3.api.event.TS3EventType;
 import com.github.theholywaffle.teamspeak3.api.reconnect.ReconnectStrategy;
 
+import java.util.Date;
 import java.util.logging.Level;
 
 /**
@@ -39,7 +40,7 @@ public abstract class Connection {
 
         // configure connection
         ts3Config.setHost(ip);
-        ts3Config.setDebugLevel(Level.ALL);
+        ts3Config.setDebugLevel(Level.OFF);
         ts3Config.setReconnectStrategy(ReconnectStrategy.exponentialBackoff());
         ts3Config.setConnectionHandler(new com.github.theholywaffle.teamspeak3.api.reconnect.ConnectionHandler() {
             @Override
@@ -113,7 +114,7 @@ public abstract class Connection {
         ts3Api.login(username, password);
         ts3Api.setNickname(nickname);
         ts3Api.sendChannelMessage(channel, "Online");
-        System.out.println("Connected");
+        System.out.println("[" + new Date().toString() + "][tlu] Bot connected to the server.");
     }
 
     /**
@@ -123,7 +124,7 @@ public abstract class Connection {
      * @since 3.0.0
      */
     private void handleDisconnect (TS3Query ts3Query) {
-        System.out.println("Disconnected");
+        System.out.println("[" + new Date().toString() + "][tlu] Bot disconnected from the server.");
     }
 
     /**

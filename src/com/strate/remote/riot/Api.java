@@ -3,12 +3,14 @@ package com.strate.remote.riot;
 import com.strate.remote.Http;
 import com.strate.remote.riot.constants.League;
 import com.strate.remote.riot.constants.Region;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 
 /**
  * <p>Perform api requests to riot games api. Only specific
@@ -51,7 +53,7 @@ public class Api {
             // 403: forbidden => api key not valid, 0: request failed => can not check if key is valid
             return statusCode != 403 && statusCode != 0;
         } catch (UnsupportedEncodingException e) {
-            System.out.println("[tlu] Can not verify key, caused by an internal error. Continue setup.");
+            System.out.println("[" + new Date().toString() + "][tlu] Can not verify key, caused by an internal error. Continue setup.");
         }
 
         // still returning true, to not bother the user
@@ -70,7 +72,7 @@ public class Api {
         try {
             summonerName = URLEncoder.encode(summonerName, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            System.out.println("[tlu] Summoner name " + summonerName + " could not be parsed.");
+            System.out.println("[" + new Date().toString() + "][tlu] Summoner name " + summonerName + " could not be parsed.");
         }
 
         Http http = new Http(region.getBaseUrl() + "/lol/summoner/v3/summoners/by-name/" +
@@ -82,7 +84,7 @@ public class Api {
 
             return (long) jsonObject.get("id");
         } catch (ParseException e) {
-            System.out.println("[tlu] Summoner name could not be checked. Wrong data.");
+            System.out.println("[" + new Date().toString() + "][tlu] Summoner name could not be checked. Wrong data.");
         }
 
         return -1;
@@ -131,7 +133,7 @@ public class Api {
                 return League.UNRANKED;
             }
         } catch (ParseException e) {
-            System.out.println("[tlu] Summoner league could not be checked. Wrong data.");
+            System.out.println("[" + new Date().toString() + "][tlu] Summoner league could not be checked. Wrong data.");
         }
 
         return League.UNRANKED;

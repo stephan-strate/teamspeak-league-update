@@ -1,5 +1,7 @@
 package com.strate.remote.riot.constants;
 
+import java.util.Date;
+
 /**
  * <p>Represents a riot games, league
  * of legends region. You can get a base
@@ -52,7 +54,7 @@ public enum Region {
             }
         }
 
-        System.out.println("[tlu] Region not found.");
+        System.out.println("[" + new Date().toString() + "][tlu] Region not found.");
         return null;
     }
 

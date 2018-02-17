@@ -3,6 +3,7 @@ package com.strate.setup;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
 
 public class Region implements Setup {
 
@@ -27,10 +28,10 @@ public class Region implements Setup {
     public void execute () {
         try {
             do {
-                System.out.print("[tlu] Enter your region (" + com.strate.remote.riot.constants.Region.getAllRegions() + "): ");
+                System.out.print("[" + new Date().toString() + "][tlu] Enter your region (" + com.strate.remote.riot.constants.Region.getAllRegions() + "): ");
                 region = com.strate.remote.riot.constants.Region.getRegionByShortcut(br.readLine());
             } while (region == null);
-            System.out.println("[tlu] Successfully identified region: " + region.getShortcut());
+            System.out.println("[" + new Date().toString() + "][tlu] Successfully identified region: " + region.getShortcut());
             new Settings().setPropertie("region", region.getShortcut());
         } catch (IOException e) {
             // error handling

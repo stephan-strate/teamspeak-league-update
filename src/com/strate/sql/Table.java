@@ -1,6 +1,7 @@
 package com.strate.sql;
 
 import java.sql.*;
+import java.util.Date;
 
 /**
  * <p></p>
@@ -36,7 +37,7 @@ public abstract class Table {
             // close connection
             database.closeConnection();
         } catch (SQLException e) {
-            System.out.println("Can not create sql statement.");
+            System.err.println("[" + new Date().toString() + "][tlu] Can not create sql statement.");
         }
     }
 
@@ -73,7 +74,7 @@ public abstract class Table {
             // close connection
             database.closeConnection();
         } catch (SQLException e) {
-            System.out.println("Can not show elements of sql " + name);
+            System.err.println("[" + new Date().toString() + "][tlu] Can not show elements of sql " + name);
         }
     }
 
@@ -109,7 +110,7 @@ public abstract class Table {
                 i--;
             }
         } catch (SQLException e) {
-            System.out.println("Can not show elements of sql " + name);
+            System.err.println("[" + new Date().toString() + "][tlu] Can not show elements of sql " + name);
         }
     }
 
@@ -127,11 +128,9 @@ public abstract class Table {
             statement.execute(sql);
             getDatabase().closeConnection();
         } catch (SQLException e) {
-            System.out.println("Can not execute.");
+            System.err.println("[" + new Date().toString() + "][tlu] Can not execute.");
         }
     }
-
-    // @TODO: add more request methods (filters etc)
 
     /**
      * <p>Get the sql name.</p>

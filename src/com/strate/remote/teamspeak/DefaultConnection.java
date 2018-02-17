@@ -7,6 +7,7 @@ import com.github.theholywaffle.teamspeak3.api.event.TS3EventType;
 import com.github.theholywaffle.teamspeak3.api.event.TextMessageEvent;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -105,9 +106,10 @@ public class DefaultConnection extends Connection {
      * @since 3.0.0
      */
     public void showChannelList () {
+        System.out.println("[" + new Date().toString() + "][tlu] Your channels:");
         List<Channel> channels = getTs3Api().getChannels();
         for (Channel channel : channels) {
-            System.out.println(channel.getId() + "  " + channel.getName() + "\n");
+            System.out.println(channel.getId() + "  " + channel.getName());
         }
     }
 }

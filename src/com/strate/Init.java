@@ -5,6 +5,8 @@ import com.strate.constants.Version;
 import com.strate.remote.teamspeak.DefaultConnection;
 import com.strate.setup.*;
 
+import java.util.Date;
+
 /**
  * <p>Main class.</p>
  * @author Stephan Strate
@@ -28,29 +30,27 @@ public class Init {
         Settings s = new Settings();
         if (!s.exists()) {
             // reading user language
-            Language language = new Language();
-            language.execute();
+            new Language().execute();
 
             // preferred region
             Region region = new Region();
             region.execute();
 
             // riot games api key
-            ApiKey apiKey = new ApiKey(region.get());
-            apiKey.execute();
+            new ApiKey(region.get()).execute();
 
             // whether users should get notifications or not
-            Notification notification = new Notification();
-            notification.execute();
+            new Notification().execute();
 
             // teamspeak settings
-            Teamspeak teamspeak = new Teamspeak();
-            teamspeak.execute();
+            new Teamspeak().execute();
 
-            System.out.println("[tlu] Finished teamspeak-league-update setup.\n" +
-                    "[tlu] Please restart the application.");
-            System.exit(0);
-        } else {
+            System.out.println("[" + new Date().toString() + "][tlu] Finished teamspeak-league-update setup.");
+            // reload settings
+            s.load();
+        }
+
+        try {
             // open a teamspeak connection
             DefaultConnection defaultConnection = new DefaultConnection(s.getPropertie("hostAddress"), Integer.parseInt(s.getPropertie("port")),
                     s.getPropertie("queryUsername"), s.getPropertie("queryPassword"), Integer.parseInt(s.getPropertie("channelId")));
@@ -59,6 +59,9 @@ public class Init {
             // opening console application
             DefaultConsole console = new DefaultConsole(defaultConnection, s);
             console.start();
+        } catch (NumberFormatException e) {
+            System.err.println("[" + new Date().toString() + "][tlu] Parsing error. Check your .tlu/properties.dat properties.");
+            System.exit(1);
         }
     }
 }

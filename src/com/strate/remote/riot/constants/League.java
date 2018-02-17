@@ -1,5 +1,7 @@
 package com.strate.remote.riot.constants;
 
+import java.util.Date;
+
 /**
  * <p>Represents a League of Legends League.
  * You can whether get a {@link League} by name
@@ -46,7 +48,7 @@ public enum League {
             }
         }
 
-        System.out.println("[tlu] League not found.");
+        System.out.println("[" + new Date().toString() + "][tlu] League not found.");
         return UNRANKED;
     }
 

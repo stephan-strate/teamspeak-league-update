@@ -3,6 +3,7 @@ package com.strate.setup;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
 
 public class Notification implements Setup {
 
@@ -27,7 +28,7 @@ public class Notification implements Setup {
         try {
             boolean touched = false;
             do {
-                System.out.print("[tlu] Do you want your users to get notifications? (Y/n) ");
+                System.out.print("[" + new Date().toString() + "][tlu] Do you want your users to get notifications? (Y/n) ");
                 String temp = br.readLine();
                 if (temp.toLowerCase().equals("y")) {
                     notification = true;
@@ -40,9 +41,9 @@ public class Notification implements Setup {
             new Settings().setPropertie("notification", notification + "");
 
             if (notification) {
-                System.out.println("[tlu] Your users will get notifications.");
+                System.out.println("[" + new Date().toString() + "][tlu] Your users will get notifications.");
             } else {
-                System.out.println("[tlu] Your users will not get notifications.");
+                System.out.println("[" + new Date().toString() + "][tlu] Your users will not get notifications.");
             }
         } catch (IOException e) {
             // error handling

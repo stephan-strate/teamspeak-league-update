@@ -4,6 +4,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Date;
 
 /**
  * <p>Helps to create several databases in different
@@ -48,7 +49,7 @@ public abstract class Database {
             // close connection
             con.close();
         } catch (SQLException e) {
-            System.out.println("Can not create sql sql " + this.path + path + database + ".");
+            System.err.println("[" + new Date().toString() + "][tlu] Can not create sql " + this.path + path + database + ".");
         }
     }
 
@@ -81,7 +82,7 @@ public abstract class Database {
             // open connection
             return con = DriverManager.getConnection(url);
         } catch (SQLException e) {
-            System.out.println("Can not open sql connection " + url + ".");
+            System.err.println("[" + new Date().toString() + "][tlu] Can not open sql connection " + url + ".");
         }
 
         // return null when error occurs
@@ -98,7 +99,7 @@ public abstract class Database {
                 con.close();
             }
         } catch (SQLException e) {
-            System.out.println("Can not close sql connection " + url + ".");
+            System.err.println("[" + new Date().toString() + "][tlu] Can not close sql connection " + url + ".");
         }
     }
 }

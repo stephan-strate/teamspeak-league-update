@@ -3,6 +3,7 @@ package com.strate.setup;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
 
 public class Language implements Setup {
 
@@ -27,10 +28,10 @@ public class Language implements Setup {
     public void execute () {
         try {
             do {
-                System.out.print("[tlu] Enter your prefered language (" + com.strate.constants.Language.getAllLanguages() + "): ");
+                System.out.print("[" + new Date().toString() + "][tlu] Enter your prefered language (" + com.strate.constants.Language.getAllLanguages() + "): ");
                 language = com.strate.constants.Language.getLanguageByCode(br.readLine());
             } while (language == null);
-            System.out.println("[tlu] Successfully identified language: " + language.getCode());
+            System.out.println("[" + new Date().toString() + "][tlu] Successfully identified language: " + language.getCode());
             new Settings().setPropertie("language", language.getCode());
         } catch (IOException e) {
             // error handling
