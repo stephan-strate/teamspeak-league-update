@@ -1,6 +1,8 @@
 package com.strate.remote.riot.constants;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>Represents a League of Legends League.
@@ -121,5 +123,19 @@ public enum League {
      */
     public String getName () {
         return name;
+    }
+
+    /**
+     * <p>Returns all leagues as {@link HashMap}.</p>
+     * @return  {@link HashMap}
+     * @since 3.0.0
+     */
+    public static HashMap<String, League> getAllLeagues () {
+        HashMap<String, League> leagues = new HashMap<>();
+        for (League league : League.values()) {
+            leagues.put(league.name.toLowerCase(), league);
+        }
+
+        return leagues;
     }
 }

@@ -6,8 +6,15 @@ import com.github.theholywaffle.teamspeak3.api.event.TS3EventAdapter;
 import com.github.theholywaffle.teamspeak3.api.event.TS3EventType;
 import com.github.theholywaffle.teamspeak3.api.event.TextMessageEvent;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
+import com.github.theholywaffle.teamspeak3.api.wrapper.ClientInfo;
+import com.github.theholywaffle.teamspeak3.api.wrapper.ServerGroup;
+import com.strate.Init;
+import com.strate.remote.riot.Api;
+import com.strate.remote.riot.constants.League;
+import com.strate.remote.riot.constants.Region;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,12 +25,12 @@ import java.util.List;
 public class DefaultConnection extends Connection {
 
     /**
-     * <p></p>
-     * @param ip
-     * @param port
-     * @param username
-     * @param password
-     * @param channel
+     * <p>Default constructor.</p>
+     * @param ip        ip address
+     * @param port      port
+     * @param username  query username
+     * @param password  query password
+     * @param channel   channel id
      * @since 3.0.0
      */
     public DefaultConnection (String ip, int port, String username, String password, int channel) {
@@ -62,7 +69,34 @@ public class DefaultConnection extends Connection {
      * @since 3.0.0
      */
     private void clientJoin (ClientJoinEvent e) {
+        Api api = new Api(Init.s.getPropertie("apikey"), Region.getRegionByShortcut(Init.s.getPropertie("region")));
 
+        // current riot game account
+        long accountId = 0;
+        League league = api.getLeagueById(accountId);
+
+        /* @TODO: WORK HERE */
+
+        // old teamspeak league
+        int clientId = e.getClientId();
+        ClientInfo clientInfo = getTs3Api().getClientInfo(clientId);
+        League teamspeak = League.UNRANKED;
+        int groupId = -1;
+
+        HashMap<String, League> leagues = League.getAllLeagues();
+        for (ServerGroup serverGroup : getTs3Api().getServerGroups()) {
+            if (leagues.containsKey(serverGroup.getName().toLowerCase())) {
+                teamspeak = League.getLeagueByName(serverGroup.getName());
+                groupId = serverGroup.getId();
+                break;
+            }
+        }
+
+        if (!teamspeak.equals(league)) {
+            int invoker = e.getClientDatabaseId();
+            getTs3Api().removeClientFromServerGroup(groupId, invoker);
+            getTs3Api().addClientToServerGroup(groupId, invoker);
+        }
     }
 
     /**

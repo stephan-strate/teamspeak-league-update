@@ -22,7 +22,9 @@ public class Settings {
             InputStream input = new FileInputStream(path);
             properties.load(input);
             input.close();
-            valid = true;
+            if (!properties.isEmpty()) {
+                valid = true;
+            }
         } catch (FileNotFoundException e) {
             try {
                 File file = new File(path);

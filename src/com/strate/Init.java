@@ -14,6 +14,8 @@ import java.util.Date;
  */
 public class Init {
 
+    public static Settings s;
+
     /**
      * <p>Main method.</p>
      * @param args  arguments
@@ -27,7 +29,7 @@ public class Init {
         Version latest = new Version();
         latest.update(version);
 
-        Settings s = new Settings();
+        s = new Settings();
         if (!s.exists()) {
             // reading user language
             new Language().execute();
