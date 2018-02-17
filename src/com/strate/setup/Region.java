@@ -31,6 +31,7 @@ public class Region implements Setup {
                 region = com.strate.remote.riot.constants.Region.getRegionByShortcut(br.readLine());
             } while (region == null);
             System.out.println("[tlu] Successfully identified region: " + region.getShortcut());
+            new Settings().setPropertie("region", region.getShortcut());
         } catch (IOException e) {
             // error handling
         }

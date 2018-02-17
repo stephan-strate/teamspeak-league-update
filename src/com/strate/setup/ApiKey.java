@@ -41,6 +41,7 @@ public class ApiKey implements Setup {
                     System.out.println("[tlu] You api key is not valid.");
                 }
             } while (!valid);
+            new Settings().setPropertie("apikey", apiKey);
         } catch (IOException e) {
             // handle errors
         }

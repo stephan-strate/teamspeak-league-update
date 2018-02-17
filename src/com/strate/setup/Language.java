@@ -31,6 +31,7 @@ public class Language implements Setup {
                 language = com.strate.constants.Language.getLanguageByCode(br.readLine());
             } while (language == null);
             System.out.println("[tlu] Successfully identified language: " + language.getCode());
+            new Settings().setPropertie("language", language.getCode());
         } catch (IOException e) {
             // error handling
         }

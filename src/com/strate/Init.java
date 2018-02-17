@@ -4,7 +4,6 @@ import com.strate.console.DefaultConsole;
 import com.strate.constants.Version;
 import com.strate.remote.teamspeak.DefaultConnection;
 import com.strate.setup.*;
-import com.strate.sql.tables.Settings;
 
 /**
  * <p>Main class.</p>
@@ -26,8 +25,8 @@ public class Init {
         Version latest = new Version();
         latest.update(version);
 
-        Settings settings = new Settings();
-        if (!settings.exists()) {
+        Settings s = new Settings();
+        if (!s.exists()) {
             // reading user language
             Language language = new Language();
             language.execute();
@@ -53,11 +52,12 @@ public class Init {
             System.exit(0);
         } else {
             // open a teamspeak connection
-            DefaultConnection defaultConnection = new DefaultConnection(settings.getHost(), settings.getPort(), settings.getName(), settings.getPassword(), settings.getChannelid());
+            DefaultConnection defaultConnection = new DefaultConnection(s.getPropertie("hostAddress"), Integer.parseInt(s.getPropertie("port")),
+                    s.getPropertie("queryUsername"), s.getPropertie("queryPassword"), Integer.parseInt(s.getPropertie("channelId")));
             defaultConnection.connect();
 
             // opening console application
-            DefaultConsole console = new DefaultConsole(defaultConnection);
+            DefaultConsole console = new DefaultConsole(defaultConnection, s);
             console.start();
         }
     }

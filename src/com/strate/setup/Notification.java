@@ -37,6 +37,7 @@ public class Notification implements Setup {
                     touched = true;
                 }
             } while (!touched);
+            new Settings().setPropertie("notification", notification + "");
 
             if (notification) {
                 System.out.println("[tlu] Your users will get notifications.");

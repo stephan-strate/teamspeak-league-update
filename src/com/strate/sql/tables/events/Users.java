@@ -1,4 +1,4 @@
-package com.strate.sql.tables;
+package com.strate.sql.tables.events;
 
 import com.strate.sql.Table;
 import com.strate.sql.databases.Events;

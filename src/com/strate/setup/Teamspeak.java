@@ -49,6 +49,13 @@ public class Teamspeak implements Setup {
         defaultConnection.connect();
         channelId = readChannelId();
         defaultConnection.disconnect();
+
+        Settings settings = new Settings();
+        settings.setPropertie("hostAddress", hostAddress);
+        settings.setPropertie("port", port + "");
+        settings.setPropertie("queryUsername", queryUsername);
+        settings.setPropertie("queryPassword", queryPassword);
+        settings.setPropertie("channelId", channelId + "");
     }
 
     private String readHostAddress () {
