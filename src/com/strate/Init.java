@@ -2,13 +2,9 @@ package com.strate;
 
 import com.strate.console.DefaultConsole;
 import com.strate.constants.Version;
-import com.strate.remote.teamspeak.Connection;
 import com.strate.remote.teamspeak.DefaultConnection;
-import com.strate.setup.Language;
-import com.strate.setup.Region;
+import com.strate.setup.*;
 import com.strate.sql.tables.Settings;
-
-import java.io.IOException;
 
 /**
  * <p>Main class.</p>
@@ -26,7 +22,7 @@ public class Init {
      * @param args  arguments
      * @since 3.0.0
      */
-    public static void main (String[] args) throws IOException {
+    public static void main (String[] args) {
         // create the current version (manually)
         Version version = new Version("2.0.1", 2, "https://github.com/stephan-strate/teamspeak-league-update/releases/download/2.0.1/teamspeak-league-update.jar");
 
@@ -36,19 +32,36 @@ public class Init {
 
         Settings settings = new Settings();
         if (!settings.exists()) {
-            // starting setup process
+            // reading user language
             Language language = new Language();
             language.execute();
 
+            // preferred region
             Region region = new Region();
             region.execute();
+
+            // riot games api key
+            ApiKey apiKey = new ApiKey(region.get());
+            apiKey.execute();
+
+            // whether users should get notifications or not
+            Notification notification = new Notification();
+            notification.execute();
+
+            // teamspeak settings
+            Teamspeak teamspeak = new Teamspeak();
+            teamspeak.execute();
+
+            System.out.println("[tlu] Finished teamspeak-league-update setup.\n" +
+                    "[tlu] Please restart the application.");
+            System.exit(0);
         } else {
-            // open a teamspeak connect
-            Connection connection = new DefaultConnection(settings.getHost(), settings.getPort(), settings.getName(), settings.getPassword(), settings.getChannelid());
-            connection.connect();
+            // open a teamspeak connection
+            DefaultConnection defaultConnection = new DefaultConnection(settings.getHost(), settings.getPort(), settings.getName(), settings.getPassword(), settings.getChannelid());
+            defaultConnection.connect();
 
             // opening console application
-            DefaultConsole console = new DefaultConsole();
+            DefaultConsole console = new DefaultConsole(defaultConnection);
             console.start();
         }
     }

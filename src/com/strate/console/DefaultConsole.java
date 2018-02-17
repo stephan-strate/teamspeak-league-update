@@ -1,5 +1,7 @@
 package com.strate.console;
 
+import com.strate.remote.teamspeak.DefaultConnection;
+
 /**
  * <p>Default console application, that's controlling
  * teamspeak-league-update bot.</p>
@@ -8,7 +10,11 @@ package com.strate.console;
  */
 public class DefaultConsole extends Console {
 
-    /* @TODO: Create console methods */
+    private DefaultConnection defaultConnection;
+
+    public DefaultConsole (DefaultConnection defaultConnection) {
+        this.defaultConnection = defaultConnection;
+    }
 
     /**
      * <p>Dummy method. Output all arguments.</p>
