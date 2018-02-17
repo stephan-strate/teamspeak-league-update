@@ -13,10 +13,6 @@ import com.strate.sql.tables.Settings;
  */
 public class Init {
 
-    /* @TODO: Sql requests and inserts */
-    /* @TODO: Handle client join event */
-    /* @TODO: Handle setup problems with teamspeak auth, cant create sqlite databases */
-
     /**
      * <p>Main method.</p>
      * @param args  arguments

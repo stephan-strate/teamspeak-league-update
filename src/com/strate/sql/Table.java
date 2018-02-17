@@ -138,7 +138,7 @@ public abstract class Table {
      * @return  {@code name}
      * @since 1.0.0
      */
-    public String getName() {
+    public String getName () {
         return name;
     }
 
@@ -147,7 +147,7 @@ public abstract class Table {
      * @return  {@code sql}
      * @since 1.0.0
      */
-    public Database getDatabase() {
+    public Database getDatabase () {
         return database;
     }
 }
