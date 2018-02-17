@@ -25,7 +25,16 @@ public enum Region {
     RU ("RU", "ru"),
     TR ("TR1", "tr");
 
+    /**
+     * <p>Url endpoint.</p>
+     * @since 3.0.0
+     */
     private String endpoint;
+
+    /**
+     * <p>Common shortcuts as string.</p>
+     * @since 3.0.0
+     */
     private String shortcut;
 
     /**

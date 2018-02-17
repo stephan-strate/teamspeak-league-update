@@ -40,6 +40,10 @@ public class Http {
         SERVICE_UNAVAILABLE(503),
         GATEWAY_TIMEOUT(504);
 
+        /**
+         * <p>Http status code.</p>
+         * @since 3.0.0
+         */
         private final int code;
 
         /**
@@ -92,16 +96,40 @@ public class Http {
         Failed
     }
 
+    /**
+     * <p>Browser user agent.</p>
+     * @since 3.0.0
+     */
     private static final String USER_AGENT = "Mozilla/5.0";
 
-    // default state
+    /**
+     * <p>Default request state.</p>
+     * @since 3.0.0
+     */
     private volatile State state = State.Default;
 
-    // pending status code
+    /**
+     * <p>Http status code.</p>
+     * @since 3.0.0
+     */
     private STATUS_CODE status_code = null;
 
+    /**
+     * <p>Requested url.</p>
+     * @since 3.0.0
+     */
     private URL url;
+
+    /**
+     * <p>Established connection.</p>
+     * @since 3.0.0
+     */
     private HttpURLConnection con;
+
+    /**
+     * <p>Http response as string.</p>
+     * @since 3.0.0
+     */
     private String response;
 
     /**

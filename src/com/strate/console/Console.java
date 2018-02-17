@@ -22,12 +22,14 @@ abstract class Console {
     /**
      * <p>Status of console. Can be terminated
      * by using {@link Console#exit(String[])}.</p>
+     * @since 3.0.0
      */
     private boolean active = false;
 
     /**
      * <p>Used to store all fetched methods with
      * {@link com.strate.console.Method} annotation.</p>
+     * @since 3.0.0
      */
     private ArrayList<Method> methods = new ArrayList<>();
 

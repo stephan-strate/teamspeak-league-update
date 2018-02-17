@@ -15,7 +15,17 @@ public enum Language {
     DE (0, "de"),
     EN (1, "en");
 
+    /**
+     * <p>Primary key/id of
+     * enum type.</p>
+     * @since 3.0.0
+     */
     private int id;
+
+    /**
+     * <p>Language code as string.</p>
+     * @since 3.0.0
+     */
     private String code;
 
     /**

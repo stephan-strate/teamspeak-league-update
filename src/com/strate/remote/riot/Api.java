@@ -21,7 +21,16 @@ import java.util.Date;
  */
 public class Api {
 
+    /**
+     * <p>Riot games api key.</p>
+     * @since 3.0.0
+     */
     private String key;
+
+    /**
+     * <p>Selected region.</p>
+     * @since 3.0.0
+     */
     private Region region;
 
     /**

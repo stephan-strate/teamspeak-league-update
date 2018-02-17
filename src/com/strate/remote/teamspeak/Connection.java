@@ -19,10 +19,31 @@ import java.util.logging.Level;
  */
 public abstract class Connection {
 
+    /**
+     * <p>Config object with ip address/hostname,
+     * reconnect strategies, ..</p>
+     * @since 3.0.0
+     */
     private TS3Config ts3Config;
+
+    /**
+     * <p>Query equipped with {@link TS3Config} object,
+     * to connect/disconnect from sever.</p>
+     * @since 3.0.0
+     */
     private TS3Query ts3Query;
+
+    /**
+     * <p>Api fetched from {@link TS3Query} to
+     * access teamspeak functions.</p>
+     * @since 3.0.0
+     */
     private TS3Api ts3Api;
 
+    /**
+     * <p>Default bot nickname.</p>
+     * @since 3.0.0
+     */
     private String nickname = "Nocturne";
 
     /**

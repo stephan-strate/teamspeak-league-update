@@ -7,7 +7,7 @@ import java.util.Date;
  * You can whether get a {@link League} by name
  * or compare them.</p>
  * @author Stephan Strate
- * @since 2.0.0
+ * @since 3.0.0
  */
 public enum League {
 
@@ -20,7 +20,17 @@ public enum League {
     MASTER (6, "Master"),
     CHALLENGER (7, "Challenger");
 
+    /**
+     * <p>Primary key/id of
+     * enum type.</p>
+     * @since 3.0.0
+     */
     private int id;
+
+    /**
+     * <p>League names as string.</p>
+     * @since 3.0.0
+     */
     private String name;
 
     /**
@@ -28,6 +38,7 @@ public enum League {
      * League with order id and a name.</p>
      * @param id    order id from 0 (lowest) to 7 (highest)
      * @param name  english name (normal case)
+     * @since 3.0.0
      */
     League (int id, String name) {
         this.id = id;
@@ -40,6 +51,7 @@ public enum League {
      * league can not be found.</p>
      * @param name  english name
      * @return      {@link League}
+     * @since 3.0.0
      */
     public static League getLeagueByName (String name) {
         for (League league : League.values()) {
@@ -56,8 +68,9 @@ public enum League {
      * <p>Compares order ids of two
      * {@link League} objects and returns
      * {@code true} when they are equal.</p>
-     * @param other     {@Link League}
+     * @param other     {@link League}
      * @return          {@code true} when equals
+     * @since 3.0.0
      */
     public boolean equals (League other) {
         return this.getId() == other.getId();
@@ -70,6 +83,7 @@ public enum League {
      * -1 when other is higher.</p>
      * @param other     {@link League}
      * @return          int
+     * @since 3.0.0
      */
     public int compare (League other) {
         if (this.getId() > other.getId()) {
@@ -84,6 +98,7 @@ public enum League {
     /**
      * <p>Returns the name of {@link League}.</p>
      * @return  name as string
+     * @since 3.0.0
      */
     @Override
     public String toString () {
@@ -93,6 +108,7 @@ public enum League {
     /**
      * <p>Returns the id.</p>
      * @return  id
+     * @since 3.0.0
      */
     public int getId () {
         return id;
@@ -101,6 +117,7 @@ public enum League {
     /**
      * <p>Returns the name.</p>
      * @return  name
+     * @since 3.0.0
      */
     public String getName () {
         return name;

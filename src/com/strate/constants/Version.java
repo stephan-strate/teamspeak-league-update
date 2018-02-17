@@ -2,6 +2,7 @@ package com.strate.constants;
 
 import com.strate.Init;
 import com.strate.remote.Http;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -19,12 +20,35 @@ import java.util.Date;
  */
 public class Version {
 
+    /**
+     * <p>Base url of own api, to check
+     * for newer versions.</p>
+     * @since 3.0.0
+     */
     private static final String baseUrl = "https://api.harddestiny.de/v1/bot/version/";
 
+    /**
+     * <p>Version status.</p>
+     * @since 3.0.0
+     */
     private boolean valid = false;
 
+    /**
+     * <p>Version number.</p>
+     * @since 3.0.0
+     */
     private String version;
+
+    /**
+     * <p>Build number.</p>
+     * @since 3.0.0
+     */
     private long build;
+
+    /**
+     * <p>Download link.</p>
+     * @since 3.0.0
+     */
     private String download;
 
     /**
@@ -66,9 +90,9 @@ public class Version {
                 valid = false;
             }
         } catch (UnsupportedEncodingException e) {
-            System.out.println("[" + new Date().toString() + "][tlu] Code 500: Internal update error, please contact dev@harddestiny.de.");
+            System.err.println("[" + new Date().toString() + "][tlu] Code 500: Internal update error, please contact dev@harddestiny.de.");
         } catch (ParseException e) {
-            System.out.println("[" + new Date().toString() + "][tlu] Code 402: Wrong update content, please contact dev@harddestiny.de.");
+            System.err.println("[" + new Date().toString() + "][tlu] Code 402: Wrong update content, please contact dev@harddestiny.de.");
         }
     }
 
@@ -106,7 +130,7 @@ public class Version {
                 }
             }
         } catch (IOException e) {
-            System.out.println("[" + new Date().toString() + "][tlu] Error while updating. Try again later.");
+            System.err.println("[" + new Date().toString() + "][tlu] Error while updating. Try again later.");
         }
     }
 
@@ -129,9 +153,9 @@ public class Version {
             System.out.println("[" + new Date().toString() + "][tlu] Update finished. Please restart.");
             System.exit(0);
         } catch (MalformedURLException e) {
-            System.out.println("[" + new Date().toString() + "][tlu] Server error. Wrong download link.");
+            System.err.println("[" + new Date().toString() + "][tlu] Server error. Wrong download link.");
         } catch (IOException e) {
-            System.out.println("[" + new Date().toString() + "][tlu] Client error. Can not download update.");
+            System.err.println("[" + new Date().toString() + "][tlu] Client error. Can not download update.");
         }
     }
 
