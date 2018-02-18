@@ -14,6 +14,11 @@ import java.util.Date;
  */
 public class Init {
 
+    /**
+     * <p>Public settings, available for all classes
+     * to access the updates properties.</p>
+     * @since 3.0.0
+     */
     public static Settings s;
 
     /**
@@ -23,7 +28,7 @@ public class Init {
      */
     public static void main (String[] args) {
         // create the current version (manually)
-        Version version = new Version("2.0.1", 2, "https://github.com/stephan-strate/teamspeak-league-update/releases/download/2.0.1/teamspeak-league-update.jar");
+        Version version = new Version("3.0.0", 3, "https://github.com/stephan-strate/teamspeak-league-update/releases/download/3.0.0/teamspeak-league-update.jar");
 
         // searching for new version
         Version latest = new Version();
@@ -59,7 +64,7 @@ public class Init {
             defaultConnection.connect();
 
             // opening console application
-            DefaultConsole console = new DefaultConsole(defaultConnection, s);
+            DefaultConsole console = new DefaultConsole(defaultConnection);
             console.start();
         } catch (NumberFormatException e) {
             System.err.println("[" + new Date().toString() + "][tlu] Parsing error. Check your .tlu/properties.dat properties.");
