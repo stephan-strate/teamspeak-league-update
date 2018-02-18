@@ -69,13 +69,11 @@ public class DefaultConnection extends Connection {
      * @since 3.0.0
      */
     private void clientJoin (ClientJoinEvent e) {
-        Api api = new Api(Init.s.getPropertie("apikey"), Region.getRegionByShortcut(Init.s.getPropertie("region")));
+        /*Api api = new Api(Init.s.getPropertie("apikey"), Region.getRegionByShortcut(Init.s.getPropertie("region")));
 
         // current riot game account
         long accountId = 0;
         League league = api.getLeagueById(accountId);
-
-        /* @TODO: WORK HERE */
 
         // old teamspeak league
         int clientId = e.getClientId();
@@ -96,7 +94,7 @@ public class DefaultConnection extends Connection {
             int invoker = e.getClientDatabaseId();
             getTs3Api().removeClientFromServerGroup(groupId, invoker);
             getTs3Api().addClientToServerGroup(groupId, invoker);
-        }
+        }*/
     }
 
     /**
@@ -143,7 +141,19 @@ public class DefaultConnection extends Connection {
         System.out.println("[" + new Date().toString() + "][tlu] Your channels:");
         List<Channel> channels = getTs3Api().getChannels();
         for (Channel channel : channels) {
-            System.out.println(channel.getId() + "  " + channel.getName());
+            System.out.println("> " + channel.getId() + "  " + channel.getName());
+        }
+    }
+
+    /**
+     * <p></p>
+     * @since 3.0.0
+     */
+    public void showServerGroups () {
+        System.out.println("[" + new Date().toString() + "][tlu] Your server groups:");
+        List<ServerGroup> serverGroups = getTs3Api().getServerGroups();
+        for (ServerGroup serverGroup : serverGroups) {
+            System.out.println("> " + serverGroup.getId() + "  " + serverGroup.getName());
         }
     }
 }

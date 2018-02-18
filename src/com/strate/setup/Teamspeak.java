@@ -1,11 +1,15 @@
 package com.strate.setup;
 
+import com.strate.remote.riot.constants.League;
 import com.strate.remote.teamspeak.DefaultConnection;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Teamspeak implements Setup {
 
@@ -26,6 +30,8 @@ public class Teamspeak implements Setup {
 
     private int channelId;
 
+    private HashMap<League, String> serverGroups;
+
     private DefaultConnection defaultConnection;
 
     public Teamspeak () {
@@ -34,6 +40,9 @@ public class Teamspeak implements Setup {
 
         queryUsername = "";
         queryPassword = "";
+
+        channelId = 0;
+        serverGroups = null;
     }
 
     @Override
@@ -49,6 +58,7 @@ public class Teamspeak implements Setup {
 
         defaultConnection.connect();
         channelId = readChannelId();
+        serverGroups = readServerGroups();
         defaultConnection.disconnect();
 
         Settings settings = new Settings();
@@ -57,6 +67,12 @@ public class Teamspeak implements Setup {
         settings.setPropertie("queryUsername", queryUsername);
         settings.setPropertie("queryPassword", queryPassword);
         settings.setPropertie("channelId", channelId + "");
+
+        Iterator it = serverGroups.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            settings.setPropertie(pair.getKey().toString(), pair.getValue().toString());
+        }
     }
 
     private String readHostAddress () {
@@ -143,7 +159,7 @@ public class Teamspeak implements Setup {
                 channelId = br.readLine();
 
                 if (channelId.equals("")) {
-                    touched = true;
+                    touched = false;
                 } else {
                     try {
                         parsedChannelId = Integer.parseInt(channelId);
@@ -160,5 +176,42 @@ public class Teamspeak implements Setup {
         }
 
         return parsedChannelId;
+    }
+
+    private HashMap<League, String> readServerGroups () {
+        // show list of server groups
+        defaultConnection.showServerGroups();
+        System.out.println("[" + new Date().toString() + "][tlu] Select your server groups.");
+
+        HashMap<League, String> serverGroups = new HashMap<>();
+
+        for (League league : League.getAllLeagues()) {
+            String serverGroup = "";
+            try {
+                boolean touched = false;
+                do {
+                    System.out.print("[" + new Date().toString() + "][tlu] Server group for " + league.getName() + ": ");
+                    serverGroup = br.readLine();
+
+                    if (serverGroup.equals("")) {
+                        touched = false;
+                    } else {
+                        try {
+                            Integer.parseInt(serverGroup);
+                        } catch (NumberFormatException e) {
+                            System.out.println("[" + new Date().toString() + "][tlu] You need to parse a valid server group id.");
+                            continue;
+                        }
+
+                        serverGroups.put(league, serverGroup);
+                        touched = true;
+                    }
+                } while (!touched);
+            } catch (IOException e) {
+                // handle errors
+            }
+        }
+
+        return serverGroups;
     }
 }

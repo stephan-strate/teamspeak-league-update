@@ -2,6 +2,7 @@ package com.strate.remote.riot.constants;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -126,14 +127,14 @@ public enum League {
     }
 
     /**
-     * <p>Returns all leagues as {@link HashMap}.</p>
-     * @return  {@link HashMap}
+     * <p>Returns all leagues as {@link List}.</p>
+     * @return  {@link List}
      * @since 3.0.0
      */
-    public static HashMap<String, League> getAllLeagues () {
-        HashMap<String, League> leagues = new HashMap<>();
+    public static List<League> getAllLeagues () {
+        List<League> leagues = new LinkedList<>();
         for (League league : League.values()) {
-            leagues.put(league.name.toLowerCase(), league);
+            leagues.add(league);
         }
 
         return leagues;
