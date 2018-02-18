@@ -28,16 +28,6 @@ public class DefaultConsole extends Console {
      */
     public DefaultConsole (DefaultConnection defaultConnection) {
         this.defaultConnection = defaultConnection;
-    }
-
-    /**
-     * <p>Extending the default {@link Console#start()} method
-     * with advise for users.</p>
-     * @since 3.0.0
-     */
-    @Override
-    public void start() {
-        super.start();
         System.out.println("[" + new Date().toString() + "][tlu] Use help for informations.");
     }
 

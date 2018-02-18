@@ -51,8 +51,8 @@ public class Users extends Table {
 
                 if (resultSet.next()) {
                     // user already in database, updating data
-                    sql = "UPDATE users SET teamspeak_nickname = '" + teamspeakName + "', league_identifier = " + leagueId + ", league_username = '" + leagueName + "', " +
-                            "last_modified = datetime('now', 'localtime') WHERE teamspeak_identifier = '" + teamspeakId + "'";
+                    sql = "UPDATE users SET teamspeak_nickname = '" + teamspeakName + "', league_identifier = " + leagueId + ", league_username = '" + leagueName + "' " +
+                            "WHERE teamspeak_identifier = '" + teamspeakId + "'";
                     statement.execute(sql);
                 } else {
                     // new user, inserting in database
