@@ -60,6 +60,17 @@ public class DefaultConnection extends Connection {
                 }
             }
         });
+
+        addEventListener(TS3EventType.TEXT_PRIVATE, new TS3EventAdapter() {
+            @Override
+            public void onTextMessage(TextMessageEvent e) {
+                super.onTextMessage(e);
+                if (e.getTargetMode() == TextMessageTargetMode.CLIENT && e.getInvokerId() != getTs3Api().whoAmI().getId()) {
+                    String message = e.getMessage().toLowerCase();
+                    textMessage(e, message);
+                }
+            }
+        });
     }
 
     /**
@@ -131,6 +142,11 @@ public class DefaultConnection extends Connection {
                     }
                 }
             }
+        } else {
+            if (Boolean.parseBoolean(Init.s.getPropertie("notification"))) {
+                getTs3Api().sendPrivateMessage(e.getClientId(), "Welcome to the server. You can assign your League of Legends summoner name " +
+                        "by using !name");
+            }
         }
     }
 
@@ -143,16 +159,28 @@ public class DefaultConnection extends Connection {
     private void textMessage (TextMessageEvent e, String message) {
         if (message.equals("!ping")) {
             // simple ping test
-            getTs3Api().sendChannelMessage("Pong");
-
+            String response = "Pong";
+            if (e.getTargetMode() == TextMessageTargetMode.CHANNEL) {
+                getTs3Api().sendChannelMessage(response);
+            } else if (e.getTargetMode() == TextMessageTargetMode.CLIENT) {
+                getTs3Api().sendPrivateMessage(e.getInvokerId(), response);
+            }
         } else if (message.equals("!help")) {
             // a bot can't help
-            getTs3Api().sendChannelMessage("I can't help you.");
-
+            String response = "I can't help you.";
+            if (e.getTargetMode() == TextMessageTargetMode.CHANNEL) {
+                getTs3Api().sendChannelMessage(response);
+            } else if (e.getTargetMode() == TextMessageTargetMode.CLIENT) {
+                getTs3Api().sendPrivateMessage(e.getInvokerId(), response);
+            }
         } else if (message.equals("!name"))  {
             // short explanation for the name system
-            getTs3Api().sendChannelMessage("Usage: !name [Your League of Legends name]");
-
+            String response = "Usage: !name [Your League of Legends name]";
+            if (e.getTargetMode() == TextMessageTargetMode.CHANNEL) {
+                getTs3Api().sendChannelMessage(response);
+            } else if (e.getTargetMode() == TextMessageTargetMode.CLIENT) {
+                getTs3Api().sendPrivateMessage(e.getInvokerId(), response);
+            }
         } else if (message.startsWith("!name ")) {
             // format !name {League of Legends name}
             String leagueName = message.substring(6);
@@ -163,14 +191,24 @@ public class DefaultConnection extends Connection {
             if (users.assign(e.getInvokerUniqueId(), e.getInvokerName(), new Api(Init.s.getPropertie("apikey"),
                     Region.getRegionByShortcut(Init.s.getPropertie("region"))).getIdBySummonerName(leagueName), leagueName)) {
 
-                getTs3Api().sendChannelMessage("[b]" + e.getInvokerName() +
-                        "[/b] " + "added to database. Reconnect to get your league assigned.");
+                String response = "[b]" + leagueName +
+                        "[/b] " + "added to database. Reconnect to get your league assigned.";
+                if (e.getTargetMode() == TextMessageTargetMode.CHANNEL) {
+                    getTs3Api().sendChannelMessage(response);
+                } else if (e.getTargetMode() == TextMessageTargetMode.CLIENT) {
+                    getTs3Api().sendPrivateMessage(e.getInvokerId(), response);
+                }
             } else {
                 getTs3Api().sendChannelMessage("Error while adding your League of Legends name, please try again later.");
             }
         } else if (message.startsWith("!")) {
             // after all equals, error message
-            getTs3Api().sendChannelMessage("Command not found.");
+            String response = "Command not found.";
+            if (e.getTargetMode() == TextMessageTargetMode.CHANNEL) {
+                getTs3Api().sendChannelMessage(response);
+            } else if (e.getTargetMode() == TextMessageTargetMode.CLIENT) {
+                getTs3Api().sendPrivateMessage(e.getInvokerId(), response);
+            }
         }
     }
 
