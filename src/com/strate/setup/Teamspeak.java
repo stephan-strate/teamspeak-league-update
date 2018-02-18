@@ -71,7 +71,7 @@ public class Teamspeak implements Setup {
         Iterator it = serverGroups.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
-            settings.setPropertie(pair.getKey().toString(), pair.getValue().toString());
+            settings.setPropertie(pair.getKey().toString().toLowerCase(), pair.getValue().toString());
         }
     }
 

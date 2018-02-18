@@ -15,6 +15,7 @@ import com.strate.remote.riot.constants.Region;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -69,32 +70,64 @@ public class DefaultConnection extends Connection {
      * @since 3.0.0
      */
     private void clientJoin (ClientJoinEvent e) {
-        /*Api api = new Api(Init.s.getPropertie("apikey"), Region.getRegionByShortcut(Init.s.getPropertie("region")));
-
         // current riot game account
         long accountId = 0;
-        League league = api.getLeagueById(accountId);
+        Api api = new Api(Init.s.getPropertie("apikey"), Region.getRegionByShortcut(Init.s.getPropertie("region")));
+        League account = api.getLeagueById(accountId);
 
         // old teamspeak league
         int clientId = e.getClientId();
         ClientInfo clientInfo = getTs3Api().getClientInfo(clientId);
         League teamspeak = League.UNRANKED;
-        int groupId = -1;
 
-        HashMap<String, League> leagues = League.getAllLeagues();
-        for (ServerGroup serverGroup : getTs3Api().getServerGroups()) {
-            if (leagues.containsKey(serverGroup.getName().toLowerCase())) {
-                teamspeak = League.getLeagueByName(serverGroup.getName());
-                groupId = serverGroup.getId();
-                break;
+        // get all server groups with id
+        HashMap<League, String> serverGroupsByLeague = new HashMap<>();
+        HashMap<String, League> serverGroupsById = new HashMap<>();
+        for (League league : League.getAllLeagues()) {
+            String id = Init.s.getPropertie(league.getName());
+            serverGroupsByLeague.put(league, id);
+            serverGroupsById.put(id, league);
+        }
+
+        // get all assigned league server groups
+        List<League> teamspeakLeagues = new LinkedList<>();
+        for (int group : clientInfo.getServerGroups()) {
+            if (serverGroupsById.containsKey(group + "")) {
+                teamspeakLeagues.add(serverGroupsById.get(group + ""));
             }
         }
 
-        if (!teamspeak.equals(league)) {
-            int invoker = e.getClientDatabaseId();
-            getTs3Api().removeClientFromServerGroup(groupId, invoker);
-            getTs3Api().addClientToServerGroup(groupId, invoker);
-        }*/
+        // get the highest rank
+        for (League league : teamspeakLeagues) {
+            if (league.compare(teamspeak) > 0) {
+                teamspeak = league;
+            }
+        }
+
+        int invoker = e.getClientDatabaseId();
+        if (!teamspeak.equals(account)) {
+            // account league is higher
+            if (teamspeakLeagues.size() > 1) {
+                // more than one league is assigned, remove all
+                for (League league : teamspeakLeagues) {
+                    getTs3Api().removeClientFromServerGroup(Integer.parseInt(serverGroupsByLeague.get(league)), invoker);
+                }
+            } else {
+                // remove the single league
+                getTs3Api().removeClientFromServerGroup(Integer.parseInt(serverGroupsByLeague.get(teamspeak)), invoker);
+            }
+
+            // assign new league
+            getTs3Api().addClientToServerGroup(Integer.parseInt(serverGroupsByLeague.get(account)), invoker);
+        } else if (teamspeakLeagues.size() > 1) {
+            // account league is not higher, but more than one league is assigned
+            for (League league : teamspeakLeagues) {
+                // remove all leagues that are not the highest
+                if (!league.equals(teamspeak)) {
+                    getTs3Api().removeClientFromServerGroup(Integer.parseInt(serverGroupsByLeague.get(league)), invoker);
+                }
+            }
+        }
     }
 
     /**
