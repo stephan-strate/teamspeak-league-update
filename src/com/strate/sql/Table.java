@@ -4,13 +4,23 @@ import java.sql.*;
 import java.util.Date;
 
 /**
- * <p></p>
+ * <p>Represents sqlite tables that are
+ * stored in {@link Database}.</p>
  * @author Stephan Strate
- * @since 1.0.0
+ * @since 3.0.0
  */
 public abstract class Table {
 
+    /**
+     * <p>Name of table.</p>
+     * @since 3.0.0
+     */
     private String name;
+
+    /**
+     * <p>Database the table is stored in.</p>
+     * @since 3.0.0
+     */
     private Database database;
 
     /**
@@ -20,7 +30,7 @@ public abstract class Table {
      * @param name      table name
      * @param database  sql object
      * @param sql       sql expression
-     * @since 1.0.0
+     * @since 3.0.0
      */
     public Table (String name, Database database, String sql) {
         this.name = name;
@@ -44,7 +54,7 @@ public abstract class Table {
     /**
      * <p>Print all sql rows (can take a
      * while, depending on table size).</p>
-     * @since 1.0.0
+     * @since 3.0.0
      */
     public void showAll () {
         String sql =
@@ -81,7 +91,7 @@ public abstract class Table {
     /**
      * <p>Prints the last x rows.</p>
      * @param rows  number of rows
-     * @since 1.0.0
+     * @since 3.0.0
      */
     public void showLast (int rows) {
         String sql =
@@ -116,7 +126,7 @@ public abstract class Table {
 
     /**
      * <p>Drop whole table.</p>
-     * @since 1.0.0
+     * @since 3.0.0
      */
     public void drop () {
         String sql =
@@ -135,7 +145,7 @@ public abstract class Table {
     /**
      * <p>Get the sql name.</p>
      * @return  {@code name}
-     * @since 1.0.0
+     * @since 3.0.0
      */
     public String getName () {
         return name;
@@ -144,7 +154,7 @@ public abstract class Table {
     /**
      * <p>Get the sql object.</p>
      * @return  {@code sql}
-     * @since 1.0.0
+     * @since 3.0.0
      */
     public Database getDatabase () {
         return database;

@@ -12,20 +12,33 @@ import java.util.Date;
  * Just extend it and call the super class. You can
  * get connections and close them again with this class.</p>
  * @author Stephan Strate
- * @since 1.0.0
+ * @since 3.0.0
  */
 public abstract class Database {
 
+    /**
+     * <p>Path to databases.</p>
+     * @since 3.0.0
+     */
     private final String path = ".tlu/";
 
+    /**
+     * <p>Current connection.</p>
+     * @since 3.0.0
+     */
     private Connection con = null;
+
+    /**
+     * <p>Current url.</p>
+     * @since 3.0.0
+     */
     private String url;
 
     /**
      * <p>Creates a Sqlite sql without
      * an extended path.</p>
      * @param database  sql name
-     * @since 1.0.0
+     * @since 3.0.0
      */
     public Database (String database) {
         this(database, "");
@@ -36,7 +49,7 @@ public abstract class Database {
      * the needed path and sql itself.</p>
      * @param database  sql name
      * @param path      path extension
-     * @since 1.0.0
+     * @since 3.0.0
      */
     public Database (String database, String path) {
         try {
@@ -57,7 +70,7 @@ public abstract class Database {
      * <p>Creates the folders, that are given
      * to store the databases in it.</p>
      * @param ext   path extension
-     * @since 1.0.0
+     * @since 3.0.0
      */
     private void createFolder (String ext) {
         // create path as file
@@ -73,7 +86,7 @@ public abstract class Database {
     /**
      * <p>Opens a new sql connection.</p>
      * @return  sql connection
-     * @since 1.0.0
+     * @since 3.0.0
      */
     public Connection getConnection () {
         // reset connection
@@ -91,7 +104,7 @@ public abstract class Database {
 
     /**
      * <p>Closes a open sql connection.</p>
-     * @since 1.0.0
+     * @since 3.0.0
      */
     public void closeConnection () {
         try {
