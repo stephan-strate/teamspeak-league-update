@@ -5,13 +5,16 @@ import java.util.Properties;
 
 public class Settings {
 
-    private String path = ".tlu/properties.dat";
+    private String path = ".tlu/";
+
+    private String ext = "properties.dat";
 
     private Properties properties;
 
     private boolean valid;
 
     public Settings () {
+        createFolder();
         properties = new Properties();
         valid = false;
         load();
@@ -19,7 +22,7 @@ public class Settings {
 
     public void load () {
         try {
-            InputStream input = new FileInputStream(path);
+            InputStream input = new FileInputStream(path + ext);
             properties.load(input);
             input.close();
             if (!properties.isEmpty()) {
@@ -27,7 +30,7 @@ public class Settings {
             }
         } catch (FileNotFoundException e) {
             try {
-                File file = new File(path);
+                File file = new File(path + ext);
                 FileOutputStream output = new FileOutputStream(file);
                 properties.store(output, "teamspeak-league-update properties");
                 output.close();
@@ -49,7 +52,7 @@ public class Settings {
     public void setPropertie (String key, String value) {
         try {
             properties.setProperty(key, value);
-            File file = new File(path);
+            File file = new File(path + ext);
             FileOutputStream output = new FileOutputStream(file);
             properties.store(output, "teamspeak-league-update properties");
             output.close();
@@ -62,5 +65,16 @@ public class Settings {
 
     public boolean exists () {
         return valid;
+    }
+
+    private void createFolder () {
+        // create path as file
+        File file = new File(path);
+
+        // if file not exists
+        if (!file.exists()) {
+            // create folder
+            file.mkdir();
+        }
     }
 }

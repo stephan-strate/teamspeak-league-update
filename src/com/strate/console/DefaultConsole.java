@@ -57,8 +57,10 @@ public class DefaultConsole extends Console {
                 }
 
                 case "teamspeak": {
+                    defaultConnection.disconnect();
                     new Teamspeak().execute();
                     reload(null);
+                    defaultConnection.connect();
                     break;
                 }
 
@@ -77,6 +79,17 @@ public class DefaultConsole extends Console {
             System.out.println("[" + new Date().toString() + "][tlu] Use 'update -help' or 'update [option]'.");
         } else {
             System.err.println("[" + new Date().toString() + "][tlu] update needs exactly one parameters. Use 'update -help' for more informations.");
+        }
+    }
+
+    @Method
+    protected void reconnect (String[] args) {
+        if (args == null || args.length == 0) {
+            System.out.println("[" + new Date().toString() + "][tlu] Reconnecting.");
+            defaultConnection.disconnect();
+            defaultConnection.connect();
+        } else {
+            System.err.println("[" + new Date().toString() + "][tlu] reconnect does not expect any parameters.");
         }
     }
 

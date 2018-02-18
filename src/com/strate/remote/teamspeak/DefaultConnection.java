@@ -12,6 +12,7 @@ import com.strate.Init;
 import com.strate.remote.riot.Api;
 import com.strate.remote.riot.constants.League;
 import com.strate.remote.riot.constants.Region;
+import com.strate.sql.EntryNotFoundException;
 import com.strate.sql.tables.events.Users;
 
 import java.util.*;
@@ -67,7 +68,11 @@ public class DefaultConnection extends Connection {
                 super.onTextMessage(e);
                 if (e.getTargetMode() == TextMessageTargetMode.CLIENT && e.getInvokerId() != getTs3Api().whoAmI().getId()) {
                     String message = e.getMessage().toLowerCase();
-                    textMessage(e, message);
+                    if (message.equals("!mute")) {
+                        new Users().assign(e.getInvokerUniqueId(), e.getInvokerName(), 0, "");
+                    } else {
+                        textMessage(e, message);
+                    }
                 }
             }
         });
@@ -79,73 +84,75 @@ public class DefaultConnection extends Connection {
      * @since 3.0.0
      */
     private void clientJoin (ClientJoinEvent e) {
-        System.out.println("[" + new Date().toString() + "][tlu] '" + e.getClientNickname() + "' joined the server.");
-        long accountId = new Users().getSummonerId(e.getUniqueClientIdentifier());
+        try {
+            System.out.println("[" + new Date().toString() + "][tlu] '" + e.getClientNickname() + "' joined the server.");
+            long accountId = new Users().getSummonerId(e.getUniqueClientIdentifier());
 
-        if (accountId != 0) {
-            // current riot game account
-            Api api = new Api(Init.s.getPropertie("apikey"), Region.getRegionByShortcut(Init.s.getPropertie("region")));
-            League account = api.getLeagueById(accountId);
+            if (accountId != 0) {
+                // current riot game account
+                Api api = new Api(Init.s.getPropertie("apikey"), Region.getRegionByShortcut(Init.s.getPropertie("region")));
+                League account = api.getLeagueById(accountId);
 
-            // old teamspeak league
-            int clientId = e.getClientId();
-            ClientInfo clientInfo = getTs3Api().getClientInfo(clientId);
-            League teamspeak = League.UNRANKED;
+                // old teamspeak league
+                int clientId = e.getClientId();
+                ClientInfo clientInfo = getTs3Api().getClientInfo(clientId);
+                League teamspeak = League.UNRANKED;
 
-            // get all server groups with id
-            HashMap<League, String> serverGroupsByLeague = new HashMap<>();
-            HashMap<String, League> serverGroupsById = new HashMap<>();
-            for (League league : League.getAllLeagues()) {
-                String id = Init.s.getPropertie(league.getName());
-                serverGroupsByLeague.put(league, id);
-                serverGroupsById.put(id, league);
-            }
-
-            // get all assigned league server groups
-            List<League> teamspeakLeagues = new LinkedList<>();
-            for (int group : clientInfo.getServerGroups()) {
-                if (serverGroupsById.containsKey(group + "")) {
-                    teamspeakLeagues.add(serverGroupsById.get(group + ""));
+                // get all server groups with id
+                HashMap<League, String> serverGroupsByLeague = new HashMap<>();
+                HashMap<String, League> serverGroupsById = new HashMap<>();
+                for (League league : League.getAllLeagues()) {
+                    String id = Init.s.getPropertie(league.getName());
+                    serverGroupsByLeague.put(league, id);
+                    serverGroupsById.put(id, league);
                 }
-            }
 
-            // get the highest rank
-            for (League league : teamspeakLeagues) {
-                if (league.compare(teamspeak) > 0) {
-                    teamspeak = league;
-                }
-            }
-
-            int invoker = e.getClientDatabaseId();
-            if (!teamspeak.equals(account)) {
-                System.out.println("[" + new Date().toString() + "][tlu] Assigning new league " + account.getName() + " and removing " + teamspeak.getName() + ".");
-
-                // account league is higher
-                if (teamspeakLeagues.size() > 1) {
-                    // more than one league is assigned, remove all
-                    for (League league : teamspeakLeagues) {
-                        getTs3Api().removeClientFromServerGroup(Integer.parseInt(serverGroupsByLeague.get(league)), invoker);
+                // get all assigned league server groups
+                List<League> teamspeakLeagues = new LinkedList<>();
+                for (int group : clientInfo.getServerGroups()) {
+                    if (serverGroupsById.containsKey(group + "")) {
+                        teamspeakLeagues.add(serverGroupsById.get(group + ""));
                     }
-                } else if (teamspeakLeagues.size() == 1) {
-                    // remove the single league
-                    getTs3Api().removeClientFromServerGroup(Integer.parseInt(serverGroupsByLeague.get(teamspeak)), invoker);
                 }
 
-                // assign new league
-                getTs3Api().addClientToServerGroup(Integer.parseInt(serverGroupsByLeague.get(account)), invoker);
-            } else if (teamspeakLeagues.size() > 1) {
-                // account league is not higher, but more than one league is assigned
+                // get the highest rank
                 for (League league : teamspeakLeagues) {
-                    // remove all leagues that are not the highest
-                    if (!league.equals(teamspeak)) {
-                        getTs3Api().removeClientFromServerGroup(Integer.parseInt(serverGroupsByLeague.get(league)), invoker);
+                    if (league.compare(teamspeak) > 0) {
+                        teamspeak = league;
+                    }
+                }
+
+                int invoker = e.getClientDatabaseId();
+                if (!teamspeak.equals(account)) {
+                    System.out.println("[" + new Date().toString() + "][tlu] Assigning new league " + account.getName() + " and removing " + teamspeak.getName() + ".");
+
+                    // account league is higher
+                    if (teamspeakLeagues.size() > 1) {
+                        // more than one league is assigned, remove all
+                        for (League league : teamspeakLeagues) {
+                            getTs3Api().removeClientFromServerGroup(Integer.parseInt(serverGroupsByLeague.get(league)), invoker);
+                        }
+                    } else if (teamspeakLeagues.size() == 1) {
+                        // remove the single league
+                        getTs3Api().removeClientFromServerGroup(Integer.parseInt(serverGroupsByLeague.get(teamspeak)), invoker);
+                    }
+
+                    // assign new league
+                    getTs3Api().addClientToServerGroup(Integer.parseInt(serverGroupsByLeague.get(account)), invoker);
+                } else if (teamspeakLeagues.size() > 1) {
+                    // account league is not higher, but more than one league is assigned
+                    for (League league : teamspeakLeagues) {
+                        // remove all leagues that are not the highest
+                        if (!league.equals(teamspeak)) {
+                            getTs3Api().removeClientFromServerGroup(Integer.parseInt(serverGroupsByLeague.get(league)), invoker);
+                        }
                     }
                 }
             }
-        } else {
+        } catch (EntryNotFoundException error) {
             if (Boolean.parseBoolean(Init.s.getPropertie("notification"))) {
                 getTs3Api().sendPrivateMessage(e.getClientId(), "Welcome to the server. You can assign your League of Legends summoner name " +
-                        "by using !name");
+                        "by using [b]!name [Your League of Legends name][/b]. If you do not want to receive any messages of Nocturne, just use [b]!mute[/b].");
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.strate.sql.tables.events;
 
+import com.strate.sql.EntryNotFoundException;
 import com.strate.sql.Table;
 import com.strate.sql.databases.Events;
 
@@ -67,9 +68,10 @@ public class Users extends Table {
                 return resultSet.getLong("league_identifier");
             }
         } catch (SQLException e) {
+            // do not interrupt user with errors
             return 0;
         }
 
-        return 0;
+        throw new EntryNotFoundException("User not found in database.");
     }
 }
