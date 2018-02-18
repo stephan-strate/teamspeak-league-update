@@ -11,6 +11,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * <p>Setup process for all teamspeak related settings.
+ * Reads and stores host address, port, username, password, channel id
+ * and server group ids.</p>
+ * @author Stephan Strate
+ * @since 3.0.0
+ */
 public class Teamspeak implements Setup {
 
     /**
@@ -20,20 +27,53 @@ public class Teamspeak implements Setup {
      */
     private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+    /**
+     * <p>Teamspeak host address/ip address.</p>
+     * @since 3.0.0
+     */
     private String hostAddress;
 
+    /**
+     * <p>Teamspeak port.</p>
+     * @since 3.0.0
+     */
     private int port;
 
+    /**
+     * <p>Teamspeak server query username.</p>
+     * @since 3.0.0
+     */
     private String queryUsername;
 
+    /**
+     * <p>Teamspeak server query password.</p>
+     * @since 3.0.0
+     */
     private String queryPassword;
 
+    /**
+     * <p>Teamspeak channel id.</p>
+     * @since 3.0.0
+     */
     private int channelId;
 
+    /**
+     * <p>Used to read the server groups
+     * from console.</p>
+     * @since 3.0.0
+     */
     private HashMap<League, String> serverGroups;
 
+    /**
+     * <p>Default teamspeak connection.</p>
+     * @since 3.0.0
+     */
     private DefaultConnection defaultConnection;
 
+    /**
+     * <p>Default connection.</p>
+     * @since 3.0.0
+     */
     public Teamspeak () {
         hostAddress = "";
         port = 9987;
@@ -45,6 +85,10 @@ public class Teamspeak implements Setup {
         serverGroups = null;
     }
 
+    /**
+     * <p></p>
+     * @since 3.0.0
+     */
     @Override
     public void execute () {
         hostAddress = readHostAddress();
@@ -75,6 +119,11 @@ public class Teamspeak implements Setup {
         }
     }
 
+    /**
+     * <p>Reading the host address from console.</p>
+     * @return  teamspeak host address
+     * @since 3.0.0
+     */
     private String readHostAddress () {
         String hostAddress = "";
         try {
@@ -89,6 +138,11 @@ public class Teamspeak implements Setup {
         return hostAddress;
     }
 
+    /**
+     * <p>Reading the port from console.</p>
+     * @return  port
+     * @since 3.0.0
+     */
     private int readPort () {
         String port = "";
         int parsedPort = 9987;
@@ -118,6 +172,11 @@ public class Teamspeak implements Setup {
         return parsedPort;
     }
 
+    /**
+     * <p>Reading the server query username from console.</p>
+     * @return  server query username
+     * @since 3.0.0
+     */
     private String readQueryUsername () {
         String queryUsername = "";
         try {
@@ -132,6 +191,11 @@ public class Teamspeak implements Setup {
         return queryUsername;
     }
 
+    /**
+     * <p>Reading the server query password from console.</p>
+     * @return  server query password
+     * @since 3.0.0
+     */
     private String readQueryPassword () {
         String queryPassword = "";
         try {
@@ -146,6 +210,11 @@ public class Teamspeak implements Setup {
         return queryPassword;
     }
 
+    /**
+     * <p>Reading the channel id from console.</p>
+     * @return  channel id
+     * @since 3.0.0
+     */
     private int readChannelId () {
         // show channel list
         defaultConnection.showChannelList();
@@ -178,6 +247,11 @@ public class Teamspeak implements Setup {
         return parsedChannelId;
     }
 
+    /**
+     * <p>Reading all server group ids from console.</p>
+     * @return  server group ids
+     * @since 3.0.0
+     */
     private HashMap<League, String> readServerGroups () {
         // show list of server groups
         defaultConnection.showServerGroups();
@@ -197,6 +271,7 @@ public class Teamspeak implements Setup {
                         touched = false;
                     } else {
                         try {
+                            // check if id is parsable
                             Integer.parseInt(serverGroup);
                         } catch (NumberFormatException e) {
                             System.out.println("[" + new Date().toString() + "][tlu] You need to parse a valid server group id.");

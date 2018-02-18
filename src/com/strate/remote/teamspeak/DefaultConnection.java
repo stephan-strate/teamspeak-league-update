@@ -38,23 +38,28 @@ public class DefaultConnection extends Connection {
     }
 
     /**
-     * <p></p>
+     * <p>Extending {@link Connection#init()} method with
+     * some EventListeners.</p>
      * @since 3.0.0
      */
     @Override
     protected void init () {
+        // client join events
         addEventListener(TS3EventType.SERVER, new TS3EventAdapter() {
             @Override
             public void onClientJoin(ClientJoinEvent e) {
                 super.onClientJoin(e);
+                // parse event to handler
                 clientJoin(e);
             }
         });
 
+        // channel messages
         addEventListener(TS3EventType.TEXT_CHANNEL, new TS3EventAdapter() {
             @Override
             public void onTextMessage(TextMessageEvent e) {
                 super.onTextMessage(e);
+                // filter message
                 if (e.getTargetMode() == TextMessageTargetMode.CHANNEL && e.getInvokerId() != getTs3Api().whoAmI().getId()) {
                     String message = e.getMessage().toLowerCase();
                     textMessage(e, message);
@@ -62,11 +67,13 @@ public class DefaultConnection extends Connection {
             }
         });
 
+        // private messages
         addEventListener(TS3EventType.TEXT_PRIVATE, new TS3EventAdapter() {
             @Override
             public void onTextMessage(TextMessageEvent e) {
                 super.onTextMessage(e);
                 if (e.getTargetMode() == TextMessageTargetMode.CLIENT && e.getInvokerId() != getTs3Api().whoAmI().getId()) {
+                    // filter message
                     String message = e.getMessage().toLowerCase();
                     if (message.equals("!mute")) {
                         new Users().assign(e.getInvokerUniqueId(), e.getInvokerName(), 0, "");
@@ -79,13 +86,14 @@ public class DefaultConnection extends Connection {
     }
 
     /**
-     * <p></p>
-     * @param e
+     * <p>Client join handler.</p>
+     * @param e on client join event
      * @since 3.0.0
      */
     private void clientJoin (ClientJoinEvent e) {
         try {
             System.out.println("[" + new Date().toString() + "][tlu] '" + e.getClientNickname() + "' joined the server.");
+            // look up account id, 0 when not found
             long accountId = new Users().getSummonerId(e.getUniqueClientIdentifier());
 
             if (accountId != 0) {
@@ -150,6 +158,7 @@ public class DefaultConnection extends Connection {
                 }
             }
         } catch (EntryNotFoundException error) {
+            // when user is not registered in database, you will be thrown here
             if (Boolean.parseBoolean(Init.s.getPropertie("notification"))) {
                 getTs3Api().sendPrivateMessage(e.getClientId(), "Welcome to the server. You can assign your League of Legends summoner name " +
                         "by using [b]!name [Your League of Legends name][/b]. If you do not want to receive any messages of Nocturne, just use [b]!mute[/b].");
@@ -158,12 +167,13 @@ public class DefaultConnection extends Connection {
     }
 
     /**
-     * <p></p>
-     * @param e
-     * @param message
+     * <p>Text message handler.</p>
+     * @param e         text message event
+     * @param message   message
      * @since 3.0.0
      */
     private void textMessage (TextMessageEvent e, String message) {
+        // switching through message types
         if (message.equals("!ping")) {
             // simple ping test
             String response = "Pong";
@@ -220,7 +230,7 @@ public class DefaultConnection extends Connection {
     }
 
     /**
-     * <p></p>
+     * <p>Prints all channels to the console.</p>
      * @since 3.0.0
      */
     public void showChannelList () {
@@ -232,7 +242,7 @@ public class DefaultConnection extends Connection {
     }
 
     /**
-     * <p></p>
+     * <p>Prints all server groups to the console.</p>
      * @since 3.0.0
      */
     public void showServerGroups () {

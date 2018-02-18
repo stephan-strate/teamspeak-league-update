@@ -5,25 +5,42 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
 
+/**
+ * <p>Setup process for preferred language.
+ * Reads and stores the language.</p>
+ * @author Stephan Strate
+ * @since 3.0.0
+ */
 public class Language implements Setup {
 
     /**
      * <p>Default {@link BufferedReader} to read
      * user input. Used to read Language code and
      * match it with available Language codes.</p>
+     * @since 3.0.0
      */
     private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     /**
      * <p>{@link com.strate.constants.Language} is the
      * main property and part of the settings.</p>
+     * @since 3.0.0
      */
     private com.strate.constants.Language language;
 
+    /**
+     * <p>Default constructor.</p>
+     * @since 3.0.0
+     */
     public Language () {
         language = null;
     }
 
+    /**
+     * <p>Reading and storing the preferred language
+     * from console.</p>
+     * @since 3.0.0
+     */
     @Override
     public void execute () {
         try {
@@ -38,6 +55,12 @@ public class Language implements Setup {
         }
     }
 
+    /**
+     * <p>Returns the language or throws a
+     * {@link SetupException}, when language not available.</p>
+     * @return  {@link Language#language}
+     * @since 3.0.0
+     */
     public com.strate.constants.Language get () {
         if (isValid()) {
             return language;
@@ -46,6 +69,11 @@ public class Language implements Setup {
         throw new SetupException("Illegal access of language property in setup. Language not available.");
     }
 
+    /**
+     * <p>Check if language object is valid.</p>
+     * @return  status
+     * @since 3.0.0
+     */
     public boolean isValid () {
         return language != null;
     }
