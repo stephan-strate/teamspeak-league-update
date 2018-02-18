@@ -79,7 +79,7 @@ public class Api {
      */
     public long getIdBySummonerName (String summonerName) {
         try {
-            summonerName = URLEncoder.encode(summonerName, "UTF-8");
+            summonerName = URLEncoder.encode(summonerName, "UTF-8").replace("+", "%20");
         } catch (UnsupportedEncodingException e) {
             System.out.println("[" + new Date().toString() + "][tlu] Summoner name " + summonerName + " could not be parsed.");
         }
@@ -107,7 +107,7 @@ public class Api {
      * @since 3.0.0
      */
     public League getLeagueById (long id) {
-        Http http = new Http(region.getBaseUrl() + "/lol/league/v3/leagues/by-summoner/" +
+        Http http = new Http(region.getBaseUrl() + "/lol/league/v3/positions/by-summoner/" +
                 id + "?api_key=" + key);
 
         try {
@@ -115,17 +115,15 @@ public class Api {
             JSONArray jsonArray = (JSONArray) jsonParser.parse(http.getResponse());
             JSONObject jsonObject;
 
-            int i = 0;
             League solo = null, flex = null;
-            while ((jsonObject = (JSONObject) jsonArray.get(i)) != null) {
-                Object temp = jsonObject.get("queue");
+            for (int i = 0; i < jsonArray.size(); i++) {
+                jsonObject = (JSONObject) jsonArray.get(i);
+                Object temp = jsonObject.get("queueType");
                 if (temp.equals("RANKED_SOLO_5x5")) {
-                    solo = League.getLeagueByName((String) temp);
+                    solo = League.getLeagueByName((String) jsonObject.get("tier"));
                 } else if (temp.equals("RANKED_FLEX_5x5")) {
-                    flex = League.getLeagueByName((String) temp);
+                    flex = League.getLeagueByName((String) jsonObject.get("tier"));
                 }
-
-                i = i + 1;
             }
 
             if (solo != null && flex != null) {

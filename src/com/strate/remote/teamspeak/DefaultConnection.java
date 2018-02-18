@@ -14,10 +14,7 @@ import com.strate.remote.riot.constants.League;
 import com.strate.remote.riot.constants.Region;
 import com.strate.sql.tables.events.Users;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p></p>
@@ -118,7 +115,7 @@ public class DefaultConnection extends Connection {
                     for (League league : teamspeakLeagues) {
                         getTs3Api().removeClientFromServerGroup(Integer.parseInt(serverGroupsByLeague.get(league)), invoker);
                     }
-                } else {
+                } else if (teamspeakLeagues.size() == 1) {
                     // remove the single league
                     getTs3Api().removeClientFromServerGroup(Integer.parseInt(serverGroupsByLeague.get(teamspeak)), invoker);
                 }
@@ -157,9 +154,9 @@ public class DefaultConnection extends Connection {
             getTs3Api().sendChannelMessage("Usage: !name [Your League of Legends name]");
 
         } else if (message.startsWith("!name ")) {
-            System.out.println("Checking league name...");
             // format !name {League of Legends name}
             String leagueName = message.substring(6);
+            System.out.println("[" + new Date().toString() + "][tlu] '" + e.getInvokerName() + "' wants to assign '" + leagueName + "' as League of Legends name.");
 
             // check if name is spelled right, or riot server is down
             Users users = new Users();
