@@ -29,5 +29,4 @@ src/META-INF/
 
 # Libary
 lib/
-
-*.properties
+.tlu/
