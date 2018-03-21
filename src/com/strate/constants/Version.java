@@ -148,7 +148,7 @@ public class Version {
             String decodePath = path.getName();
 
             System.out.println("[" + new Date().toString() + "][tlu] Starting download.");
-            FileOutputStream fileOutputStream = new FileOutputStream(decodePath + ".jar");
+            FileOutputStream fileOutputStream = new FileOutputStream(decodePath);
             fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
             System.out.println("[" + new Date().toString() + "][tlu] Update finished. Please restart.");
             System.exit(0);
