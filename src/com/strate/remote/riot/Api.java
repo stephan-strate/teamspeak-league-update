@@ -55,7 +55,7 @@ public class Api {
      */
     public boolean isKeyValid (String key) {
         try {
-            Http http = new Http(region.getBaseUrl() + "/lol/summoner/v3/summoners/by-account/" +
+            Http http = new Http(region.getBaseUrl() + "/lol/summoner/v3/summoners/by-account/0" +
                     "?api_key=" + URLEncoder.encode(key, "UTF-8"));
 
             int statusCode = http.getStatusCode() != null ? http.getStatusCode().getCode() : 0;

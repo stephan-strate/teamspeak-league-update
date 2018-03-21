@@ -72,6 +72,7 @@ public class Users extends Table {
                 return true;
             } catch (SQLException e) {
                 // handle errors
+                getDatabase().closeConnection();
                 return false;
             }
         }
@@ -93,10 +94,12 @@ public class Users extends Table {
             ResultSet resultSet = statement.executeQuery(sql);
 
             if (resultSet.next()) {
+                getDatabase().closeConnection();
                 return resultSet.getLong("league_identifier");
             }
         } catch (SQLException e) {
             // do not interrupt user with errors
+            getDatabase().closeConnection();
             return 0;
         }
 

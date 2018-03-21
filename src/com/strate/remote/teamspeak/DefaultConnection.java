@@ -1,10 +1,7 @@
 package com.strate.remote.teamspeak;
 
 import com.github.theholywaffle.teamspeak3.api.TextMessageTargetMode;
-import com.github.theholywaffle.teamspeak3.api.event.ClientJoinEvent;
-import com.github.theholywaffle.teamspeak3.api.event.TS3EventAdapter;
-import com.github.theholywaffle.teamspeak3.api.event.TS3EventType;
-import com.github.theholywaffle.teamspeak3.api.event.TextMessageEvent;
+import com.github.theholywaffle.teamspeak3.api.event.*;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
 import com.github.theholywaffle.teamspeak3.api.wrapper.ClientInfo;
 import com.github.theholywaffle.teamspeak3.api.wrapper.ServerGroup;
@@ -215,6 +212,7 @@ public class DefaultConnection extends Connection {
                 } else if (e.getTargetMode() == TextMessageTargetMode.CLIENT) {
                     getTs3Api().sendPrivateMessage(e.getInvokerId(), response);
                 }
+                System.out.println("[" + new Date().toString() + "][tlu] '" + e.getInvokerName() + "' assigned '" + leagueName + "' as League of Legends name.");
             } else {
                 getTs3Api().sendChannelMessage("Error while adding your League of Legends name, please try again later.");
             }
