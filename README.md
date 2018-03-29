@@ -13,7 +13,7 @@ A bot that registers every user that joins your Teamspeak 3 server and assigns t
 ### Getting started
 
 #### Download
-You can download the latest version [3.0.0](https://github.com/stephan-strate/teamspeak-league-update/releases/tag/3.0.0) via GitHub.</br>
+You can download the latest version [3.0.1](https://github.com/stephan-strate/teamspeak-league-update/releases/tag/3.0.1) via GitHub.</br>
 Older versions aren't available anymore, due riots api changes.
 
 #### What do I need?
@@ -22,6 +22,26 @@ Nothing. You just need a server/computer to run the bot on (most likely the serv
 #### Starting the bot
 ```
 $ java -jar teamspeak-league-update.jar
+```
+
+#### Configuration
+
+| Parameter | Value | Description |
+| :--- | :--- | :--- |
+| language | string <i>(de/en)</i> | Select the language that is used to notify your users (if enabled). <div style="color: red;">Currently not available!</div> |
+| notification | boolean | Users that not added their League of Legends name to your database, will be notified with a private message on every reconnect. |
+| hostAddress | string | Your server ip address or hostname. |
+| port | int <i>(default: 9987)</i> | Your server port. |
+| queryUsername | string | Server query username. |
+| queryPassword | string | Server query password. |
+| channelId | int | The bot needs a channel to rest. You can contact the bot in private chat with him or in this specific channel. |
+| serverGroups | int | You will need to create Server groups like "Bronce", "Silver", .. that represent the League of Legends Tiers. |
+| region | string | This is the region most of your users are placed in. Only accounts placed in this region will be considered. |
+| apikey | string | This will be probably the hardest thing to get at the moment. You need to request a Riot Games api key at: https://developer.riotgames.com/ |
+
+Use the following command to get more informations on how to configure your bot:
+```
+$ help
 ```
 
 ### Development
