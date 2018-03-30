@@ -28,7 +28,7 @@ public class Init {
      */
     public static void main (String[] args) {
         // create the current version (manually)
-        Version version = new Version("3.0.1", 4, "https://github.com/stephan-strate/teamspeak-league-update/releases/download/3.0.1/teamspeak-league-update.jar");
+        Version version = new Version("3.0.2", 5, "https://github.com/stephan-strate/teamspeak-league-update/releases/download/3.0.2/teamspeak-league-update.jar");
 
         // searching for new version
         Version latest = new Version();

@@ -67,13 +67,12 @@ public class Users extends Table {
 
                     preparedStatement.executeUpdate();
                 }
-
-                getDatabase().closeConnection();
                 return true;
             } catch (SQLException e) {
                 // handle errors
-                getDatabase().closeConnection();
                 return false;
+            } finally {
+                getDatabase().closeConnection();
             }
         }
 
@@ -94,13 +93,13 @@ public class Users extends Table {
             ResultSet resultSet = statement.executeQuery(sql);
 
             if (resultSet.next()) {
-                getDatabase().closeConnection();
                 return resultSet.getLong("league_identifier");
             }
         } catch (SQLException e) {
             // do not interrupt user with errors
-            getDatabase().closeConnection();
             return 0;
+        } finally {
+            getDatabase().closeConnection();
         }
 
         throw new EntryNotFoundException("User not found in database.");
