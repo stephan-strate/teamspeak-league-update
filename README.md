@@ -13,7 +13,7 @@ A bot that registers every user that joins your Teamspeak 3 server and assigns t
 ### Getting started
 
 #### Download
-You can download the latest version [3.0.1](https://github.com/stephan-strate/teamspeak-league-update/releases/tag/3.0.1) via GitHub.</br>
+You can download the latest version [3.0.2](https://github.com/stephan-strate/teamspeak-league-update/releases/tag/3.0.2) via GitHub.</br>
 Older versions aren't available anymore, due riots api changes.
 
 #### What do I need?
