@@ -94,6 +94,8 @@ public class Api {
             return (long) jsonObject.get("id");
         } catch (ParseException e) {
             System.out.println("[" + new Date().toString() + "][tlu] Summoner name could not be checked. Wrong data.");
+        } catch (NullPointerException e) {
+            System.out.println("[" + new Date().toString() + "][tlu] Summoner name " + summonerName + " not found.");
         }
 
         return -1;

@@ -1,6 +1,7 @@
 package com.strate.constants;
 
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * <p>Represents a supported language for this
@@ -12,8 +13,8 @@ import java.util.Date;
  */
 public enum Language {
 
-    DE (0, "de"),
-    EN (1, "en");
+    EN (0, new Locale("en", "US")),
+    DE (1, new Locale("de", "DE"));
 
     /**
      * <p>Primary key/id of
@@ -26,7 +27,7 @@ public enum Language {
      * <p>Language code as string.</p>
      * @since 3.0.0
      */
-    private String code;
+    private Locale code;
 
     /**
      * <p>Represents a languages the application
@@ -35,7 +36,7 @@ public enum Language {
      * @param code  language code
      * @since 3.0.0
      */
-    Language (int id, String code) {
+    Language (int id, Locale code) {
         this.id = id;
         this.code = code;
     }
@@ -49,7 +50,7 @@ public enum Language {
      */
     public static Language getLanguageByCode (String code) {
         for (Language language : Language.values()) {
-            if (language.getCode().equals((code.toLowerCase()))) {
+            if (language.toString().toLowerCase().equals((code.toLowerCase()))) {
                 return language;
             }
         }
@@ -66,7 +67,7 @@ public enum Language {
     public static String getAllLanguages () {
         String languages = "";
         for (Language language : Language.values()) {
-            languages += language.getCode() + "/";
+            languages += language.toString() + "/";
         }
 
         languages = languages.substring(0, languages.length() - 1);
@@ -92,7 +93,7 @@ public enum Language {
      */
     @Override
     public String toString () {
-        return code;
+        return code.toLanguageTag();
     }
 
     /**
@@ -109,7 +110,7 @@ public enum Language {
      * @return  language code
      * @since 3.0.0
      */
-    public String getCode () {
+    public Locale getCode () {
         return code;
     }
 }

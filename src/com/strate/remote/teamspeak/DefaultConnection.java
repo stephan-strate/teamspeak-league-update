@@ -155,10 +155,10 @@ public class DefaultConnection extends Connection {
                 }
             }
         } catch (EntryNotFoundException error) {
+            ResourceBundle language = ResourceBundle.getBundle("lang");
             // when user is not registered in database, you will be thrown here
             if (Boolean.parseBoolean(Init.s.getPropertie("notification"))) {
-                getTs3Api().sendPrivateMessage(e.getClientId(), "Welcome to the server. You can assign your League of Legends summoner name " +
-                        "by using [b]!name [Your League of Legends name][/b]. If you do not want to receive any messages of Nocturne, just use [b]!mute[/b].");
+                getTs3Api().sendPrivateMessage(e.getClientId(), language.getString("private-welcome"));
             }
         }
     }
@@ -170,10 +170,12 @@ public class DefaultConnection extends Connection {
      * @since 3.0.0
      */
     private void textMessage (TextMessageEvent e, String message) {
+        ResourceBundle language = ResourceBundle.getBundle("lang");
+
         // switching through message types
         if (message.equals("!ping")) {
             // simple ping test
-            String response = "Pong";
+            String response = language.getString("pong");
             if (e.getTargetMode() == TextMessageTargetMode.CHANNEL) {
                 getTs3Api().sendChannelMessage(response);
             } else if (e.getTargetMode() == TextMessageTargetMode.CLIENT) {
@@ -181,7 +183,7 @@ public class DefaultConnection extends Connection {
             }
         } else if (message.equals("!help")) {
             // a bot can't help
-            String response = "I can't help you.";
+            String response = language.getString("help");
             if (e.getTargetMode() == TextMessageTargetMode.CHANNEL) {
                 getTs3Api().sendChannelMessage(response);
             } else if (e.getTargetMode() == TextMessageTargetMode.CLIENT) {
@@ -189,7 +191,7 @@ public class DefaultConnection extends Connection {
             }
         } else if (message.equals("!name"))  {
             // short explanation for the name system
-            String response = "Usage: !name [Your League of Legends name]";
+            String response = language.getString("usage");
             if (e.getTargetMode() == TextMessageTargetMode.CHANNEL) {
                 getTs3Api().sendChannelMessage(response);
             } else if (e.getTargetMode() == TextMessageTargetMode.CLIENT) {
@@ -205,8 +207,7 @@ public class DefaultConnection extends Connection {
             if (users.assign(e.getInvokerUniqueId(), e.getInvokerName(), new Api(Init.s.getPropertie("apikey"),
                     Region.getRegionByShortcut(Init.s.getPropertie("region"))).getIdBySummonerName(leagueName), leagueName)) {
 
-                String response = "[b]" + leagueName +
-                        "[/b] " + "added to database. Reconnect to get your league assigned.";
+                String response = "[b]" + leagueName + "[/b] " + language.getString("added-to-database");
                 if (e.getTargetMode() == TextMessageTargetMode.CHANNEL) {
                     getTs3Api().sendChannelMessage(response);
                 } else if (e.getTargetMode() == TextMessageTargetMode.CLIENT) {
@@ -214,11 +215,16 @@ public class DefaultConnection extends Connection {
                 }
                 System.out.println("[" + new Date().toString() + "][tlu] '" + e.getInvokerName() + "' assigned '" + leagueName + "' as League of Legends name.");
             } else {
-                getTs3Api().sendChannelMessage("Error while adding your League of Legends name, please try again later.");
+                String response = language.getString("error-database");
+                if (e.getTargetMode() == TextMessageTargetMode.CHANNEL) {
+                    getTs3Api().sendChannelMessage(response);
+                } else if (e.getTargetMode() == TextMessageTargetMode.CLIENT) {
+                    getTs3Api().sendPrivateMessage(e.getInvokerId(), response);
+                }
             }
         } else if (message.startsWith("!")) {
             // after all equals, error message
-            String response = "Command not found.";
+            String response = language.getString("command-not-found");
             if (e.getTargetMode() == TextMessageTargetMode.CHANNEL) {
                 getTs3Api().sendChannelMessage(response);
             } else if (e.getTargetMode() == TextMessageTargetMode.CLIENT) {

@@ -6,6 +6,8 @@ import com.strate.remote.teamspeak.DefaultConnection;
 import com.strate.setup.*;
 
 import java.util.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * <p>Main class.</p>
@@ -58,6 +60,14 @@ public class Init {
         }
 
         try {
+            // set default language
+            com.strate.constants.Language defaultLang = com.strate.constants.Language.getLanguageByCode(s.getPropertie("language"));
+            if (defaultLang == null) {
+                System.out.println("[" + new Date().toString() + "][tlu] Default language en_US applied. You can configure a language with 'update language'");
+                defaultLang = com.strate.constants.Language.EN;
+            }
+            Locale.setDefault(defaultLang.getCode());
+
             // open a teamspeak connection
             DefaultConnection defaultConnection = new DefaultConnection(s.getPropertie("hostAddress"), Integer.parseInt(s.getPropertie("port")),
                     s.getPropertie("queryUsername"), s.getPropertie("queryPassword"), Integer.parseInt(s.getPropertie("channelId")));
