@@ -65,6 +65,14 @@ With the same command, you can change your account.</br>
 You don't need to update your ingame name after you changed it, because
 the bot stores your account id.
 
+## Known issues
+
+1. Disonnect loop! When you reached the flood limit, the server will prevent you from connecting.
+To fix this issue, you need to shut down the bot for some minutes and try it again after it.
+
+2. Parsing error. Check your .tlu/properties.dat properties.
+You fix this issue by deleting your properties.dat and starting the initial setup again.
+
 ## Questions or bugs?
 
 If you have any questions or you found a bug, just let me know [here](https://github.com/stephan-strate/teamspeak-league-update/issues).
