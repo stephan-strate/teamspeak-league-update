@@ -8,7 +8,7 @@
 
 ## [3.0.1](https://github.com/stephan-strate/teamspeak-league-update/releases/tag/3.0.1) (21.03.2018)
 
-### Upgrading instructions
+### Upgrading Instructions
 
 To get this update, you need to manually download 3.0.1, because of a small bug in our upgrading process.
 
@@ -23,7 +23,5 @@ To get this update, you need to manually download 3.0.1, because of a small bug 
 
 ## Legacy versions
 
-All versions < 3.0.0
-
-Legacy versions are not supported anymore.
+All versions **< 3.0.0** are not supported anymore.
 Please use the newest version available to ensure most stability.
