@@ -14,7 +14,7 @@ A bot that registers every user that joins your Teamspeak 3 server and assigns t
 
 #### Download
 You can download the latest version [3.0.2](https://github.com/stephan-strate/teamspeak-league-update/releases/tag/3.0.2) via GitHub.</br>
-Older versions aren't available anymore, due riots api changes.
+Older versions aren't available anymore, due riots api changes. Get more information in our [changelog](https://github.com/stephan-strate/teamspeak-league-update/blob/master/CHANGELOG.md).
 
 #### What do I need?
 Nothing. You just need a server/computer to run the bot on (most likely the server your ts is running on).
@@ -65,6 +65,13 @@ With the same command, you can change your account.</br>
 You don't need to update your ingame name after you changed it, because
 the bot stores your account id.
 
+### All commands
+| Command | Description |
+| :--- | :--- |
+| !ping | Pong |
+| !help | I can't help you |
+| !name | Add/change your League of Legends name |
+
 ## Known issues
 
 1. Disonnect loop! When you reached the flood limit, the server will prevent you from connecting.
@@ -72,6 +79,8 @@ To fix this issue, you need to shut down the bot for some minutes and try it aga
 
 2. Parsing error. Check your .tlu/properties.dat properties.
 You fix this issue by deleting your properties.dat and starting the initial setup again.
+
+Get more information in our [roadmap](https://github.com/stephan-strate/teamspeak-league-update/blob/master/ROADMAP.md).
 
 ## Questions or bugs?
 
