@@ -4,9 +4,10 @@ A bot that registers every user that joins your Teamspeak 3 server and assigns t
 
 ## Features
 
-- Based on the most powerful Teamspeak 3 api java wrapper
-- Assigns matching League of Legends tier server groups for every client
-- Easy to set up
+* Based on the most powerful Teamspeak 3 api java wrapper
+* Assigns matching League of Legends tier server groups for every client
+* Easy to set up
+* Multiple languages possible (currently english and german)
 
 ## Setup
 
@@ -50,9 +51,12 @@ You may use my repository for non-commercial as well as commercial purposes.</br
 But there is no warranty or guaranteed support.
 
 #### Dependencies
-- [teamspeak3-api](https://github.com/TheHolyWaffle/TeamSpeak-3-Java-API) by [_TheHolyWaffle_](https://github.com/TheHolyWaffle) at [1.0.14](https://github.com/TheHolyWaffle/TeamSpeak-3-Java-API/releases/tag/v1.0.14)
-- [json-simple](https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple) at [1.1.1](https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple/1.1.1)
-- [sqlite-jdbc](https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc) at [3.20.0](https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc/3.20.0)
+
+All current dependencies can be found [here](https://github.com/stephan-strate/teamspeak-league-update/blob/master/pom.xml).
+
+* [teamspeak3-api](https://github.com/TheHolyWaffle/TeamSpeak-3-Java-API) by [_TheHolyWaffle_](https://github.com/TheHolyWaffle) at [1.0.14](https://github.com/TheHolyWaffle/TeamSpeak-3-Java-API/releases/tag/v1.0.14)
+* [json-simple](https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple) at [1.1.1](https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple/1.1.1)
+* [sqlite-jdbc](https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc) at [3.20.0](https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc/3.20.0)
 
 ## What does it do?
 
@@ -82,6 +86,12 @@ You fix this issue by deleting your properties.dat and starting the initial setu
 
 Get more information in our [roadmap](https://github.com/stephan-strate/teamspeak-league-update/blob/master/ROADMAP.md).
 
+## Example servers
+
+If you want your server to be listed here, please [contact me](development@famstrate.com).
+
+* [ts.harddestiny.de](ts3server://ts.harddestiny.de), original server
+
 ## Questions or bugs?
 
-If you have any questions or you found a bug, just let me know [here](https://github.com/stephan-strate/teamspeak-league-update/issues).
+If you have any questions or you found a bug, just let me know [here](https://github.com/stephan-strate/teamspeak-league-update/issues). I'm always open for new features aswell.
