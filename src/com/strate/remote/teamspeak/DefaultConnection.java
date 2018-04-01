@@ -94,6 +94,9 @@ public class DefaultConnection extends Connection {
             long accountId = new Users().getSummonerId(e.getUniqueClientIdentifier());
 
             if (accountId != 0) {
+                // update nickname in database
+                new Users().updateName(e.getUniqueClientIdentifier(), e.getClientNickname());
+
                 // current riot game account
                 Api api = new Api(Init.s.getPropertie("apikey"), Region.getRegionByShortcut(Init.s.getPropertie("region")));
                 League account = api.getLeagueById(accountId);

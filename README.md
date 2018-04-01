@@ -88,7 +88,7 @@ Get more information in our [roadmap](https://github.com/stephan-strate/teamspea
 
 ## Example servers
 
-If you want your server to be listed here, please [contact me](development@famstrate.com).
+If you want your server to be listed here, please [contact me](mailto:development@famstrate.com).
 
 * [ts.harddestiny.de](ts3server://ts.harddestiny.de), original server
 
