@@ -18,7 +18,8 @@ Update plans and goals.
 specific users.
 * **Language support:** The bot speaks your language *(currently en_US and de_DE)*.
 You can contribute and add your translations (*src/lang_en_GB.properties* for example).
-
+* **Database actuality:** The teamspeak nickname will be updated on every connect, so you can
+easily identify your users.
 
 ### Bug Fixes
 

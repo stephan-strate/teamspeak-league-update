@@ -105,6 +105,13 @@ public class Users extends Table {
         throw new EntryNotFoundException("User not found in database.");
     }
 
+    /**
+     * <p>Updates the teamspeak name for a teamspeak
+     * identifier.</p>
+     * @param teamspeakId   unique teamspeak identifier
+     * @param teamspeakName teamspeak name
+     * @since 3.1.0
+     */
     public void updateName (String teamspeakId, String teamspeakName) {
         String sql = "UPDATE users SET teamspeak_nickname = '" + teamspeakName + "' WHERE teamspeak_identifier = '" + teamspeakId + "'";
         try {
