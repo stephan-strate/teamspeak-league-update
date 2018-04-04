@@ -88,6 +88,49 @@ public class Settings {
      * @since 3.0.0
      */
     public String getPropertie (String key) {
+        if (!properties.containsKey(key)) {
+            switch (key.toLowerCase()) {
+                case "language": {
+                    new Language().execute();
+                    break;
+                }
+
+                case "notification": {
+                    new Notification().execute();
+                    break;
+                }
+
+                case "apikey": {
+                    new ApiKey(com.strate.remote.riot.constants.Region.getRegionByShortcut(getPropertie("region"))).execute();
+                    break;
+                }
+
+                case "region": {
+                    new Region().execute();
+                    break;
+                }
+
+                case "bronce":
+                case "silver":
+                case "gold":
+                case "platinum":
+                case "diamond":
+                case "master":
+                case "challenger":
+                case "channelId":
+                case "queryUsername":
+                case "queryPassword":
+                case "hostAddress":
+                case "port": {
+                    new Teamspeak().execute();
+                    break;
+                }
+            }
+
+            // reload settings
+            this.load();
+        }
+
         return properties.getProperty(key);
     }
 

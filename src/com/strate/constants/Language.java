@@ -50,7 +50,7 @@ public enum Language {
      */
     public static Language getLanguageByCode (String code) {
         for (Language language : Language.values()) {
-            if (language.toString().toLowerCase().equals((code.toLowerCase()))) {
+            if (language.toString().toLowerCase().equals(code.toLowerCase())) {
                 return language;
             }
         }
