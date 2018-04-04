@@ -100,6 +100,43 @@ public class DefaultConsole extends Console {
     }
 
     /**
+     * <p></p>
+     * @param args
+     */
+    @Method
+    protected void database (String[] args) {
+        if (args != null && args.length > 1) {
+            switch (args[0].toLowerCase()) {
+                case "users": {
+                    if (args.length == 2) {
+                        switch (args[1].toLowerCase()) {
+                            case "all": {
+                                // print all users
+                                break;
+                            }
+
+                            default: {
+                                // search for a single user
+                                break;
+                            }
+                        }
+                    } else {
+                        // list all possible arguments
+                    }
+                    break;
+                }
+
+                default: {
+                    // list all possible arguments
+                    break;
+                }
+            }
+        } else {
+            // no arguments
+        }
+    }
+
+    /**
      * <p>Used to update specific settings. Expects
      * an option that needs to be updated.</p>
      * @param args  arguments
